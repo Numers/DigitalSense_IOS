@@ -1,0 +1,527 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		569D5ACA853E899497589500 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D39F362A473940166CFC44 /* libPods.a */; };
+		8476D8091CE429D000D9F428 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8081CE429D000D9F428 /* CoreBluetooth.framework */; };
+		8476D8111CE429DC00D9F428 /* BluetoothMacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8476D80D1CE429DC00D9F428 /* BluetoothMacManager.m */; };
+		8476D8121CE429DC00D9F428 /* DataAnalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8476D8101CE429DC00D9F428 /* DataAnalizer.m */; };
+		8476D81D1CE44EA200D9F428 /* IflyRecognizerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8476D81B1CE44EA200D9F428 /* IflyRecognizerManager.m */; };
+		8476D8331CE44FE400D9F428 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8321CE44FE400D9F428 /* iflyMSC.framework */; };
+		8476D8351CE4503900D9F428 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8341CE4503900D9F428 /* libz.tbd */; };
+		8476D8371CE4504300D9F428 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8361CE4504300D9F428 /* CoreTelephony.framework */; };
+		8476D8391CE4504900D9F428 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8381CE4504900D9F428 /* AVFoundation.framework */; };
+		8476D83B1CE4505200D9F428 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D83A1CE4505200D9F428 /* AudioToolbox.framework */; };
+		8476D83D1CE4505900D9F428 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D83C1CE4505900D9F428 /* SystemConfiguration.framework */; };
+		8476D83F1CE4505E00D9F428 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D83E1CE4505E00D9F428 /* QuartzCore.framework */; };
+		8476D8411CE4506600D9F428 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8401CE4506600D9F428 /* CoreGraphics.framework */; };
+		8476D8431CE4507C00D9F428 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D8421CE4507C00D9F428 /* libc++.tbd */; };
+		8476D8451CE458F200D9F428 /* grammar_sample.abnf in Resources */ = {isa = PBXBuildFile; fileRef = 8476D8441CE458F200D9F428 /* grammar_sample.abnf */; };
+		8476D84A1CE469A200D9F428 /* AppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 8476D8491CE469A200D9F428 /* AppUtils.m */; };
+		8476D84C1CE4724D00D9F428 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8476D84B1CE4724D00D9F428 /* AddressBook.framework */; };
+		84BE615F1CE3227400D080F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE615E1CE3227400D080F6 /* main.m */; };
+		84BE61621CE3227400D080F6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE61611CE3227400D080F6 /* AppDelegate.m */; };
+		84BE61651CE3227400D080F6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BE61641CE3227400D080F6 /* ViewController.m */; };
+		84BE61681CE3227400D080F6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84BE61661CE3227400D080F6 /* Main.storyboard */; };
+		84BE616A1CE3227400D080F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84BE61691CE3227400D080F6 /* Assets.xcassets */; };
+		84BE616D1CE3227400D080F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84BE616B1CE3227400D080F6 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		55AF18376D2CAE98665BABCD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		8476D8081CE429D000D9F428 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8476D80C1CE429DC00D9F428 /* BluetoothMacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothMacManager.h; sourceTree = "<group>"; };
+		8476D80D1CE429DC00D9F428 /* BluetoothMacManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothMacManager.m; sourceTree = "<group>"; };
+		8476D80F1CE429DC00D9F428 /* DataAnalizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataAnalizer.h; sourceTree = "<group>"; };
+		8476D8101CE429DC00D9F428 /* DataAnalizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataAnalizer.m; sourceTree = "<group>"; };
+		8476D81A1CE44EA200D9F428 /* IflyRecognizerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IflyRecognizerManager.h; sourceTree = "<group>"; };
+		8476D81B1CE44EA200D9F428 /* IflyRecognizerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IflyRecognizerManager.m; sourceTree = "<group>"; };
+		8476D8321CE44FE400D9F428 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
+		8476D8341CE4503900D9F428 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8476D8361CE4504300D9F428 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		8476D8381CE4504900D9F428 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8476D83A1CE4505200D9F428 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		8476D83C1CE4505900D9F428 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8476D83E1CE4505E00D9F428 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8476D8401CE4506600D9F428 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		8476D8421CE4507C00D9F428 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		8476D8441CE458F200D9F428 /* grammar_sample.abnf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = grammar_sample.abnf; sourceTree = "<group>"; };
+		8476D8461CE45A4C00D9F428 /* GlobalVar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVar.h; sourceTree = "<group>"; };
+		8476D8481CE469A200D9F428 /* AppUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppUtils.h; sourceTree = "<group>"; };
+		8476D8491CE469A200D9F428 /* AppUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppUtils.m; sourceTree = "<group>"; };
+		8476D84B1CE4724D00D9F428 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		84BE615A1CE3227400D080F6 /* DigitalSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		84BE615E1CE3227400D080F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		84BE61601CE3227400D080F6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		84BE61611CE3227400D080F6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		84BE61631CE3227400D080F6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		84BE61641CE3227400D080F6 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		84BE61671CE3227400D080F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		84BE61691CE3227400D080F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		84BE616C1CE3227400D080F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		84BE616E1CE3227400D080F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A110EA22B50A2E8BA69D4D7D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A4D39F362A473940166CFC44 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		84BE61571CE3227400D080F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8476D84C1CE4724D00D9F428 /* AddressBook.framework in Frameworks */,
+				8476D8431CE4507C00D9F428 /* libc++.tbd in Frameworks */,
+				8476D8411CE4506600D9F428 /* CoreGraphics.framework in Frameworks */,
+				8476D83F1CE4505E00D9F428 /* QuartzCore.framework in Frameworks */,
+				8476D83D1CE4505900D9F428 /* SystemConfiguration.framework in Frameworks */,
+				8476D83B1CE4505200D9F428 /* AudioToolbox.framework in Frameworks */,
+				8476D8391CE4504900D9F428 /* AVFoundation.framework in Frameworks */,
+				8476D8371CE4504300D9F428 /* CoreTelephony.framework in Frameworks */,
+				8476D8351CE4503900D9F428 /* libz.tbd in Frameworks */,
+				8476D8331CE44FE400D9F428 /* iflyMSC.framework in Frameworks */,
+				8476D8091CE429D000D9F428 /* CoreBluetooth.framework in Frameworks */,
+				569D5ACA853E899497589500 /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		48138E84282E39AF64F990BA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A110EA22B50A2E8BA69D4D7D /* Pods.debug.xcconfig */,
+				55AF18376D2CAE98665BABCD /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		8476D8071CE429BB00D9F428 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8476D84B1CE4724D00D9F428 /* AddressBook.framework */,
+				8476D8421CE4507C00D9F428 /* libc++.tbd */,
+				8476D8401CE4506600D9F428 /* CoreGraphics.framework */,
+				8476D83E1CE4505E00D9F428 /* QuartzCore.framework */,
+				8476D83C1CE4505900D9F428 /* SystemConfiguration.framework */,
+				8476D83A1CE4505200D9F428 /* AudioToolbox.framework */,
+				8476D8381CE4504900D9F428 /* AVFoundation.framework */,
+				8476D8361CE4504300D9F428 /* CoreTelephony.framework */,
+				8476D8341CE4503900D9F428 /* libz.tbd */,
+				8476D8321CE44FE400D9F428 /* iflyMSC.framework */,
+				8476D8081CE429D000D9F428 /* CoreBluetooth.framework */,
+				A4D39F362A473940166CFC44 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8476D80A1CE429DC00D9F428 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				8476D8171CE44EA200D9F428 /* IflyRecognizer */,
+				8476D80B1CE429DC00D9F428 /* Bluetooth */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		8476D80B1CE429DC00D9F428 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				8476D80C1CE429DC00D9F428 /* BluetoothMacManager.h */,
+				8476D80D1CE429DC00D9F428 /* BluetoothMacManager.m */,
+				8476D80E1CE429DC00D9F428 /* DataAnalizer */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		8476D80E1CE429DC00D9F428 /* DataAnalizer */ = {
+			isa = PBXGroup;
+			children = (
+				8476D80F1CE429DC00D9F428 /* DataAnalizer.h */,
+				8476D8101CE429DC00D9F428 /* DataAnalizer.m */,
+			);
+			path = DataAnalizer;
+			sourceTree = "<group>";
+		};
+		8476D8171CE44EA200D9F428 /* IflyRecognizer */ = {
+			isa = PBXGroup;
+			children = (
+				8476D8181CE44EA200D9F428 /* bnf */,
+				8476D81A1CE44EA200D9F428 /* IflyRecognizerManager.h */,
+				8476D81B1CE44EA200D9F428 /* IflyRecognizerManager.m */,
+			);
+			path = IflyRecognizer;
+			sourceTree = "<group>";
+		};
+		8476D8181CE44EA200D9F428 /* bnf */ = {
+			isa = PBXGroup;
+			children = (
+				8476D8441CE458F200D9F428 /* grammar_sample.abnf */,
+			);
+			path = bnf;
+			sourceTree = "<group>";
+		};
+		84BE61511CE3227400D080F6 = {
+			isa = PBXGroup;
+			children = (
+				84BE615C1CE3227400D080F6 /* DigitalSense */,
+				8476D8071CE429BB00D9F428 /* Frameworks */,
+				84BE615B1CE3227400D080F6 /* Products */,
+				48138E84282E39AF64F990BA /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		84BE615B1CE3227400D080F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				84BE615A1CE3227400D080F6 /* DigitalSense.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		84BE615C1CE3227400D080F6 /* DigitalSense */ = {
+			isa = PBXGroup;
+			children = (
+				8476D8461CE45A4C00D9F428 /* GlobalVar.h */,
+				8476D80A1CE429DC00D9F428 /* Helper */,
+				84BE61601CE3227400D080F6 /* AppDelegate.h */,
+				84BE61611CE3227400D080F6 /* AppDelegate.m */,
+				84BE61631CE3227400D080F6 /* ViewController.h */,
+				84BE61641CE3227400D080F6 /* ViewController.m */,
+				84BE61661CE3227400D080F6 /* Main.storyboard */,
+				84BE61691CE3227400D080F6 /* Assets.xcassets */,
+				84BE616B1CE3227400D080F6 /* LaunchScreen.storyboard */,
+				84BE616E1CE3227400D080F6 /* Info.plist */,
+				84BE615D1CE3227400D080F6 /* Supporting Files */,
+				8476D8481CE469A200D9F428 /* AppUtils.h */,
+				8476D8491CE469A200D9F428 /* AppUtils.m */,
+			);
+			path = DigitalSense;
+			sourceTree = "<group>";
+		};
+		84BE615D1CE3227400D080F6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				84BE615E1CE3227400D080F6 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		84BE61591CE3227400D080F6 /* DigitalSense */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84BE61711CE3227400D080F6 /* Build configuration list for PBXNativeTarget "DigitalSense" */;
+			buildPhases = (
+				EA3DF0B3D63CC0BE763B2663 /* Check Pods Manifest.lock */,
+				84BE61561CE3227400D080F6 /* Sources */,
+				84BE61571CE3227400D080F6 /* Frameworks */,
+				84BE61581CE3227400D080F6 /* Resources */,
+				CB6FABC69AB295A079B27E35 /* Embed Pods Frameworks */,
+				695D3746DC815C27267DFD6B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DigitalSense;
+			productName = DigitalSense;
+			productReference = 84BE615A1CE3227400D080F6 /* DigitalSense.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		84BE61521CE3227400D080F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = RenRenFenQi;
+				TargetAttributes = {
+					84BE61591CE3227400D080F6 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = VNE3KQ6H48;
+					};
+				};
+			};
+			buildConfigurationList = 84BE61551CE3227400D080F6 /* Build configuration list for PBXProject "DigitalSense" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 84BE61511CE3227400D080F6;
+			productRefGroup = 84BE615B1CE3227400D080F6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				84BE61591CE3227400D080F6 /* DigitalSense */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		84BE61581CE3227400D080F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84BE616D1CE3227400D080F6 /* LaunchScreen.storyboard in Resources */,
+				84BE616A1CE3227400D080F6 /* Assets.xcassets in Resources */,
+				8476D8451CE458F200D9F428 /* grammar_sample.abnf in Resources */,
+				84BE61681CE3227400D080F6 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		695D3746DC815C27267DFD6B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB6FABC69AB295A079B27E35 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA3DF0B3D63CC0BE763B2663 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		84BE61561CE3227400D080F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84BE61651CE3227400D080F6 /* ViewController.m in Sources */,
+				8476D81D1CE44EA200D9F428 /* IflyRecognizerManager.m in Sources */,
+				8476D8121CE429DC00D9F428 /* DataAnalizer.m in Sources */,
+				84BE61621CE3227400D080F6 /* AppDelegate.m in Sources */,
+				8476D84A1CE469A200D9F428 /* AppUtils.m in Sources */,
+				8476D8111CE429DC00D9F428 /* BluetoothMacManager.m in Sources */,
+				84BE615F1CE3227400D080F6 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		84BE61661CE3227400D080F6 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84BE61671CE3227400D080F6 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		84BE616B1CE3227400D080F6 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				84BE616C1CE3227400D080F6 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		84BE616F1CE3227400D080F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		84BE61701CE3227400D080F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		84BE61721CE3227400D080F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A110EA22B50A2E8BA69D4D7D /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Renren Technology Co., Ltd.";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = DigitalSense/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		84BE61731CE3227400D080F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55AF18376D2CAE98665BABCD /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Renren Technology Co., Ltd.";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = DigitalSense/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		84BE61551CE3227400D080F6 /* Build configuration list for PBXProject "DigitalSense" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84BE616F1CE3227400D080F6 /* Debug */,
+				84BE61701CE3227400D080F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84BE61711CE3227400D080F6 /* Build configuration list for PBXNativeTarget "DigitalSense" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84BE61721CE3227400D080F6 /* Debug */,
+				84BE61731CE3227400D080F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 84BE61521CE3227400D080F6 /* Project object */;
+}
