@@ -1,0 +1,6 @@
+#source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '7.0'
+pod 'MBProgressHUD', '~> 0.8'
+pod 'LewReorderableLayout', :git => 'https://github.com/pljhonglu/LewReorderableLayout.git', :tag => 'v0.1.0'
+pod 'ReactiveCocoa'
+pod 'AFNetworking', '~> 2.5.4'

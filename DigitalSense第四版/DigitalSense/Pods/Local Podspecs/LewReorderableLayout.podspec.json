@@ -1,0 +1,22 @@
+{
+  "name": "LewReorderableLayout",
+  "version": "0.1.0",
+  "summary": "A UICollectionView layout which you can move items with drag and drop.",
+  "homepage": "https://github.com/pljhonglu/LewReorderableLayout",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "pljhonglu": "pljhonglu@gmail.com"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/pljhonglu/LewReorderableLayout.git",
+    "tag": "v0.1.0"
+  },
+  "source_files": "LewReorderableLayout/*.{h,m}",
+  "requires_arc": true
+}
