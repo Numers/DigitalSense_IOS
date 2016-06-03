@@ -18,15 +18,22 @@
 #import "ViewModel.h"
 
 #define SpeakDelay 0.5f
+#define SmellEmitDuration 15
 #define CellMargin 0.0f
 #define CellItemCount 3
 #define CloseTag 0
 
+#define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
 @interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource>
 {
     NSNumber *selectTag;
+    NSTimer *smellEmitTimer;
+    NSInteger countTime;
+    
+    NSArray *rfIdOrderList;
+    BOOL hasNewFruit;
 }
 @property (nonatomic, weak)IBOutlet UICollectionView *collectionView;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
@@ -51,36 +58,44 @@
     layout.delegate = self;
     layout.dataSource = self;
     
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
+    rfIdOrderList = [NSArray arrayWithContentsOfFile:path];
+    
+    hasNewFruit = NO;
     _fruitsList = [NSMutableArray array];
+    
+    /*********************添加假数据**********************/
     Fruit *fruit1 = [[Fruit alloc] init];
     fruit1.fruitName = @"苹果";
     fruit1.fruitImage = @"AppleImage_Normal";
     fruit1.fruitRFID = 0xFFFFFFFF;
-    [_fruitsList addObject:fruit1];
+    [self addFruitByOrder:fruit1];
     
     Fruit *fruit2 = [[Fruit alloc] init];
     fruit2.fruitName = @"椰子";
     fruit2.fruitImage = @"CoconutImage_Normal";
     fruit2.fruitRFID = 0x8765e394;
-    [_fruitsList addObject:fruit2];
+    [self addFruitByOrder:fruit2];
     
     Fruit *fruit3 = [[Fruit alloc] init];
     fruit3.fruitName = @"猕猴桃";
     fruit3.fruitImage = @"KiwifruitImage_Normal";
-    fruit3.fruitRFID = 0x8765e394;
-    [_fruitsList addObject:fruit3];
+    fruit3.fruitRFID = 0x8765e393;
+    [self addFruitByOrder:fruit3];
     
     Fruit *fruit4 = [[Fruit alloc] init];
     fruit4.fruitName = @"芒果";
     fruit4.fruitImage = @"MangoImage_Normal";
-    fruit4.fruitRFID = 0x8765e394;
-    [_fruitsList addObject:fruit4];
+    fruit4.fruitRFID = 0x8765e392;
+    [self addFruitByOrder:fruit4];
     
     Fruit *fruit5 = [[Fruit alloc] init];
     fruit5.fruitName = @"橙子";
     fruit5.fruitImage = @"OrangeImage_Normal";
-    fruit5.fruitRFID = 0x8765e394;
-    [_fruitsList addObject:fruit5];
+    fruit5.fruitRFID = 0x8765e391;
+    [self addFruitByOrder:fruit5];
+    /****************************************************/
     
     selectTag = [NSNumber numberWithInteger:CloseTag];
     
@@ -174,8 +189,7 @@
                 [[self.viewModel getBottleInfoReturn:byte] subscribeNext:^(id x) {
                     NSDictionary *dic = (NSDictionary *)x;
                     Fruit *fruit = [dic objectForKey:BottleKey];
-                    [_fruitsList addObject:fruit];
-                    [_collectionView reloadData];
+                    [self addFruitByOrder:fruit];
                 }];
             }
                 break;
@@ -184,18 +198,26 @@
                 [[self.viewModel emitSmellReturn:byte] subscribeNext:^(id x) {
                     NSDictionary *dic = (NSDictionary *)x;
                     NSNumber *rfId = [dic objectForKey:EmitSmellNoKey];
-                    NSNumber *duration = [dic objectForKey:EmitSmellDuration];
+                    NSNumber *duration = [dic objectForKey:EmitSmellDurationKey];
                     if ([duration integerValue] == 0) {
                         [self setSelectTag:CloseTag];
+                        if (smellEmitTimer) {
+                            if ([smellEmitTimer isValid]) {
+                                [smellEmitTimer invalidate];
+                                smellEmitTimer = nil;
+                            }
+                        }
                     }else{
                         [self setSelectTag:[rfId integerValue]];
+                        [self startTimerWithDuration:[duration intValue]];
                     }
                 }];
             }
                 break;
             default:
                 break;
-        }    }
+        }
+    }
 }
 
 #pragma -mark private function
@@ -210,6 +232,7 @@
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+            [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
         }else{
             if(backType == CallbackBluetoothPowerOff)
             {
@@ -230,12 +253,28 @@
     [[BluetoothMacManager defaultManager] stopBluetoothDevice];
 }
 
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:34
+ *
+ *  设置当前发散气味的标识
+ *
+ *  @param tag 气味标识
+ */
 -(void)setSelectTag:(NSInteger)tag
 {
     selectTag = [NSNumber numberWithInteger:tag];
     [_collectionView reloadData];
 }
 
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:58
+ *
+ *  查找气味对象
+ *
+ *  @param rfId 气味对应的瓶子RFID
+ *
+ *  @return 气味对象
+ */
 -(Fruit *)searchFruitByRFID:(NSInteger)rfId
 {
     Fruit *fruit = nil;
@@ -248,6 +287,120 @@
     return fruit;
 }
 
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:24
+ *
+ *  开启气味发散计时
+ *
+ *  @param duration 气味发散时间间隔
+ */
+-(void)startTimerWithDuration:(int)duration
+{
+    if (smellEmitTimer) {
+        if ([smellEmitTimer isValid]) {
+            [smellEmitTimer invalidate];
+            smellEmitTimer = nil;
+        }
+    }
+    
+    countTime = -1;
+    smellEmitTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countdown) userInfo:nil repeats:YES];
+}
+
+-(void)countdown
+{
+    countTime ++;
+    if (countTime <= SmellEmitDuration) {
+        //计时气味发散时间
+        
+    }else{
+        if (smellEmitTimer) {
+            if ([smellEmitTimer isValid]) {
+                [smellEmitTimer invalidate];
+                smellEmitTimer = nil;
+            }
+        }
+        [self setSelectTag:CloseTag];
+    }
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:19
+ *
+ *  往蓝牙写入开启气味命令
+ *
+ *  @param rfId     气味对应的瓶子RFID
+ *  @param interval 发散气味的时间间隔 0表示关闭
+ */
+-(void)writeDataWithRFID:(NSInteger)rfId WithTimeInterval:(int)interval
+{
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithRFID:rfId WithTimeInterval:interval];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:38
+ *
+ *  添加一个气味，从气味顺序列表中搜索
+ *
+ *  @param fruit 气味对象
+ */
+-(void)addFruitByOrder:(Fruit *)fruit
+{
+    if (rfIdOrderList) {
+        NSInteger index = [rfIdOrderList indexOfObject:[NSNumber numberWithInteger:fruit.fruitRFID]];
+        if (index >= 0 && index < rfIdOrderList.count) {
+            fruit.tag = index;
+        }else{
+            hasNewFruit = YES;
+            fruit.tag = rfIdOrderList.count;
+        }
+        [_fruitsList addObject:fruit];
+    }else{
+        hasNewFruit = YES;
+        fruit.tag = rfIdOrderList.count;
+        [_fruitsList addObject:fruit];
+    }
+    
+    [_fruitsList sortUsingComparator:^NSComparisonResult(Fruit*  _Nonnull obj1, Fruit*  _Nonnull obj2) {
+        return obj1.tag > obj2.tag ? NSOrderedDescending:NSOrderedAscending;
+    }];
+    [_collectionView reloadData];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:08
+ *
+ *  保存当前气味列表的RFID顺序
+ */
+-(void)saveOrderFile
+{
+    NSMutableArray *orderList = [NSMutableArray array];
+    for (Fruit *fruit in _fruitsList) {
+        NSNumber *RFID = [NSNumber numberWithInteger:fruit.fruitRFID];
+        [orderList addObject:RFID];
+    }
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
+    [orderList writeToFile:path atomically:YES];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 13:06:24
+ *
+ *  组织上传语音语法
+ *
+ *  @return 语音语法
+ */
+-(NSString *)generateGrammarContent
+{
+    NSMutableString *content = [[NSMutableString alloc] initWithString:@"#ABNF 1.0 UTF-8;\nlanguage zh-CN; \nmode voice;\n\nroot $main;\n$main = $place1;\n$place1 = "];
+    for (Fruit *fruit in _fruitsList) {
+        [content appendString:fruit.fruitName];
+        [content appendString:@"|"];
+    }
+    [content appendString:@"关|关闭;"];
+    return content;
+}
 #pragma -mark ButtonClickEvent
 -(IBAction)TouchDownVoiceBtn:(id)sender
 {
@@ -263,7 +416,14 @@
         [AppUtils showInfo:@"请先打开蓝牙或者刷新重连"];
         return;
     }
-    [[IflyRecognizerManager defaultManager] startRecognizer:^(NSString *result) {
+    
+    NSString *grammarContent = nil;
+    if (hasNewFruit) {
+        hasNewFruit = NO;
+        grammarContent = [self generateGrammarContent];
+    }
+    
+    [[IflyRecognizerManager defaultManager] startRecognizer:grammarContent Callback:^(NSString *result) {
         NSLog(@"%@",result);
         NSData *jsonData = [result dataUsingEncoding:NSUTF8StringEncoding];
         NSError *err;
@@ -279,113 +439,34 @@
                     NSDictionary *infoDic = [cwArr objectAtIndex:0];
                     NSString *highMatch = [infoDic objectForKey:@"w"];
                     
-                    if ([highMatch isEqualToString:@"芒果"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellMango];
-//                                    [self setSelectTag:1 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"苹果"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellApple];
-//                                    [self setSelectTag:2 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"猕猴桃"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellKiwifruit];
-//                                    [self setSelectTag:3 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"橘子"] || [highMatch isEqualToString:@"橙子"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellOrange];
-//                                    [self setSelectTag:4 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"椰子"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellCoconut];
-//                                    [self setSelectTag:5 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"水蜜桃"] || [highMatch isEqualToString:@"桃子"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellPeach];
-//                                    [self setSelectTag:6 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"菠萝"] || [highMatch isEqualToString:@"凤梨"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellPineapple];
-//                                    [self setSelectTag:7 voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
-                    if ([highMatch isEqualToString:@"草莓"]) {
-                        [AppUtils showInfo:@"草莓味正在研究中，敬请期待"];
-                        return ;
-                    }
-                    
-                    if ([highMatch isEqualToString:@"关闭"] || [highMatch isEqualToString:@"关"]) {
-                        [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
-                            if (completely) {
-                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                                    //延迟后需要做的操作
-//                                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandSmellClose];
-//                                    [self setSelectTag:CloseTag voice:YES];
-                                });
-                            }
-                        }];
-                    }
-                    
                     if ([highMatch hasPrefix:@"nomatch"]) {
                         //指令未识别
                         [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:NO Callback:^(BOOL completely) {
                             
                         }];
+                    }else if([highMatch isEqualToString:@"关闭"] || [highMatch isEqualToString:@"关"]){
+                        if ([selectTag integerValue] != CloseTag) {
+                            [self writeDataWithRFID:[selectTag integerValue] WithTimeInterval:0];
+                        }
+                    }else{
+                        Fruit *matchFruit = [self.viewModel matchFruitName:highMatch InList:_fruitsList];
+                        if (matchFruit) {
+                            [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
+                                if (completely) {
+                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                        //延迟后需要做的操作
+                                        [self writeDataWithRFID:matchFruit.fruitRFID WithTimeInterval:SmellEmitDuration];
+                                    });
+                                }
+                            }];
+                        }else{
+                            //指令未识别
+                            [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:NO Callback:^(BOOL completely) {
+                                
+                            }];
+                        }
                     }
+                    
                 }
             }
         }
@@ -425,8 +506,8 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
     if (CellItemCount >= 1) {
-//        CGFloat perPieceWidth = floor(screenWidth / CellItemCount - ((CellMargin / CellItemCount) * (CellItemCount - 1)));
-        CGFloat perPieceWidth = screenWidth / CellItemCount - ((CellMargin / CellItemCount) * (CellItemCount - 1));
+//        CGFloat perPieceWidth = floor(screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1)));
+        CGFloat perPieceWidth = screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1));
         return CGSizeMake(perPieceWidth, perPieceWidth * 480.0f / 414.0f);
     }
     return CGSizeMake(0, 0);
@@ -445,62 +526,33 @@
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath{
-
-//    if (indexPath.section == 1 && indexPath.row == _imagesForSection_1.count-1) {
-//        return NO;
-//    }
     return YES;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath canMoveToIndexPath:(NSIndexPath *)toIndexPath{
-//    if (fromIndexPath.section != toIndexPath.section && toIndexPath.row == _imagesForSection_1.count) {
-//        return NO;
-//    }else if (fromIndexPath.section == toIndexPath.section && toIndexPath.row == _imagesForSection_1.count-1){
-//        return NO;
-//    }
     return YES;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath{
-//    UIImage *image = nil;
-//    if (fromIndexPath.section == 0) {
-//        image = _imagesForSection_0[fromIndexPath.item];
-//        [_imagesForSection_0 removeObjectAtIndex:fromIndexPath.item];
-//    }else{
-//        image = _imagesForSection_1[fromIndexPath.item];
-//        [_imagesForSection_1 removeObjectAtIndex:fromIndexPath.item];
-//    }
-//    
-//    if (toIndexPath.section == 0) {
-//        [_imagesForSection_0 insertObject:image atIndex:toIndexPath.item];
-//    }else{
-//        [_imagesForSection_1 insertObject:image atIndex:toIndexPath.item];
-//    }
-    
     Fruit *fruit = [_fruitsList objectAtIndex:fromIndexPath.item];
     [_fruitsList removeObjectAtIndex:fromIndexPath.item];
     [_fruitsList insertObject:fruit atIndex:toIndexPath.item];
+    
+    [self saveOrderFile];
 }
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     Fruit *selectFruit = [_fruitsList objectAtIndex:indexPath.item];
     NSLog(@"select %ld, FruitName is %@",indexPath.item,selectFruit.fruitName);
-    
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//    UIView *frontView = [cell viewWithTag:3];
-//    [frontView setHidden:NO];
     if (selectFruit.fruitRFID == [selectTag integerValue]) {
-        [[BluetoothMacManager defaultManager] writeCharacteristicWithRFID:selectFruit.fruitRFID WithTimeInterval:0];
+        [self writeDataWithRFID:selectFruit.fruitRFID WithTimeInterval:0];
     }else{
-        [[BluetoothMacManager defaultManager] writeCharacteristicWithRFID:selectFruit.fruitRFID WithTimeInterval:15];
+        [self writeDataWithRFID:selectFruit.fruitRFID WithTimeInterval:SmellEmitDuration];
     }
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"deselect %ld",indexPath.item);
-//    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-//    UIView *frontView = [cell viewWithTag:3];
-//    [frontView setHidden:YES];
 }
 @end

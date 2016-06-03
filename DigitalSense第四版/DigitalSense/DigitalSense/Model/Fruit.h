@@ -12,4 +12,6 @@
 @property(nonatomic, copy) NSString *fruitName;
 @property(nonatomic, copy) NSString *fruitImage;
 @property(nonatomic) NSInteger fruitRFID;
+
+@property(nonatomic) NSInteger tag; //专用于排序
 @end

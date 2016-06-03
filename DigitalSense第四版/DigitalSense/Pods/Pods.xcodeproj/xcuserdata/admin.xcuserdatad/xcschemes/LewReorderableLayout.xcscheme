@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'B01EEE8CF92CFF1D01741202'
+               BlueprintIdentifier = '1DCBDCAEE85861327D817FC0'
                BlueprintName = 'LewReorderableLayout'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libLewReorderableLayout.a'>

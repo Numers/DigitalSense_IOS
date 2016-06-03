@@ -17,7 +17,7 @@ typedef void (^IFlyRecognizerCallback) (NSString *result);
 }
 +(id)defaultManager;
 
--(void)startRecognizer:(IFlyRecognizerCallback)callback;
+-(void)startRecognizer:(NSString *)grammarContent Callback:(IFlyRecognizerCallback)callback;
 
 -(void)stopRecongnizer;
 @end

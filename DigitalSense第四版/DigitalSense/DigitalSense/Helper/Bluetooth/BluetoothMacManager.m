@@ -266,7 +266,7 @@ static BluetoothMacManager *bluetoothMacManager;
             NSInteger hour = [[timeArr objectAtIndex:3] integerValue];
             NSInteger minite = [[timeArr objectAtIndex:4] integerValue];
             NSInteger second = [[timeArr objectAtIndex:5] integerValue];
-            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(year),@(month),@(day),@(hour),@(minite),@(second),@(0x55),nil];
+            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(0x63),@(year),@(month),@(day),@(hour),@(minite),@(second),@(0x55),nil];
         }
             break;
         case CommandOpenDeviceTime:

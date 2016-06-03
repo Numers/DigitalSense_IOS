@@ -15,6 +15,8 @@
 		846667851CF82AD400EFBE66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667831CF82AD400EFBE66 /* Main.storyboard */; };
 		846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 846667861CF82AD500EFBE66 /* Assets.xcassets */; };
 		8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */; };
+		846735C51D0033D00073ED9D /* SDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735C41D0033D00073ED9D /* SDBManager.m */; };
+		846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735CB1D003A800073ED9D /* SFruitInfoDB.m */; };
 		8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471AB0E1CFC321F00CB5DB6 /* Fruit.m */; };
 		847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */; };
 		847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C71CFD65E5000D77AE /* DataAnalizer.m */; };
@@ -52,6 +54,10 @@
 		846667861CF82AD500EFBE66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		846667891CF82AD500EFBE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8466678B1CF82AD500EFBE66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		846735C31D0033D00073ED9D /* SDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBManager.h; sourceTree = "<group>"; };
+		846735C41D0033D00073ED9D /* SDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBManager.m; sourceTree = "<group>"; };
+		846735CA1D003A800073ED9D /* SFruitInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFruitInfoDB.h; sourceTree = "<group>"; };
+		846735CB1D003A800073ED9D /* SFruitInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFruitInfoDB.m; sourceTree = "<group>"; };
 		8471AB0D1CFC321F00CB5DB6 /* Fruit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
 		8471AB0E1CFC321F00CB5DB6 /* Fruit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
 		847EC4C31CFD65E5000D77AE /* BluetoothMacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothMacManager.h; sourceTree = "<group>"; };
@@ -164,6 +170,25 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		846735C21D0033D00073ED9D /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				846735C61D00347E0073ED9D /* FruitInfoManager */,
+				846735C31D0033D00073ED9D /* SDBManager.h */,
+				846735C41D0033D00073ED9D /* SDBManager.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
+		846735C61D00347E0073ED9D /* FruitInfoManager */ = {
+			isa = PBXGroup;
+			children = (
+				846735CA1D003A800073ED9D /* SFruitInfoDB.h */,
+				846735CB1D003A800073ED9D /* SFruitInfoDB.m */,
+			);
+			path = FruitInfoManager;
+			sourceTree = "<group>";
+		};
 		8471AB0C1CFC320D00CB5DB6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +201,7 @@
 		847EC4C11CFD65E5000D77AE /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				846735C21D0033D00073ED9D /* FMDB */,
 				847EC4C21CFD65E5000D77AE /* Bluetooth */,
 				847EC4C81CFD65E5000D77AE /* IflyRecognizer */,
 				847EC4CD1CFD65E5000D77AE /* IFlySpeechSynthesizer */,
@@ -407,8 +433,10 @@
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
+				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
+				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

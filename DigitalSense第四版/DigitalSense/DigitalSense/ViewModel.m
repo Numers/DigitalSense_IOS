@@ -8,6 +8,7 @@
 
 #import "ViewModel.h"
 #import "Fruit.h"
+#import "SFruitInfoDB.h"
 
 @implementation ViewModel
 -(instancetype)init
@@ -21,6 +22,7 @@
         [uploadSignal subscribeNext:^(id x) {
             if ([x boolValue]) {
                 //上传设备的开关机时间
+                NSLog(@"macAddress:%@  OpenDeviceTime:%@  CloseDeviceTime:%@",self.macAddress,self.openDeviceTime,self.closeDeviceTime);
             }
         }];
     }
@@ -66,7 +68,10 @@
         NSMutableString *result = [[NSMutableString alloc] init];
         for (int i = 1; i <= 6; i ++) {
             int value = byte[i];
-            [result appendFormat:@"%d",value];
+            [result appendFormat:@"%02d",value];
+            if (i != 6) {
+                [result appendString:@"-"];
+            }
         }
         self.openDeviceTime = [NSString stringWithString:result];
         [subscriber sendNext:result];
@@ -90,7 +95,10 @@
         NSMutableString *result = [[NSMutableString alloc] init];
         for (int i = 1; i <= 6; i ++) {
             int value = byte[i];
-            [result appendFormat:@"%d",value];
+            [result appendFormat:@"%02d",value];
+            if (i != 6) {
+                [result appendString:@"-"];
+            }
         }
         self.closeDeviceTime = [NSString stringWithString:result];
         [subscriber sendNext:result];
@@ -172,13 +180,23 @@
         NSScanner *scanner2 = [NSScanner scannerWithString:temp2];
         unsigned long long useTime;
         [scanner2 scanHexLongLong:&useTime];
-
-        Fruit *fruit = [[Fruit alloc] init];
-        fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
         
-        NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
-        [subscriber sendNext:dic];
-        [subscriber sendCompleted];
+        SFruitInfoDB *fruitInfodb = [[SFruitInfoDB alloc] init];
+        Fruit *fruit = nil;
+        fruit = [fruitInfodb selectFruitWithRFID:cardNo];
+        if (fruit) {
+            NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
+            [subscriber sendNext:dic];
+            [subscriber sendCompleted];
+        }else{
+            fruit = [[Fruit alloc] init];
+            fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
+            [fruitInfodb saveFruit:fruit];
+            
+            NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
+            [subscriber sendNext:dic];
+            [subscriber sendCompleted];
+        }
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"获取每个瓶子时间信号销毁");
         }];
@@ -204,12 +222,48 @@
         
         NSInteger duration = byte[5];
     
-        NSDictionary *dic = @{EmitSmellNoKey:@(cardNo),EmitSmellDuration:@(duration)};
+        NSDictionary *dic = @{EmitSmellNoKey:@(cardNo),EmitSmellDurationKey:@(duration)};
         [subscriber sendNext:dic];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"开启味道信号销毁");
         }];
     }];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-02 14:06:34
+ *
+ *  根据名字匹配对象
+ *
+ *  @param fruitName 语音识别名称
+ *  @param list      对象列表
+ *
+ *  @return 返回匹配对象
+ */
+-(Fruit *)matchFruitName:(NSString *)fruitName InList:(NSArray *)list
+{
+    if (list == nil) {
+        return nil;
+    }
+    
+    if (fruitName == nil) {
+        return nil;
+    }
+    
+    Fruit *fruit = nil;
+    for (Fruit *f in list) {
+        NSArray *nameList = [f.fruitName componentsSeparatedByString:@"|"];
+        for (NSString *name in nameList) {
+            if ([name isEqualToString:fruitName]) {
+                fruit = f;
+                break;
+            }
+        }
+        if (fruit) {
+            break;
+        }
+    }
+    return fruit;
 }
 @end

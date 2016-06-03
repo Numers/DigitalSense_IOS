@@ -10,8 +10,9 @@
 #define BottleKey @"Bottle"
 #define BottleUseTimeKey @"BottleUseTime"
 #define EmitSmellNoKey @"EmitSmellNo"
-#define EmitSmellDuration @"EmitSmellDuration"
+#define EmitSmellDurationKey @"EmitSmellDuration"
 
+@class Fruit;
 @interface ViewModel : NSObject
 @property(nonatomic, copy) NSString *macAddress;
 @property(nonatomic, copy) NSString *openDeviceTime;
@@ -86,4 +87,16 @@
  *  @return 开启味道信号
  */
 -(RACSignal *)emitSmellReturn:(Byte *)byte;
+
+/**
+ *  @author RenRenFenQi, 16-06-02 14:06:34
+ *
+ *  根据名字匹配对象
+ *
+ *  @param fruitName 语音识别名称
+ *  @param list      对象列表
+ *
+ *  @return 返回匹配对象
+ */
+-(Fruit *)matchFruitName:(NSString *)fruitName InList:(NSArray *)list;
 @end

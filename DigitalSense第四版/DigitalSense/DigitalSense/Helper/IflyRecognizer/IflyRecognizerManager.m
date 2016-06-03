@@ -41,22 +41,26 @@ static IFlyRecognizerView *iFlyRecognizerView;
     [iFlyRecognizerView setParameter:IFLYDOMAIN forKey:[IFlySpeechConstant IFLY_DOMAIN]];
 }
 
--(void)startRecognizer:(IFlyRecognizerCallback)callback
+-(void)startRecognizer:(NSString *)grammarContent Callback:(IFlyRecognizerCallback)callback;
 {
     recogniserCallback = callback;
     tempResult = [[NSMutableString alloc] init];
     
     [iFlyRecognizerView setParameter:IFLYDOMAIN forKey:[IFlySpeechConstant IFLY_DOMAIN]];
     
-    //设置结果数据格式，可设置为json，xml，plain，默认为json。
-    [iFlyRecognizerView setParameter:@"json" forKey:[IFlySpeechConstant RESULT_TYPE]];
-    NSString *grammarId = [[NSUserDefaults standardUserDefaults] objectForKey:OnlineGrammarIDKey];
-    if (grammarId) {
-        //设置字符编码
-        [iFlyRecognizerView setParameter:@"utf-8" forKey:[IFlySpeechConstant TEXT_ENCODING]];
-        [iFlyRecognizerView setParameter:grammarId forKey:[IFlySpeechConstant CLOUD_GRAMMAR]];
+    if (grammarContent != nil) {
+        [iFlyRecognizerManager buildGrammer:grammarContent];
     }else{
-        [iFlyRecognizerManager buildGrammer];
+        //设置结果数据格式，可设置为json，xml，plain，默认为json。
+        [iFlyRecognizerView setParameter:@"json" forKey:[IFlySpeechConstant RESULT_TYPE]];
+        NSString *grammarId = [[NSUserDefaults standardUserDefaults] objectForKey:OnlineGrammarIDKey];
+        if (grammarId) {
+            //设置字符编码
+            [iFlyRecognizerView setParameter:@"utf-8" forKey:[IFlySpeechConstant TEXT_ENCODING]];
+            [iFlyRecognizerView setParameter:grammarId forKey:[IFlySpeechConstant CLOUD_GRAMMAR]];
+        }else{
+            [iFlyRecognizerManager buildGrammer:grammarContent];
+        }
     }
     
     [iFlyRecognizerView start];
@@ -81,15 +85,18 @@ static IFlyRecognizerView *iFlyRecognizerView;
 /**
  构建语法
  ****/
--(void) buildGrammer
+-(void) buildGrammer:(NSString *)grammarContent
 {
-    NSString *grammarContent = nil;
-    NSString *appPath = [[NSBundle mainBundle] resourcePath];
+    NSString *content = nil;
     
-    //读取abnf内容
-    NSString *bnfFilePath = [[NSString alloc] initWithFormat:@"%@/grammar_sample.abnf",appPath];
-    grammarContent = [self readFile:bnfFilePath];
-    
+    if (grammarContent != nil) {
+        content = grammarContent;
+    }else{
+        //读取abnf内容
+        NSString *appPath = [[NSBundle mainBundle] resourcePath];
+        NSString *bnfFilePath = [[NSString alloc] initWithFormat:@"%@/grammar_sample.abnf",appPath];
+        content = [self readFile:bnfFilePath];
+    }
 //    IFlyUserWords *iFlyUserWords = [[IFlyUserWords alloc] initWithJson:grammarContent];
 //    NSLog(@"%@",[iFlyUserWords toString]);
 //    
@@ -139,7 +146,7 @@ static IFlyRecognizerView *iFlyRecognizerView;
 //                [[IFlySpeechRecognizer sharedInstance] destroy];
             });
     
-        }grammarType:GRAMMAR_TYPE_ABNF grammarContent:grammarContent];
+        }grammarType:GRAMMAR_TYPE_ABNF grammarContent:content];
 }
 
 #pragma mark IFlyRecognizerViewDelegate

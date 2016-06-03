@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FMDB.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>LewReorderableLayout.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,12 +47,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>88362583DCE7F1BFA98BCD30F583A2BD</key>
+		<key>31609B50186B511EC0E97647029BC507</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A1B0D952C4340CA789B2E11B105C1B2C</key>
+		<key>49BEF888C264B6BCFF2D75ED933D6A12</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9F12FB4A63E20F601CFB2E64A65B57C1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
