@@ -10,6 +10,8 @@
 #import "Fruit.h"
 #import "SFruitInfoDB.h"
 
+#import "SCDeviceInfoManager.h"
+
 @implementation ViewModel
 -(instancetype)init
 {
@@ -189,13 +191,19 @@
             [subscriber sendNext:dic];
             [subscriber sendCompleted];
         }else{
-            fruit = [[Fruit alloc] init];
-            fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
-            [fruitInfodb saveFruit:fruit];
-            
-            NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
-            [subscriber sendNext:dic];
-            [subscriber sendCompleted];
+            [[SCDeviceInfoManager defaultManager] requestFruitInfoWithRFID:cardNo Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                Fruit *fruit = [[Fruit alloc] init];
+                fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
+                [fruitInfodb saveFruit:fruit];
+                
+                NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
+                [subscriber sendNext:dic];
+                [subscriber sendCompleted];
+            } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+                
+            } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
         }
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"获取每个瓶子时间信号销毁");

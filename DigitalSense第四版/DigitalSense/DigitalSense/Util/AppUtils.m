@@ -8,8 +8,66 @@
 
 #import "AppUtils.h"
 #import "MBProgressHUD.h"
+#import "URLManager.h"
+#import <CommonCrypto/CommonDigest.h>
 #define MBTAG  1001
 @implementation AppUtils
++(void)setUrlWithState:(BOOL)state
+{
+    [[URLManager defaultManager] setUrlWithState:state];
+}
+
++(NSString *)returnBaseUrl
+{
+    return [[URLManager defaultManager] returnBaseUrl];
+}
+
++ (NSString*) appVersion {
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
++(NSString *)generateSignatureString:(NSDictionary *)parameters Method:(NSString *)method URI:(NSString *)uri Key:(NSString *)subKey
+{
+    NSMutableString *signatureString = nil;
+    if (parameters) {
+        NSArray *allKeys = [parameters allKeys];
+        NSArray *sortKeys = [allKeys sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            return [obj1 compare:obj2];
+        }];
+        
+        signatureString = [[NSMutableString alloc] initWithFormat:@"%@:%@:",method,uri];
+        for (NSString *key in sortKeys) {
+            NSString *paraString = nil;
+            if ([key isEqualToString:[sortKeys lastObject]]) {
+                paraString = [NSString stringWithFormat:@"%@=%@:",key,[parameters objectForKey:key]];
+            }else{
+                paraString = [NSString stringWithFormat:@"%@=%@&",key,[parameters objectForKey:key]];
+            }
+            [signatureString appendString:paraString];
+        }
+        
+        [signatureString appendString:subKey];
+    }
+    return signatureString;
+}
+
++(NSString*) sha1:(NSString *)text
+{
+    const char *cstr = [text cStringUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [NSData dataWithBytes:cstr length:text.length];
+    
+    uint8_t digest[CC_SHA1_DIGEST_LENGTH];
+    
+    CC_SHA1(data.bytes, data.length, digest);
+    
+    NSMutableString* output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH * 2];
+    
+    for(int i = 0; i < CC_SHA1_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x", digest[i]];
+    
+    return output;
+}
+
 +(void)showInfo:(NSString *)text
 {
     UIWindow *appRootView = [UIApplication sharedApplication].keyWindow;

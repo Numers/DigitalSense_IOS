@@ -48,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib
     UIImage * backgroundImg = [UIImage imageNamed:@"TabBarBackgroundImage"];
     _tabBarView.layer.contents = (id)backgroundImg.CGImage;
     [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Normal"] forState:UIControlStateNormal];

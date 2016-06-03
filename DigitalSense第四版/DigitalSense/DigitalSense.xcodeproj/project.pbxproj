@@ -17,6 +17,10 @@
 		8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */; };
 		846735C51D0033D00073ED9D /* SDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735C41D0033D00073ED9D /* SDBManager.m */; };
 		846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735CB1D003A800073ED9D /* SFruitInfoDB.m */; };
+		846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */; };
+		846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76ED1D016DD00055E54E /* RFGeneralManager.m */; };
+		846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F01D016DD00055E54E /* SCNetWorkManager.m */; };
+		846A76F61D016DD00055E54E /* URLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F21D016DD00055E54E /* URLManager.m */; };
 		8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471AB0E1CFC321F00CB5DB6 /* Fruit.m */; };
 		847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */; };
 		847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C71CFD65E5000D77AE /* DataAnalizer.m */; };
@@ -58,6 +62,15 @@
 		846735C41D0033D00073ED9D /* SDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBManager.m; sourceTree = "<group>"; };
 		846735CA1D003A800073ED9D /* SFruitInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFruitInfoDB.h; sourceTree = "<group>"; };
 		846735CB1D003A800073ED9D /* SFruitInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFruitInfoDB.m; sourceTree = "<group>"; };
+		846A76EA1D016DD00055E54E /* SCDeviceInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDeviceInfoManager.h; sourceTree = "<group>"; };
+		846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDeviceInfoManager.m; sourceTree = "<group>"; };
+		846A76EC1D016DD00055E54E /* RFGeneralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFGeneralManager.h; sourceTree = "<group>"; };
+		846A76ED1D016DD00055E54E /* RFGeneralManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFGeneralManager.m; sourceTree = "<group>"; };
+		846A76EE1D016DD00055E54E /* RFNetWorkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFNetWorkHelper.h; sourceTree = "<group>"; };
+		846A76EF1D016DD00055E54E /* SCNetWorkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCNetWorkManager.h; sourceTree = "<group>"; };
+		846A76F01D016DD00055E54E /* SCNetWorkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNetWorkManager.m; sourceTree = "<group>"; };
+		846A76F11D016DD00055E54E /* URLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLManager.h; sourceTree = "<group>"; };
+		846A76F21D016DD00055E54E /* URLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLManager.m; sourceTree = "<group>"; };
 		8471AB0D1CFC321F00CB5DB6 /* Fruit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
 		8471AB0E1CFC321F00CB5DB6 /* Fruit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
 		847EC4C31CFD65E5000D77AE /* BluetoothMacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothMacManager.h; sourceTree = "<group>"; };
@@ -143,6 +156,7 @@
 		846667791CF82AD400EFBE66 /* DigitalSense */ = {
 			isa = PBXGroup;
 			children = (
+				846A76E81D016DD00055E54E /* NetWorkManager */,
 				847EC4DA1CFD6654000D77AE /* Util */,
 				847EC4C11CFD65E5000D77AE /* Helper */,
 				8471AB0C1CFC320D00CB5DB6 /* Model */,
@@ -150,13 +164,13 @@
 				8466677E1CF82AD400EFBE66 /* AppDelegate.m */,
 				846667801CF82AD400EFBE66 /* ViewController.h */,
 				846667811CF82AD400EFBE66 /* ViewController.m */,
+				84595C8A1CFE8229007DB272 /* ViewModel.h */,
+				84595C8B1CFE8229007DB272 /* ViewModel.m */,
 				846667831CF82AD400EFBE66 /* Main.storyboard */,
 				846667861CF82AD500EFBE66 /* Assets.xcassets */,
 				846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */,
 				8466678B1CF82AD500EFBE66 /* Info.plist */,
 				8466677A1CF82AD400EFBE66 /* Supporting Files */,
-				84595C8A1CFE8229007DB272 /* ViewModel.h */,
-				84595C8B1CFE8229007DB272 /* ViewModel.m */,
 			);
 			path = DigitalSense;
 			sourceTree = "<group>";
@@ -187,6 +201,30 @@
 				846735CB1D003A800073ED9D /* SFruitInfoDB.m */,
 			);
 			path = FruitInfoManager;
+			sourceTree = "<group>";
+		};
+		846A76E81D016DD00055E54E /* NetWorkManager */ = {
+			isa = PBXGroup;
+			children = (
+				846A76E91D016DD00055E54E /* NetWorkAPIManager */,
+				846A76EC1D016DD00055E54E /* RFGeneralManager.h */,
+				846A76ED1D016DD00055E54E /* RFGeneralManager.m */,
+				846A76EE1D016DD00055E54E /* RFNetWorkHelper.h */,
+				846A76EF1D016DD00055E54E /* SCNetWorkManager.h */,
+				846A76F01D016DD00055E54E /* SCNetWorkManager.m */,
+				846A76F11D016DD00055E54E /* URLManager.h */,
+				846A76F21D016DD00055E54E /* URLManager.m */,
+			);
+			path = NetWorkManager;
+			sourceTree = "<group>";
+		};
+		846A76E91D016DD00055E54E /* NetWorkAPIManager */ = {
+			isa = PBXGroup;
+			children = (
+				846A76EA1D016DD00055E54E /* SCDeviceInfoManager.h */,
+				846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */,
+			);
+			path = NetWorkAPIManager;
 			sourceTree = "<group>";
 		};
 		8471AB0C1CFC320D00CB5DB6 /* Model */ = {
@@ -429,10 +467,14 @@
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
 				846667821CF82AD400EFBE66 /* ViewController.m in Sources */,
+				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
 				84595C8C1CFE8229007DB272 /* ViewModel.m in Sources */,
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
+				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
+				846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */,
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
+				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,

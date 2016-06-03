@@ -9,7 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#define API_BASE  [AppUtils returnBaseUrl]
 @interface AppUtils : NSObject
++ (NSString*) appVersion;
++(void)setUrlWithState:(BOOL)state;
++(NSString *)returnBaseUrl;
++(NSString *)generateSignatureString:(NSDictionary *)parameters Method:(NSString *)method URI:(NSString *)uri Key:(NSString *)subKey;
++(NSString*) sha1:(NSString *)text;
+
 +(void)showInfo:(NSString *)text;
 + (BOOL)isNullStr:(NSString *)str;
 @end
