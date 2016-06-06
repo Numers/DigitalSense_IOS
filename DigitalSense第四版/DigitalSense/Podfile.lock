@@ -32,6 +32,10 @@ PODS:
   - ReactiveCocoa/no-arc (2.5)
   - ReactiveCocoa/UI (2.5):
     - ReactiveCocoa/Core
+  - SDWebImage (3.7.6):
+    - SDWebImage/Core (= 3.7.6)
+  - SDWebImage/Core (3.7.6)
+  - SSZipArchive (1.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
@@ -40,6 +44,8 @@ DEPENDENCIES:
     tag `v0.1.0`)
   - MBProgressHUD (~> 0.8)
   - ReactiveCocoa
+  - SDWebImage (~> 3.6)
+  - SSZipArchive
 
 EXTERNAL SOURCES:
   LewReorderableLayout:
@@ -57,5 +63,7 @@ SPEC CHECKSUMS:
   LewReorderableLayout: b67d3117c208f54fe20aaca614779e7089618206
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  SDWebImage: c325cf02c30337336b95beff20a13df489ec0ec9
+  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
 
 COCOAPODS: 0.39.0

@@ -25,9 +25,9 @@ static URLManager *manager;
 -(void)setUrlWithState:(BOOL)state
 {
     if (state) {
-        BaseURL = @"http://api.dafeng.renrenfenqi.com";
+        BaseURL = @"http://api.smell.renrenfenqi.com";
     }else{
-        BaseURL = @"http://api.dafeng.renrenfenqi.com";
+        BaseURL = @"http://api.smell.renrenfenqi.com";
     }
 }
 @end

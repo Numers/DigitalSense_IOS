@@ -14,4 +14,13 @@
 -(void)post:(NSString *)uri parameters:(id)parameters success:(ApiSuccessCallback)success error:(ApiErrorCallback)errors failed:(ApiFailedCallback)failed isNotify:(BOOL)isNotify;
 
 -(void)get:(NSString *)uri parameters:(id)parameters success:(ApiSuccessCallback)success error:(ApiErrorCallback)errors failed:(ApiFailedCallback)failed isNotify:(BOOL)isNotify;
+
+-(void)put:(NSString *)uri parameters:(id)parameters success:(ApiSuccessCallback)success error:(ApiErrorCallback)errors failed:(ApiFailedCallback)failed isNotify:(BOOL)isNotify;
+
+- (void)downloadFileWithOption:(NSDictionary *)paramDic
+                 withInferface:(NSString*)requestURL
+                     savedPath:(NSString*)savedPath
+               downloadSuccess:(ApiSuccessCallback)success
+               downloadFailure:(ApiFailedCallback)failure
+                      progress:(ApiDownloadFileProgress)progress;
 @end

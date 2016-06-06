@@ -281,7 +281,7 @@ static BluetoothMacManager *bluetoothMacManager;
             break;
         case CommandBottleInfo:
         {
-            writeStr = [self stringByCalculateValues:@(BottleInfo),@(0x66),@(0x55),nil];
+            writeStr = [self stringByCalculateValues:@(BottleInfo),@(0x65),@(0x55),nil];
         }
             break;
         default:

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "LewReorderableLayout.h"
+#import "UIImageView+Webcache.h"
 #import "Fruit.h"
 
 #import "AppUtils.h"
@@ -33,6 +34,7 @@
     NSInteger countTime;
     
     NSArray *rfIdOrderList;
+    NSMutableArray *bottleInfoList;
     BOOL hasNewFruit;
 }
 @property (nonatomic, weak)IBOutlet UICollectionView *collectionView;
@@ -61,6 +63,8 @@
     NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
     rfIdOrderList = [NSArray arrayWithContentsOfFile:path];
+    
+    bottleInfoList = [NSMutableArray array];
     
     hasNewFruit = NO;
     _fruitsList = [NSMutableArray array];
@@ -188,8 +192,9 @@
             {
                 [[self.viewModel getBottleInfoReturn:byte] subscribeNext:^(id x) {
                     NSDictionary *dic = (NSDictionary *)x;
-                    Fruit *fruit = [dic objectForKey:BottleKey];
-                    [self addFruitByOrder:fruit];
+                    [bottleInfoList addObject:dic];
+//                    Fruit *fruit = [dic objectForKey:BottleKey];
+//                    [self addFruitByOrder:fruit];
                 }];
             }
                 break;
@@ -210,6 +215,34 @@
                     }else{
                         [self setSelectTag:[rfId integerValue]];
                         [self startTimerWithDuration:[duration intValue]];
+                    }
+                }];
+            }
+                break;
+            case BottleInfoCompletely:
+            {
+                [[self.viewModel getBottleInfoCompletelyReturn:byte WithBottleInfoList:bottleInfoList] subscribeNext:^(id x) {
+                    //处理http返回responseObject
+                    NSDictionary *result = (NSDictionary *)x;
+                    if (result) {
+                        NSArray *dataArr = [result objectForKey:@"data"];
+                        if (dataArr) {
+                            for (NSDictionary *dic in dataArr) {
+                                Fruit *fruit = [[Fruit alloc] init];
+                                fruit.fruitName = [dic objectForKey:@"cn_name"];
+                                fruit.fruitEnName = [dic objectForKey:@"en_name"];
+                                fruit.fruitImage = [dic objectForKey:@"icon"];
+                                NSString *tempRFID = [dic objectForKey:@"rfid"];
+                                if (tempRFID.length % 2 == 0) {
+                                    NSScanner *scanner = [NSScanner scannerWithString:tempRFID];
+                                    unsigned long long cardNo;
+                                    [scanner scanHexLongLong:&cardNo];
+                                    fruit.fruitRFID = cardNo;
+                                    [self addFruitByOrder:fruit];
+                                }
+                            }
+                            [_collectionView reloadData];
+                        }
                     }
                 }];
             }
@@ -364,7 +397,7 @@
     [_fruitsList sortUsingComparator:^NSComparisonResult(Fruit*  _Nonnull obj1, Fruit*  _Nonnull obj2) {
         return obj1.tag > obj2.tag ? NSOrderedDescending:NSOrderedAscending;
     }];
-    [_collectionView reloadData];
+//    [_collectionView reloadData];
 }
 
 /**
@@ -485,6 +518,7 @@
     UIView *frontView = [cell viewWithTag:3];
     
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
+//    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FuitPlaceHolderImage_Normal"]];
     [backImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
     if ([selectTag integerValue] == fruit.fruitRFID) {
         [frontView setHidden:NO];

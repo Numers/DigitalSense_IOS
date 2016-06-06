@@ -10,6 +10,7 @@
 
 @interface Fruit : NSObject
 @property(nonatomic, copy) NSString *fruitName;
+@property(nonatomic, copy) NSString *fruitEnName;
 @property(nonatomic, copy) NSString *fruitImage;
 @property(nonatomic) NSInteger fruitRFID;
 

@@ -78,6 +78,18 @@
 -(RACSignal *)getBottleInfoReturn:(Byte *)byte;
 
 /**
+ *  @author RenRenFenQi, 16-06-03 17:06:47
+ *
+ *  瓶子信息发送完成后，获取瓶子内气味信息
+ *
+ *  @param byte 蓝牙回送:FB6455
+ *  @param list 瓶子信息列表
+ *
+ *  @return 获取瓶内气味信息信号
+ */
+-(RACSignal *)getBottleInfoCompletelyReturn:(Byte *)byte WithBottleInfoList:(NSArray *)list;
+
+/**
  *  @author RenRenFenQi, 16-06-01 15:06:17
  *
  *  开启某一种味道

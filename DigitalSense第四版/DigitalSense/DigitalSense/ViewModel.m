@@ -25,10 +25,35 @@
             if ([x boolValue]) {
                 //上传设备的开关机时间
                 NSLog(@"macAddress:%@  OpenDeviceTime:%@  CloseDeviceTime:%@",self.macAddress,self.openDeviceTime,self.closeDeviceTime);
+                [[SCDeviceInfoManager defaultManager] uploadDevice:self.macAddress OpenTime:[self timeIntervalFromTimeString:self.openDeviceTime] CloseTime:[self timeIntervalFromTimeString:self.closeDeviceTime] Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"上传设备开关机时间成功");
+                } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"上传设备开关机时间失败");
+                } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    NSLog(@"上传设备开关机时间网络失败");
+                }];
             }
         }];
     }
     return self;
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-06 17:06:36
+ *
+ *  根据特定格式的时间字符串转为时间戳
+ *
+ *  @param timeStr 时间字符串 yy-MM-dd-HH-mm-ss
+ *
+ *  @return 时间戳
+ */
+-(NSTimeInterval)timeIntervalFromTimeString:(NSString *)timeStr
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yy-MM-dd-HH-mm-ss"];
+    NSDate *tempDate = [formatter dateFromString:timeStr];
+    NSTimeInterval interval = [tempDate timeIntervalSince1970];
+    return interval;
 }
 /**
  *  @author RenRenFenQi, 16-06-01 11:06:44
@@ -183,32 +208,103 @@
         unsigned long long useTime;
         [scanner2 scanHexLongLong:&useTime];
         
-        SFruitInfoDB *fruitInfodb = [[SFruitInfoDB alloc] init];
-        Fruit *fruit = nil;
-        fruit = [fruitInfodb selectFruitWithRFID:cardNo];
-        if (fruit) {
-            NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
-            [subscriber sendNext:dic];
-            [subscriber sendCompleted];
-        }else{
-            [[SCDeviceInfoManager defaultManager] requestFruitInfoWithRFID:cardNo Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                Fruit *fruit = [[Fruit alloc] init];
-                fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
-                [fruitInfodb saveFruit:fruit];
-                
-                NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
-                [subscriber sendNext:dic];
-                [subscriber sendCompleted];
-            } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
-                
-            } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
-                
-            }];
-        }
+        NSDictionary *dic = @{BottleKey:@(cardNo),BottleUseTimeKey:@(useTime)};
+        [subscriber sendNext:dic];
+        [subscriber sendCompleted];
+//        SFruitInfoDB *fruitInfodb = [[SFruitInfoDB alloc] init];
+//        Fruit *fruit = nil;
+//        fruit = [fruitInfodb selectFruitWithRFID:cardNo];
+//        if (fruit) {
+//            NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
+//            [subscriber sendNext:dic];
+//            [subscriber sendCompleted];
+//        }else{
+//            [[SCDeviceInfoManager defaultManager] requestFruitInfoWithRFID:cardNo Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                Fruit *fruit = [[Fruit alloc] init];
+//                fruit.fruitRFID = [[NSNumber numberWithLongLong:cardNo] integerValue];
+//                [fruitInfodb saveFruit:fruit];
+//                
+//                NSDictionary *dic = @{BottleKey:fruit,BottleUseTimeKey:@(useTime)};
+//                [subscriber sendNext:dic];
+//                [subscriber sendCompleted];
+//            } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+//                
+//            } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+//                
+//            }];
+//        }
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"获取每个瓶子时间信号销毁");
         }];
     }];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 17:06:47
+ *
+ *  瓶子信息发送完成后，获取瓶子内气味信息
+ *
+ *  @param byte 蓝牙回送:FB6455
+ *  @param list 瓶子信息列表
+ *
+ *  @return 获取瓶内气味信息信号
+ */
+-(RACSignal *)getBottleInfoCompletelyReturn:(Byte *)byte WithBottleInfoList:(NSArray *)list
+{
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        int value = byte[1];
+        if (value == list.count)
+        {
+            if(self.macAddress == nil)
+            {
+                [subscriber sendCompleted];
+            }else{
+                NSDictionary *bottleInfoDic = [self dowithBottleInfoList:list];
+                [[SCDeviceInfoManager defaultManager] requestFruitInfo:self.macAddress WithRFIDSequence:[bottleInfoDic objectForKey:@"RFID"] WithUseTimeSequence:[bottleInfoDic objectForKey:@"useTime"] IsNew:@"1" Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [subscriber sendNext:responseObject];
+                    [subscriber sendCompleted];
+                } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    [subscriber sendNext:responseObject];
+                    [subscriber sendCompleted];
+                } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [subscriber sendCompleted];
+                }];
+            }
+        }else{
+            [subscriber sendCompleted];
+        }
+        return [RACDisposable disposableWithBlock:^{
+            NSLog(@"获取瓶内气味信息信号销毁");
+        }];
+    }];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-03 17:06:00
+ *
+ *  处理瓶子信息成json字符串
+ *
+ *  @param list 瓶子信息列表
+ *
+ *  @return 瓶子RFID和useTime序列
+ */
+-(NSDictionary *)dowithBottleInfoList:(NSArray *)list
+{
+    if (list == nil) {
+        return nil;
+    }
+    NSMutableString *rfIdSequence = [[NSMutableString alloc] init];
+    NSMutableString *useTimeSequence = [[NSMutableString alloc] init];
+    for (NSDictionary *dic in list) {
+        [rfIdSequence appendFormat:@"%@",[dic objectForKey:BottleKey]];
+        [useTimeSequence appendFormat:@"%@",[dic objectForKey:BottleUseTimeKey]];
+        
+        if (![dic isEqual:[list lastObject]]) {
+            [rfIdSequence appendString:@":"];
+            [useTimeSequence appendString:@":"];
+        }
+    }
+    return [NSDictionary dictionaryWithObjectsAndKeys:rfIdSequence,@"RFID",useTimeSequence,@"useTime", nil];
 }
 
 /**
