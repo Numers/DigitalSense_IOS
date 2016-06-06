@@ -198,7 +198,7 @@ static BluetoothMacManager *bluetoothMacManager;
     }
 }
 
--(void)writeCharacteristicWithRFID:(NSInteger)rfId WithTimeInterval:(int)interval
+-(void)writeCharacteristicWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
     if (!self.peripheral) {
         return;
@@ -293,7 +293,7 @@ static BluetoothMacManager *bluetoothMacManager;
     return [self hexToBytes:writeStr];
 }
 
--(NSData *)writeDataWithRFID:(NSInteger)rfId WithTimeInterval:(int)interval
+-(NSData *)writeDataWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
     NSString *writeStr = [self stringByCaculateRFID:rfId WithTimeInterval:interval];
     return [self hexToBytes:writeStr];
@@ -318,10 +318,10 @@ static BluetoothMacManager *bluetoothMacManager;
     return result;
 }
 
--(NSString *)stringByCaculateRFID:(NSInteger)rfId WithTimeInterval:(int)interval
+-(NSString *)stringByCaculateRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
     NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"%02X",EmitSmell];
-    [result appendFormat:@"%08lX",(long)rfId];
+    [result appendFormat:@"%@",rfId];
     [result appendFormat:@"%02X",interval];
     [result appendFormat:@"55"];
     return result;

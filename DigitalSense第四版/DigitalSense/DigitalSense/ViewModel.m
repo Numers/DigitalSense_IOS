@@ -198,17 +198,14 @@
 -(RACSignal *)getBottleInfoReturn:(Byte *)byte
 {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *temp1 = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
-        NSScanner *scanner1 = [NSScanner scannerWithString:temp1];
-        unsigned long long cardNo;
-        [scanner1 scanHexLongLong:&cardNo];
+        NSString *cardNo = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
         
         NSString *temp2 = [NSString stringWithFormat:@"0x%02X%02X",byte[5],byte[6]];
         NSScanner *scanner2 = [NSScanner scannerWithString:temp2];
         unsigned long long useTime;
         [scanner2 scanHexLongLong:&useTime];
         
-        NSDictionary *dic = @{BottleKey:@(cardNo),BottleUseTimeKey:@(useTime)};
+        NSDictionary *dic = @{BottleKey:cardNo,BottleUseTimeKey:@(useTime)};
         [subscriber sendNext:dic];
         [subscriber sendCompleted];
 //        SFruitInfoDB *fruitInfodb = [[SFruitInfoDB alloc] init];
@@ -319,14 +316,11 @@
 -(RACSignal *)emitSmellReturn:(Byte *)byte
 {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *temp1 = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
-        NSScanner *scanner1 = [NSScanner scannerWithString:temp1];
-        unsigned long long cardNo;
-        [scanner1 scanHexLongLong:&cardNo];
+        NSString *cardNo = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
         
         NSInteger duration = byte[5];
     
-        NSDictionary *dic = @{EmitSmellNoKey:@(cardNo),EmitSmellDurationKey:@(duration)};
+        NSDictionary *dic = @{EmitSmellNoKey:cardNo,EmitSmellDurationKey:@(duration)};
         [subscriber sendNext:dic];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{

@@ -98,7 +98,7 @@ typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, 
  *  @param rfId     瓶子的RFID
  *  @param interval 开启的持续时间/单位秒
  */
--(void)writeCharacteristicWithRFID:(NSInteger)rfId WithTimeInterval:(int)interval;
+-(void)writeCharacteristicWithRFID:(NSString *)rfId WithTimeInterval:(int)interval;
 
 /**
  *  @author RenRenFenQi, 16-01-22 14:01:40

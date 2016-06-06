@@ -22,14 +22,14 @@
 #define SmellEmitDuration 15
 #define CellMargin 0.0f
 #define CellItemCount 3
-#define CloseTag 0
+#define CloseTag @"0"
 
 #define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
 @interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource>
 {
-    NSNumber *selectTag;
+    NSString *selectTag;
     NSTimer *smellEmitTimer;
     NSInteger countTime;
     
@@ -73,35 +73,35 @@
     Fruit *fruit1 = [[Fruit alloc] init];
     fruit1.fruitName = @"苹果";
     fruit1.fruitImage = @"AppleImage_Normal";
-    fruit1.fruitRFID = 0xFFFFFFFF;
+    fruit1.fruitRFID = @"FFFFFFFF";
     [self addFruitByOrder:fruit1];
     
     Fruit *fruit2 = [[Fruit alloc] init];
     fruit2.fruitName = @"椰子";
     fruit2.fruitImage = @"CoconutImage_Normal";
-    fruit2.fruitRFID = 0x8765e394;
+    fruit2.fruitRFID = @"8765e394";
     [self addFruitByOrder:fruit2];
     
     Fruit *fruit3 = [[Fruit alloc] init];
     fruit3.fruitName = @"猕猴桃";
     fruit3.fruitImage = @"KiwifruitImage_Normal";
-    fruit3.fruitRFID = 0x8765e393;
+    fruit3.fruitRFID = @"8765e393";
     [self addFruitByOrder:fruit3];
     
     Fruit *fruit4 = [[Fruit alloc] init];
     fruit4.fruitName = @"芒果";
     fruit4.fruitImage = @"MangoImage_Normal";
-    fruit4.fruitRFID = 0x8765e392;
+    fruit4.fruitRFID = @"8765e392";
     [self addFruitByOrder:fruit4];
     
     Fruit *fruit5 = [[Fruit alloc] init];
     fruit5.fruitName = @"橙子";
     fruit5.fruitImage = @"OrangeImage_Normal";
-    fruit5.fruitRFID = 0x8765e391;
+    fruit5.fruitRFID = @"8765e391";
     [self addFruitByOrder:fruit5];
     /****************************************************/
     
-    selectTag = [NSNumber numberWithInteger:CloseTag];
+    selectTag = CloseTag;
     
     [[BluetoothMacManager defaultManager] startBluetoothDevice];
     
@@ -202,7 +202,7 @@
             {
                 [[self.viewModel emitSmellReturn:byte] subscribeNext:^(id x) {
                     NSDictionary *dic = (NSDictionary *)x;
-                    NSNumber *rfId = [dic objectForKey:EmitSmellNoKey];
+                    NSString *rfId = [dic objectForKey:EmitSmellNoKey];
                     NSNumber *duration = [dic objectForKey:EmitSmellDurationKey];
                     if ([duration integerValue] == 0) {
                         [self setSelectTag:CloseTag];
@@ -213,7 +213,7 @@
                             }
                         }
                     }else{
-                        [self setSelectTag:[rfId integerValue]];
+                        [self setSelectTag:rfId];
                         [self startTimerWithDuration:[duration intValue]];
                     }
                 }];
@@ -232,14 +232,8 @@
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 fruit.fruitImage = [dic objectForKey:@"icon"];
-                                NSString *tempRFID = [dic objectForKey:@"rfid"];
-                                if (tempRFID.length % 2 == 0) {
-                                    NSScanner *scanner = [NSScanner scannerWithString:tempRFID];
-                                    unsigned long long cardNo;
-                                    [scanner scanHexLongLong:&cardNo];
-                                    fruit.fruitRFID = cardNo;
-                                    [self addFruitByOrder:fruit];
-                                }
+                                fruit.fruitRFID = [dic objectForKey:@"rfid"];
+                                [self addFruitByOrder:fruit];
                             }
                             [_collectionView reloadData];
                         }
@@ -293,9 +287,9 @@
  *
  *  @param tag 气味标识
  */
--(void)setSelectTag:(NSInteger)tag
+-(void)setSelectTag:(NSString *)tag
 {
-    selectTag = [NSNumber numberWithInteger:tag];
+    selectTag = tag;
     [_collectionView reloadData];
 }
 
@@ -308,11 +302,11 @@
  *
  *  @return 气味对象
  */
--(Fruit *)searchFruitByRFID:(NSInteger)rfId
+-(Fruit *)searchFruitByRFID:(NSString *)rfId
 {
     Fruit *fruit = nil;
     for (Fruit *f in _fruitsList) {
-        if (f.fruitRFID == rfId) {
+        if ([f.fruitRFID isEqualToString:rfId]) {
             fruit = f;
             break;
         }
@@ -365,7 +359,7 @@
  *  @param rfId     气味对应的瓶子RFID
  *  @param interval 发散气味的时间间隔 0表示关闭
  */
--(void)writeDataWithRFID:(NSInteger)rfId WithTimeInterval:(int)interval
+-(void)writeDataWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
     [[BluetoothMacManager defaultManager] writeCharacteristicWithRFID:rfId WithTimeInterval:interval];
 }
@@ -380,7 +374,7 @@
 -(void)addFruitByOrder:(Fruit *)fruit
 {
     if (rfIdOrderList) {
-        NSInteger index = [rfIdOrderList indexOfObject:[NSNumber numberWithInteger:fruit.fruitRFID]];
+        NSInteger index = [rfIdOrderList indexOfObject:fruit.fruitRFID];
         if (index >= 0 && index < rfIdOrderList.count) {
             fruit.tag = index;
         }else{
@@ -409,8 +403,7 @@
 {
     NSMutableArray *orderList = [NSMutableArray array];
     for (Fruit *fruit in _fruitsList) {
-        NSNumber *RFID = [NSNumber numberWithInteger:fruit.fruitRFID];
-        [orderList addObject:RFID];
+        [orderList addObject:fruit.fruitRFID];
     }
     NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
@@ -478,8 +471,8 @@
                             
                         }];
                     }else if([highMatch isEqualToString:@"关闭"] || [highMatch isEqualToString:@"关"]){
-                        if ([selectTag integerValue] != CloseTag) {
-                            [self writeDataWithRFID:[selectTag integerValue] WithTimeInterval:0];
+                        if (![selectTag isEqualToString:CloseTag]) {
+                            [self writeDataWithRFID:selectTag WithTimeInterval:0];
                         }
                     }else{
                         Fruit *matchFruit = [self.viewModel matchFruitName:highMatch InList:_fruitsList];
@@ -520,7 +513,7 @@
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
 //    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FuitPlaceHolderImage_Normal"]];
     [backImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
-    if ([selectTag integerValue] == fruit.fruitRFID) {
+    if ([selectTag isEqualToString:fruit.fruitRFID]) {
         [frontView setHidden:NO];
     }else{
         [frontView setHidden:YES];
@@ -579,7 +572,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     Fruit *selectFruit = [_fruitsList objectAtIndex:indexPath.item];
     NSLog(@"select %ld, FruitName is %@",indexPath.item,selectFruit.fruitName);
-    if (selectFruit.fruitRFID == [selectTag integerValue]) {
+    if ([selectFruit.fruitRFID isEqualToString:selectTag]) {
         [self writeDataWithRFID:selectFruit.fruitRFID WithTimeInterval:0];
     }else{
         [self writeDataWithRFID:selectFruit.fruitRFID WithTimeInterval:SmellEmitDuration];
