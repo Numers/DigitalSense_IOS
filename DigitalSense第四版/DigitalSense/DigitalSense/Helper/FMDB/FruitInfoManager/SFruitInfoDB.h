@@ -30,7 +30,7 @@
  *
  *  @return Fruit对象
  */
--(Fruit *)selectFruitWithRFID:(NSInteger)rfId;
+-(Fruit *)selectFruitWithRFID:(NSString *)rfId;
 
 /**
  *  @author RenRenFenQi, 16-06-02 18:06:54

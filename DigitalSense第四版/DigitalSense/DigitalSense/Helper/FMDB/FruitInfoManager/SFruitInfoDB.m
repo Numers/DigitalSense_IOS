@@ -38,7 +38,7 @@
         NSLog(@"%@数据库已经存在",kFruitInfoTableName);
     } else {
         // TODO: 插入新的数据库
-        NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitimage VARCHAR(100),rfid INTEGER)",kFruitInfoTableName];
+        NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitimage VARCHAR(100),rfid VARCHAR(50))",kFruitInfoTableName];
         BOOL res = [_db executeUpdate:sql];
         if (!res) {
             NSLog(@"%@数据库创建失败",kFruitInfoTableName);
@@ -58,16 +58,16 @@
  *
  *  @return Fruit对象
  */
--(Fruit *)selectFruitWithRFID:(NSInteger)rfId
+-(Fruit *)selectFruitWithRFID:(NSString *)rfId
 {
     Fruit *fruit = nil;
-    NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE rfid = '%ld' limit 1",kFruitInfoTableName,rfId];
+    NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE rfid = '%@' limit 1",kFruitInfoTableName,rfId];
     FMResultSet * rs = [_db executeQuery:query];
     if ([rs next]) {
         fruit = [[Fruit alloc] init];
         fruit.fruitName = [rs stringForColumn:@"fruitname"];
         fruit.fruitImage = [rs stringForColumn:@"fruitimage"];
-        fruit.fruitRFID = [rs intForColumn:@"rfid"];
+        fruit.fruitRFID = [rs stringForColumn:@"rfid"];
     }
     [rs close];
     return fruit;
@@ -96,7 +96,7 @@
     }
     
     [temp appendString:@")"];
-    query = [query stringByAppendingFormat:@"%@ WHERE rfid = '%ld'",[temp stringByReplacingOccurrencesOfString:@",)" withString:@""],fruit.fruitRFID];
+    query = [query stringByAppendingFormat:@"%@ WHERE rfid = '%@'",[temp stringByReplacingOccurrencesOfString:@",)" withString:@""],fruit.fruitRFID];
     
     BOOL flag = [_db executeUpdate:query];
     flag?NSLog(@"修改%@成功",fruit.fruitName): NSLog(@"修改%@失败",fruit.fruitName);
@@ -114,7 +114,7 @@
  */
 -(BOOL)deleteFruit:(Fruit *)fruit
 {
-    NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%ld'",kFruitInfoTableName,fruit.fruitRFID];
+    NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,fruit.fruitRFID];
     BOOL flag = [_db executeUpdate:query];
     flag?NSLog(@"删除 一条数据 成功"): NSLog(@"删除 一条数据  失败");
     return flag;
@@ -151,7 +151,7 @@
     
     [keys appendString:@"rfid,"];
     [values appendString:@"?,"];
-    [arguments addObject:[NSString stringWithFormat:@"%ld",fruit.fruitRFID]];
+    [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitRFID]];
     
     [keys appendString:@")"];
     [values appendString:@")"];
