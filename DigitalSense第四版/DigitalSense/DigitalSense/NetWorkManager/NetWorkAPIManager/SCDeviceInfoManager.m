@@ -66,7 +66,8 @@ static SCDeviceInfoManager *scDeviceInfoManager;
 -(void)requestSmellSkinPacket:(NSInteger)packetId Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
     NSString *uri = [SC_SmellSkinPacket_API stringByReplacingOccurrencesOfString:@":id" withString:[NSString stringWithFormat:@"%ld",packetId]];
-    [[SCNetWorkManager defaultManager] get:uri parameters:nil success:success error:error failed:failed isNotify:YES];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"ios",@"type",nil];
+    [[SCNetWorkManager defaultManager] get:uri parameters:parameters success:success error:error failed:failed isNotify:YES];
 }
 
 /**

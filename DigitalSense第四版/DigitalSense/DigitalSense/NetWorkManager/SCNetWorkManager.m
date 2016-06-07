@@ -47,7 +47,10 @@ static SCNetWorkManager *scNetWorkManager;
                 [AppUtils showInfo:NetWorkConnectFailedDescription];
                 failed(operation, error);
             }else{
-                [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                NSInteger code = [[responseObject objectForKey:@"code"] integerValue];
+                if (code % 2 != 0) {
+                    [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                }
                 errors(operation, error);
             }
         }else{
@@ -87,7 +90,10 @@ static SCNetWorkManager *scNetWorkManager;
                 [AppUtils showInfo:NetWorkConnectFailedDescription];
                 failed(operation, error);
             }else{
-                [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                NSInteger code = [[responseObject objectForKey:@"code"] integerValue];
+                if (code % 2 != 0) {
+                    [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                }
                 errors(operation, error);
             }
         }else{
@@ -128,7 +134,10 @@ static SCNetWorkManager *scNetWorkManager;
                 [AppUtils showInfo:NetWorkConnectFailedDescription];
                 failed(operation, error);
             }else{
-                [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                NSInteger code = [[responseObject objectForKey:@"code"] integerValue];
+                if (code % 2 != 0) {
+                    [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                }
                 errors(operation, error);
             }
         }else{

@@ -198,7 +198,7 @@
 -(RACSignal *)getBottleInfoReturn:(Byte *)byte
 {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *cardNo = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
+        NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
         
         NSString *temp2 = [NSString stringWithFormat:@"0x%02X%02X",byte[5],byte[6]];
         NSScanner *scanner2 = [NSScanner scannerWithString:temp2];
@@ -261,7 +261,6 @@
                     [subscriber sendNext:responseObject];
                     [subscriber sendCompleted];
                 } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [subscriber sendNext:responseObject];
                     [subscriber sendCompleted];
                 } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [subscriber sendCompleted];
@@ -316,15 +315,44 @@
 -(RACSignal *)emitSmellReturn:(Byte *)byte
 {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *cardNo = [NSString stringWithFormat:@"0x%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
-        
-        NSInteger duration = byte[5];
-    
-        NSDictionary *dic = @{EmitSmellNoKey:cardNo,EmitSmellDurationKey:@(duration)};
-        [subscriber sendNext:dic];
-        [subscriber sendCompleted];
+        int value = byte[1];
+        if (value == 0x66) {
+            NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[2],byte[3],byte[4],byte[5]];
+            
+            NSInteger duration = byte[6];
+            
+            NSDictionary *dic = @{EmitSmellNoKey:cardNo,EmitSmellDurationKey:@(duration)};
+            [subscriber sendNext:dic];
+            [subscriber sendCompleted];
+        }
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"开启味道信号销毁");
+        }];
+    }];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-07 16:06:29
+ *
+ *  获取皮肤包
+ *
+ *  @param packetId 皮肤包ID
+ *
+ *  @return 皮肤包信号
+ */
+-(RACSignal *)getSkinPacket:(NSInteger)packetId
+{
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [[SCDeviceInfoManager defaultManager] requestSmellSkinPacket:packetId Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [subscriber sendNext:responseObject];
+            [subscriber sendCompleted];
+        } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [subscriber sendCompleted];
+        } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [subscriber sendCompleted];
+        }];
+        return [RACDisposable disposableWithBlock:^{
+            NSLog(@"皮肤包信号销毁");
         }];
     }];
 }

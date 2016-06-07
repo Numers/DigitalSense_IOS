@@ -101,6 +101,17 @@
 -(RACSignal *)emitSmellReturn:(Byte *)byte;
 
 /**
+ *  @author RenRenFenQi, 16-06-07 16:06:29
+ *
+ *  获取皮肤包
+ *
+ *  @param packetId 皮肤包ID
+ *
+ *  @return 皮肤包信号
+ */
+-(RACSignal *)getSkinPacket:(NSInteger)packetId;
+
+/**
  *  @author RenRenFenQi, 16-06-02 14:06:34
  *
  *  根据名字匹配对象

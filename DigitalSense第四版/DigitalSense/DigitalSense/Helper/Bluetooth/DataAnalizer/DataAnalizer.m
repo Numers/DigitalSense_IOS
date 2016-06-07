@@ -24,6 +24,11 @@
         return;
     }
     
+//    Byte *byte = (Byte *)[data bytes];
+//    for (int i = 0; i < data.length; i++) {
+//        NSLog(@"%02X",byte[i]);
+//    }
+    
     if ([self.delegate respondsToSelector:@selector(outputData:)]) {
         [self.delegate outputData:data];
     }

@@ -20,6 +20,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="It4-2e-ylp">
                                 <rect key="frame" x="0.0" y="64" width="414" height="543"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="InO-pa-aA0" customClass="LewReorderableLayout">
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -87,7 +88,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="ZYM-uI-Izt" firstAttribute="centerY" secondItem="hfc-Gs-8Q0" secondAttribute="centerY" constant="10" id="MAp-MW-CCj"/>
                                     <constraint firstAttribute="height" constant="64" id="O2X-2U-gvd"/>
@@ -101,7 +102,9 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9yD-zY-cfO">
                                         <rect key="frame" x="40" y="39" width="335" height="50"/>
-                                        <state key="normal" image="VoiceBtn_Hightlight"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="i3s-zl-nc6"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="TouchDownVoiceBtn:" destination="BYZ-38-t0r" eventType="touchDown" id="p97-pR-Ig0"/>
                                             <action selector="TouchUpinsideVoiceBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Hha-rP-CzF"/>
@@ -149,6 +152,5 @@
         <image name="FruitDefaultImage" width="210" height="204"/>
         <image name="PressedImage" width="50" height="50"/>
         <image name="RefreshImage_Normal" width="46" height="44"/>
-        <image name="VoiceBtn_Hightlight" width="333" height="50"/>
     </resources>
 </document>

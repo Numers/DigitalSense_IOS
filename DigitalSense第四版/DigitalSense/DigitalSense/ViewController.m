@@ -51,10 +51,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
-    UIImage * backgroundImg = [UIImage imageNamed:@"TabBarBackgroundImage"];
-    _tabBarView.layer.contents = (id)backgroundImg.CGImage;
-    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Normal"] forState:UIControlStateNormal];
-    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Hightlight"] forState:UIControlStateHighlighted];
+//    UIImage * theBackgroundImg = [UIImage imageNamed:@"BackGroudImage"];
+//    self.view.layer.contents = (id) theBackgroundImg.CGImage;
+//    
+//    UIImage * backgroundImg = [UIImage imageNamed:@"TabBarBackgroundImage"];
+//    _tabBarView.layer.contents = (id)backgroundImg.CGImage;
+//    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Normal"] forState:UIControlStateNormal];
+//    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Hightlight"] forState:UIControlStateHighlighted];
     
     LewReorderableLayout *layout = (LewReorderableLayout *)[_collectionView collectionViewLayout];
     layout.delegate = self;
@@ -72,32 +75,34 @@
     /*********************添加假数据**********************/
     Fruit *fruit1 = [[Fruit alloc] init];
     fruit1.fruitName = @"苹果";
-    fruit1.fruitImage = @"AppleImage_Normal";
+//    fruit1.fruitImage = @"AppleImage_Normal";
+    fruit1.fruitImage = @"http://www.frenchrevolutionfood.com/wp-content/uploads/2009/04/Twitter-Bird.png";
     fruit1.fruitRFID = @"FFFFFFFF";
     [self addFruitByOrder:fruit1];
     
     Fruit *fruit2 = [[Fruit alloc] init];
     fruit2.fruitName = @"椰子";
-    fruit2.fruitImage = @"CoconutImage_Normal";
-    fruit2.fruitRFID = @"8765e394";
+//    fruit2.fruitImage = @"CoconutImage_Normal";
+    fruit2.fruitImage = @"http://thecustomizewindows.com/wp-content/uploads/2011/11/Nicest-Android-Live-Wallpapers.png";
+    fruit2.fruitRFID = @"8765E394";
     [self addFruitByOrder:fruit2];
     
     Fruit *fruit3 = [[Fruit alloc] init];
     fruit3.fruitName = @"猕猴桃";
     fruit3.fruitImage = @"KiwifruitImage_Normal";
-    fruit3.fruitRFID = @"8765e393";
+    fruit3.fruitRFID = @"8765E393";
     [self addFruitByOrder:fruit3];
     
     Fruit *fruit4 = [[Fruit alloc] init];
     fruit4.fruitName = @"芒果";
     fruit4.fruitImage = @"MangoImage_Normal";
-    fruit4.fruitRFID = @"8765e392";
+    fruit4.fruitRFID = @"8765E392";
     [self addFruitByOrder:fruit4];
     
     Fruit *fruit5 = [[Fruit alloc] init];
     fruit5.fruitName = @"橙子";
     fruit5.fruitImage = @"OrangeImage_Normal";
-    fruit5.fruitRFID = @"8765e391";
+    fruit5.fruitRFID = @"8765E391";
     [self addFruitByOrder:fruit5];
     /****************************************************/
     
@@ -106,6 +111,46 @@
     [[BluetoothMacManager defaultManager] startBluetoothDevice];
     
     self.viewModel = [[ViewModel alloc] init];
+    [[self.viewModel getSkinPacket:1] subscribeNext:^(id x) {
+        NSDictionary *resultDic = (NSDictionary *)x;
+        if (resultDic) {
+            NSDictionary *dataDic = [resultDic objectForKey:@"data"];
+            if (dataDic) {
+                NSString *url = [dataDic objectForKey:@"url"];
+                NSString *backgroundUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"background"]];
+                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:backgroundUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                    NSLog(@"正在接收BackgroundImage");
+                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    if (finished) {
+                        if (image) {
+                            self.view.layer.contents = (id)image.CGImage;
+                        }
+                    }
+                }];
+                NSString *tabUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"tab"]];
+                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:tabUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                     NSLog(@"正在接收TabBarImage");
+                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    if (finished) {
+                        if (image) {
+                            self.tabBarView.layer.contents = (id)image.CGImage;
+                        }
+                    }
+                }];
+                
+                NSString *buttonUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"button"]];
+                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:buttonUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                    NSLog(@"正在接收ButtonVoiceImage");
+                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+                    if (finished) {
+                        if (image) {
+                            [self.btnVoice setBackgroundImage:image forState:UIControlStateNormal];
+                        }
+                    }
+                }];
+            }
+        }
+    }];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -232,10 +277,10 @@
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 fruit.fruitImage = [dic objectForKey:@"icon"];
-                                fruit.fruitRFID = [dic objectForKey:@"rfid"];
+                                fruit.fruitRFID = [[dic objectForKey:@"rfid"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
-                            [_collectionView reloadData];
+                            [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                         }
                     }
                 }];
@@ -290,7 +335,7 @@
 -(void)setSelectTag:(NSString *)tag
 {
     selectTag = tag;
-    [_collectionView reloadData];
+    [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
 /**
@@ -511,8 +556,7 @@
     UIView *frontView = [cell viewWithTag:3];
     
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
-//    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FuitPlaceHolderImage_Normal"]];
-    [backImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
+    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FuitPlaceHolderImage_Normal"] options:SDWebImageLowPriority|SDWebImageRetryFailed];
     if ([selectTag isEqualToString:fruit.fruitRFID]) {
         [frontView setHidden:NO];
     }else{

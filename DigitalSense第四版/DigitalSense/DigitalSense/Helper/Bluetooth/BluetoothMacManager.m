@@ -320,7 +320,7 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(NSString *)stringByCaculateRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
-    NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"%02X",EmitSmell];
+    NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"%02X66",EmitSmell];
     [result appendFormat:@"%@",rfId];
     [result appendFormat:@"%02X",interval];
     [result appendFormat:@"55"];
