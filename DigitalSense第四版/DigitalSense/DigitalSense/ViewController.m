@@ -10,6 +10,7 @@
 #import "LewReorderableLayout.h"
 #import "UIImageView+Webcache.h"
 #import "Fruit.h"
+#import "SmellSkin.h"
 
 #import "AppUtils.h"
 #import "BluetoothMacManager.h"
@@ -58,6 +59,9 @@
 //    _tabBarView.layer.contents = (id)backgroundImg.CGImage;
 //    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Normal"] forState:UIControlStateNormal];
 //    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Hightlight"] forState:UIControlStateHighlighted];
+    SmellSkin *skin = [SmellSkin getLocalSkin];
+    [self renderingSkinWithSmellSkin:skin];
+    
     
     LewReorderableLayout *layout = (LewReorderableLayout *)[_collectionView collectionViewLayout];
     layout.delegate = self;
@@ -117,37 +121,15 @@
             NSDictionary *dataDic = [resultDic objectForKey:@"data"];
             if (dataDic) {
                 NSString *url = [dataDic objectForKey:@"url"];
+                SmellSkin *skin = [[SmellSkin alloc] init];
                 NSString *backgroundUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"background"]];
-                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:backgroundUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                    NSLog(@"正在接收BackgroundImage");
-                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    if (finished) {
-                        if (image) {
-                            self.view.layer.contents = (id)image.CGImage;
-                        }
-                    }
-                }];
+                skin.backgroundImage = backgroundUrl;
                 NSString *tabUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"tab"]];
-                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:tabUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                     NSLog(@"正在接收TabBarImage");
-                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    if (finished) {
-                        if (image) {
-                            self.tabBarView.layer.contents = (id)image.CGImage;
-                        }
-                    }
-                }];
-                
+                skin.tabBarImage = tabUrl;
                 NSString *buttonUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"button"]];
-                [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:buttonUrl] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                    NSLog(@"正在接收ButtonVoiceImage");
-                } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-                    if (finished) {
-                        if (image) {
-                            [self.btnVoice setBackgroundImage:image forState:UIControlStateNormal];
-                        }
-                    }
-                }];
+                skin.voiceButtonImage = buttonUrl;
+                [skin saveSkinToLocal];
+                [self renderingSkinWithSmellSkin:skin];
             }
         }
     }];
@@ -471,6 +453,52 @@
     }
     [content appendString:@"关|关闭;"];
     return content;
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-07 17:06:19
+ *
+ *  渲染皮肤
+ *
+ *  @param skin 皮肤属性对象
+ */
+-(void)renderingSkinWithSmellSkin:(SmellSkin *)skin
+{
+    if (skin == nil) {
+        return;
+    }
+    
+    [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:skin.backgroundImage] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        NSLog(@"正在接收BackgroundImage");
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        if (finished) {
+            if (image) {
+                self.view.layer.contents = (id)image.CGImage;
+            }
+        }
+    }];
+
+    [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:skin.tabBarImage] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        NSLog(@"正在接收TabBarImage");
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        if (finished) {
+            if (image) {
+                self.tabBarView.layer.contents = (id)image.CGImage;
+            }
+        }
+    }];
+    
+
+    [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:skin.voiceButtonImage] options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        NSLog(@"正在接收ButtonVoiceImage");
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        if (finished) {
+            if (image) {
+                [self.btnVoice setBackgroundImage:image forState:UIControlStateNormal];
+            }
+        }
+    }];
+
 }
 #pragma -mark ButtonClickEvent
 -(IBAction)TouchDownVoiceBtn:(id)sender

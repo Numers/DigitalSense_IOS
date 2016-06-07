@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
 		84595C8C1CFE8229007DB272 /* ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84595C8B1CFE8229007DB272 /* ViewModel.m */; };
+		846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 846582261D06CDC0009C5A9E /* SmellSkin.m */; };
 		8466677C1CF82AD400EFBE66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677B1CF82AD400EFBE66 /* main.m */; };
 		8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677E1CF82AD400EFBE66 /* AppDelegate.m */; };
 		846667821CF82AD400EFBE66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846667811CF82AD400EFBE66 /* ViewController.m */; };
@@ -48,6 +49,8 @@
 		84595C8A1CFE8229007DB272 /* ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewModel.h; sourceTree = "<group>"; };
 		84595C8B1CFE8229007DB272 /* ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewModel.m; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
+		846582251D06CDC0009C5A9E /* SmellSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmellSkin.h; sourceTree = "<group>"; };
+		846582261D06CDC0009C5A9E /* SmellSkin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmellSkin.m; sourceTree = "<group>"; };
 		846667771CF82AD400EFBE66 /* DigitalSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8466677B1CF82AD400EFBE66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8466677D1CF82AD400EFBE66 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -232,6 +235,8 @@
 			children = (
 				8471AB0D1CFC321F00CB5DB6 /* Fruit.h */,
 				8471AB0E1CFC321F00CB5DB6 /* Fruit.m */,
+				846582251D06CDC0009C5A9E /* SmellSkin.h */,
+				846582261D06CDC0009C5A9E /* SmellSkin.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
+				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,
 				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
