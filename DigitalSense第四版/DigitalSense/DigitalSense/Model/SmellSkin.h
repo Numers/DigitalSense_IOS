@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface SmellSkin : NSObject
+@property(nonatomic, copy) NSString *skinId;
 @property(nonatomic, copy) NSString *backgroundImage;
 @property(nonatomic, copy) NSString *tabBarImage;
 @property(nonatomic, copy) NSString *voiceButtonImage;

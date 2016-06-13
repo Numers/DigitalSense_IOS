@@ -49,7 +49,7 @@
  *  @param error    返回错误
  *  @param failed   返回失败
  */
--(void)requestSmellSkinPacket:(NSInteger)packetId Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed;
+-(void)requestSmellSkinPacket:(NSString *)packetId Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed;
 
 /**
  *  @author RenRenFenQi, 16-06-06 17:06:08

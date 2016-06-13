@@ -32,7 +32,7 @@ static SCDeviceInfoManager *scDeviceInfoManager;
  */
 -(void)requestFruitInfo:(NSString *)hid WithRFIDSequence:(NSString *)rfIdSequece WithUseTimeSequence:(NSString *)useTimeSequence IsNew:(NSString *)isNew Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hid,@"hid",rfIdSequece,@"rfid",useTimeSequence,@"used",isNew,@"new",nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hid,@"hid",rfIdSequece,@"rfid",useTimeSequence,@"used",isNew,@"new",@"ios",@"type",nil];
     [[SCNetWorkManager defaultManager] put:SC_FruitInfo_API parameters:parameters success:success error:error failed:failed isNotify:NO];
 }
 
@@ -49,7 +49,7 @@ static SCDeviceInfoManager *scDeviceInfoManager;
  */
 -(void)requestSmellSkinList:(NSInteger)page WithPageNumber:(NSInteger)pageNum Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:page],@"p",[NSNumber numberWithInteger:pageNum],@"n",nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:page],@"p",[NSNumber numberWithInteger:pageNum],@"n",@"ios",@"type",nil];
     [[SCNetWorkManager defaultManager] get:SC_SmellSkin_API parameters:parameters success:success error:error failed:failed isNotify:YES];
 }
 
@@ -63,9 +63,9 @@ static SCDeviceInfoManager *scDeviceInfoManager;
  *  @param error    返回错误
  *  @param failed   返回失败
  */
--(void)requestSmellSkinPacket:(NSInteger)packetId Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
+-(void)requestSmellSkinPacket:(NSString *)packetId Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
-    NSString *uri = [SC_SmellSkinPacket_API stringByReplacingOccurrencesOfString:@":id" withString:[NSString stringWithFormat:@"%ld",packetId]];
+    NSString *uri = [SC_SmellSkinPacket_API stringByReplacingOccurrencesOfString:@":id" withString:[NSString stringWithFormat:@"%@",packetId]];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"ios",@"type",nil];
     [[SCNetWorkManager defaultManager] get:uri parameters:parameters success:success error:error failed:failed isNotify:YES];
 }
@@ -84,7 +84,8 @@ static SCDeviceInfoManager *scDeviceInfoManager;
  */
 -(void)uploadDevice:(NSString *)hid OpenTime:(NSTimeInterval)openTime CloseTime:(NSTimeInterval)closeTime Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hid,@"hid",[NSNumber numberWithDouble:openTime],@"on",[NSNumber numberWithDouble:closeTime],@"off",nil];
-    [[SCNetWorkManager defaultManager] put:SC_UploadOpenAndCloseDeviceTime_API parameters:parameters success:success error:error failed:failed isNotify:NO];
+    NSString *uri = [SC_UploadOpenAndCloseDeviceTime_API stringByReplacingOccurrencesOfString:@":hid" withString:hid];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hid,@"hid",[NSNumber numberWithDouble:openTime],@"on",[NSNumber numberWithDouble:closeTime],@"off",@"ios",@"type",nil];
+    [[SCNetWorkManager defaultManager] put:uri parameters:parameters success:success error:error failed:failed isNotify:NO];
 }
 @end

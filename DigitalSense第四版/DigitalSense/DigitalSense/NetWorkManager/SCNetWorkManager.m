@@ -75,7 +75,7 @@ static SCNetWorkManager *scNetWorkManager;
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
     NSString *timeStamp = [NSString stringWithFormat:@"%.0f",nowTime];
     [para setObject:timeStamp forKey:@"timestamp"];
-    NSString *signatureString = [AppUtils generateSignatureString:parameters Method:@"POST" URI:uri Key:SignatureAPPKey];
+    NSString *signatureString = [AppUtils generateSignatureString:parameters Method:@"GET" URI:uri Key:SignatureAPPKey];
     NSString *signature = [AppUtils sha1:signatureString];
     [para setObject:signature forKey:@"sign"];
     
@@ -119,7 +119,7 @@ static SCNetWorkManager *scNetWorkManager;
     NSTimeInterval nowTime = [[NSDate date] timeIntervalSince1970];
     NSString *timeStamp = [NSString stringWithFormat:@"%.0f",nowTime];
     [para setObject:timeStamp forKey:@"timestamp"];
-    NSString *signatureString = [AppUtils generateSignatureString:parameters Method:@"POST" URI:uri Key:SignatureAPPKey];
+    NSString *signatureString = [AppUtils generateSignatureString:parameters Method:@"PUT" URI:uri Key:SignatureAPPKey];
     NSString *signature = [AppUtils sha1:signatureString];
     [para setObject:signature forKey:@"sign"];
     

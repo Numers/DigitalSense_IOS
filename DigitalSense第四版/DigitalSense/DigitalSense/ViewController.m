@@ -21,7 +21,7 @@
 
 #define SpeakDelay 0.5f
 #define SmellEmitDuration 15
-#define CellMargin 0.0f
+#define CellMargin 0.5f
 #define CellItemCount 3
 #define CloseTag @"0"
 
@@ -52,13 +52,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
-//    UIImage * theBackgroundImg = [UIImage imageNamed:@"BackGroudImage"];
-//    self.view.layer.contents = (id) theBackgroundImg.CGImage;
-//    
-//    UIImage * backgroundImg = [UIImage imageNamed:@"TabBarBackgroundImage"];
-//    _tabBarView.layer.contents = (id)backgroundImg.CGImage;
-//    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Normal"] forState:UIControlStateNormal];
-//    [_btnVoice setImage:[UIImage imageNamed:@"VoiceBtn_Hightlight"] forState:UIControlStateHighlighted];
     SmellSkin *skin = [SmellSkin getLocalSkin];
     [self renderingSkinWithSmellSkin:skin];
     
@@ -66,6 +59,11 @@
     LewReorderableLayout *layout = (LewReorderableLayout *)[_collectionView collectionViewLayout];
     layout.delegate = self;
     layout.dataSource = self;
+    
+//    [self.cellFakeImageView.layer setShadowOffset:CGSizeMake(1, 1)];
+//    [self.cellFakeImageView.layer setShadowRadius:5];
+//    [self.cellFakeImageView.layer setShadowOpacity:1.f];
+//    [self.cellFakeImageView.layer setShadowColor:[UIColor blackColor].CGColor];
     
     NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
@@ -76,63 +74,46 @@
     hasNewFruit = NO;
     _fruitsList = [NSMutableArray array];
     
-    /*********************添加假数据**********************/
-    Fruit *fruit1 = [[Fruit alloc] init];
-    fruit1.fruitName = @"苹果";
-//    fruit1.fruitImage = @"AppleImage_Normal";
-    fruit1.fruitImage = @"http://www.frenchrevolutionfood.com/wp-content/uploads/2009/04/Twitter-Bird.png";
-    fruit1.fruitRFID = @"FFFFFFFF";
-    [self addFruitByOrder:fruit1];
-    
-    Fruit *fruit2 = [[Fruit alloc] init];
-    fruit2.fruitName = @"椰子";
-//    fruit2.fruitImage = @"CoconutImage_Normal";
-    fruit2.fruitImage = @"http://thecustomizewindows.com/wp-content/uploads/2011/11/Nicest-Android-Live-Wallpapers.png";
-    fruit2.fruitRFID = @"8765E394";
-    [self addFruitByOrder:fruit2];
-    
-    Fruit *fruit3 = [[Fruit alloc] init];
-    fruit3.fruitName = @"猕猴桃";
-    fruit3.fruitImage = @"KiwifruitImage_Normal";
-    fruit3.fruitRFID = @"8765E393";
-    [self addFruitByOrder:fruit3];
-    
-    Fruit *fruit4 = [[Fruit alloc] init];
-    fruit4.fruitName = @"芒果";
-    fruit4.fruitImage = @"MangoImage_Normal";
-    fruit4.fruitRFID = @"8765E392";
-    [self addFruitByOrder:fruit4];
-    
-    Fruit *fruit5 = [[Fruit alloc] init];
-    fruit5.fruitName = @"橙子";
-    fruit5.fruitImage = @"OrangeImage_Normal";
-    fruit5.fruitRFID = @"8765E391";
-    [self addFruitByOrder:fruit5];
-    /****************************************************/
+//    /*********************添加假数据**********************/
+//    Fruit *fruit1 = [[Fruit alloc] init];
+//    fruit1.fruitName = @"苹果";
+////    fruit1.fruitImage = @"AppleImage_Normal";
+//    fruit1.fruitImage = @"http://www.frenchrevolutionfood.com/wp-content/uploads/2009/04/Twitter-Bird.png";
+//    fruit1.fruitRFID = @"FFFFFFFF";
+//    [self addFruitByOrder:fruit1];
+//    
+//    Fruit *fruit2 = [[Fruit alloc] init];
+//    fruit2.fruitName = @"椰子";
+////    fruit2.fruitImage = @"CoconutImage_Normal";
+//    fruit2.fruitImage = @"http://thecustomizewindows.com/wp-content/uploads/2011/11/Nicest-Android-Live-Wallpapers.png";
+//    fruit2.fruitRFID = @"8765E394";
+//    [self addFruitByOrder:fruit2];
+//    
+//    Fruit *fruit3 = [[Fruit alloc] init];
+//    fruit3.fruitName = @"猕猴桃";
+//    fruit3.fruitImage = @"KiwifruitImage_Normal";
+//    fruit3.fruitRFID = @"8765E393";
+//    [self addFruitByOrder:fruit3];
+//    
+//    Fruit *fruit4 = [[Fruit alloc] init];
+//    fruit4.fruitName = @"芒果";
+//    fruit4.fruitImage = @"MangoImage_Normal";
+//    fruit4.fruitRFID = @"8765E392";
+//    [self addFruitByOrder:fruit4];
+//    
+//    Fruit *fruit5 = [[Fruit alloc] init];
+//    fruit5.fruitName = @"橙子";
+//    fruit5.fruitImage = @"OrangeImage_Normal";
+//    fruit5.fruitRFID = @"8765E391";
+//    [self addFruitByOrder:fruit5];
+//    /****************************************************/
     
     selectTag = CloseTag;
     
     [[BluetoothMacManager defaultManager] startBluetoothDevice];
     
     self.viewModel = [[ViewModel alloc] init];
-    [[self.viewModel getSkinPacket:1] subscribeNext:^(id x) {
-        NSDictionary *resultDic = (NSDictionary *)x;
-        if (resultDic) {
-            NSDictionary *dataDic = [resultDic objectForKey:@"data"];
-            if (dataDic) {
-                NSString *url = [dataDic objectForKey:@"url"];
-                SmellSkin *skin = [[SmellSkin alloc] init];
-                NSString *backgroundUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"background"]];
-                skin.backgroundImage = backgroundUrl;
-                NSString *tabUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"tab"]];
-                skin.tabBarImage = tabUrl;
-                NSString *buttonUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"button"]];
-                skin.voiceButtonImage = buttonUrl;
-                [skin saveSkinToLocal];
-                [self renderingSkinWithSmellSkin:skin];
-            }
-        }
-    }];
+    [self requestSmellSkinWithSkinId:skin.skinId];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -220,8 +201,6 @@
                 [[self.viewModel getBottleInfoReturn:byte] subscribeNext:^(id x) {
                     NSDictionary *dic = (NSDictionary *)x;
                     [bottleInfoList addObject:dic];
-//                    Fruit *fruit = [dic objectForKey:BottleKey];
-//                    [self addFruitByOrder:fruit];
                 }];
             }
                 break;
@@ -258,8 +237,8 @@
                                 Fruit *fruit = [[Fruit alloc] init];
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
-                                fruit.fruitImage = [dic objectForKey:@"icon"];
-                                fruit.fruitRFID = [[dic objectForKey:@"rfid"] uppercaseString];
+                                [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
+                                fruit.fruitRFID = [[dic objectForKey:@"sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
                             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -282,6 +261,9 @@
     [[BluetoothMacManager defaultManager] startScanBluetoothDevice:ConnectToDevice callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
         if (completely) {
             [self.lblTitle setText:@"设备已连接"];
+            if (bottleInfoList.count > 0) {
+                [bottleInfoList removeAllObjects];
+            }
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
@@ -388,6 +370,12 @@
  */
 -(void)writeDataWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
+    if (![[BluetoothMacManager defaultManager] isConnected]) {
+        //提示打开蓝牙或下拉重连
+        [AppUtils showInfo:@"请先打开蓝牙或者刷新重连"];
+        return;
+    }
+
     [[BluetoothMacManager defaultManager] writeCharacteristicWithRFID:rfId WithTimeInterval:interval];
 }
 
@@ -474,6 +462,9 @@
         if (finished) {
             if (image) {
                 self.view.layer.contents = (id)image.CGImage;
+            }else{
+                UIImage *backImage = [UIImage imageNamed:@"BackGroudImage"];
+                self.view.layer.contents = (id)backImage.CGImage;
             }
         }
     }];
@@ -484,6 +475,9 @@
         if (finished) {
             if (image) {
                 self.tabBarView.layer.contents = (id)image.CGImage;
+            }else{
+                UIImage *tabBarImage = [UIImage imageNamed:@"TabBarBackgroundImage"];
+                self.tabBarView.layer.contents = (id)tabBarImage.CGImage;
             }
         }
     }];
@@ -495,10 +489,47 @@
         if (finished) {
             if (image) {
                 [self.btnVoice setBackgroundImage:image forState:UIControlStateNormal];
+            }else{
+                UIImage *voiceImage = [UIImage imageNamed:@"VoiceBtn_Normal"];
+                [self.btnVoice setBackgroundImage:voiceImage forState:UIControlStateNormal];
             }
         }
     }];
 
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-08 11:06:36
+ *
+ *  获取皮肤包
+ *
+ *  @param skinId 皮肤包ID
+ */
+-(void)requestSmellSkinWithSkinId:(NSString *)skinId
+{
+    if (self.viewModel) {
+        [[self.viewModel getSkinPacket:skinId] subscribeNext:^(id x) {
+            NSDictionary *resultDic = (NSDictionary *)x;
+            if (resultDic) {
+                NSDictionary *dataDic = [resultDic objectForKey:@"data"];
+                if (dataDic) {
+                    
+                    SmellSkin *skin = [[SmellSkin alloc] init];
+                    skin.skinId = [dataDic objectForKey:@"id"];
+                    NSString *url = [dataDic objectForKey:@"url"];
+                    NSString *backgroundUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"background"]];
+                    skin.backgroundImage = backgroundUrl;
+                    NSString *tabUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"tab"]];
+                    skin.tabBarImage = tabUrl;
+                    NSString *buttonUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"button"]];
+                    skin.voiceButtonImage = buttonUrl;
+                    [skin saveSkinToLocal];
+                    [self renderingSkinWithSmellSkin:skin];
+                }
+            }
+        }];
+
+    }
 }
 #pragma -mark ButtonClickEvent
 -(IBAction)TouchDownVoiceBtn:(id)sender
@@ -545,7 +576,14 @@
                         }];
                     }else if([highMatch isEqualToString:@"关闭"] || [highMatch isEqualToString:@"关"]){
                         if (![selectTag isEqualToString:CloseTag]) {
-                            [self writeDataWithRFID:selectTag WithTimeInterval:0];
+                            [[IFlySpeechSynthesizerManager defaultManager] startSpeeking:YES Callback:^(BOOL completely) {
+                                if (completely) {
+                                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SpeakDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                        //延迟后需要做的操作
+                                        [self writeDataWithRFID:selectTag WithTimeInterval:0];
+                                    });
+                                }
+                            }];
                         }
                     }else{
                         Fruit *matchFruit = [self.viewModel matchFruitName:highMatch InList:_fruitsList];
@@ -584,7 +622,8 @@
     UIView *frontView = [cell viewWithTag:3];
     
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
-    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FuitPlaceHolderImage_Normal"] options:SDWebImageLowPriority|SDWebImageRetryFailed];
+    [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"] options:SDWebImageLowPriority|SDWebImageRetryFailed];
+//    [backImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
     if ([selectTag isEqualToString:fruit.fruitRFID]) {
         [frontView setHidden:NO];
     }else{
@@ -603,11 +642,13 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds);
+    
     if (CellItemCount >= 1) {
 //        CGFloat perPieceWidth = floor(screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1)));
+        CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds)-0.5;
         CGFloat perPieceWidth = screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1));
-        return CGSizeMake(perPieceWidth, perPieceWidth * 480.0f / 414.0f);
+        CGFloat perPieceHeight = perPieceWidth * 480.0f / 414.0f;
+        return CGSizeMake(perPieceWidth, perPieceHeight);
     }
     return CGSizeMake(0, 0);
 }

@@ -109,7 +109,7 @@
  *
  *  @return 皮肤包信号
  */
--(RACSignal *)getSkinPacket:(NSInteger)packetId;
+-(RACSignal *)getSkinPacket:(NSString *)packetId;
 
 /**
  *  @author RenRenFenQi, 16-06-02 14:06:34

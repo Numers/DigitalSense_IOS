@@ -69,9 +69,6 @@
         for (int i = 1; i <= 6; i ++) {
             int value = byte[i];
             [result appendFormat:@"%02X",value];
-            if (i != 6) {
-                [result appendString:@":"];
-            }
         }
         self.macAddress = [NSString stringWithString:result];
         [subscriber sendNext:result];
@@ -340,7 +337,7 @@
  *
  *  @return 皮肤包信号
  */
--(RACSignal *)getSkinPacket:(NSInteger)packetId
+-(RACSignal *)getSkinPacket:(NSString *)packetId
 {
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         [[SCDeviceInfoManager defaultManager] requestSmellSkinPacket:packetId Success:^(AFHTTPRequestOperation *operation, id responseObject) {

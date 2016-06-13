@@ -16,7 +16,7 @@
  *  上传开关机时间API
  */
 //////////////////////////////////////////////////////////
-#define SC_UploadOpenAndCloseDeviceTime_API @"/app/v1/smell-device"
+#define SC_UploadOpenAndCloseDeviceTime_API @"/app/v1/smell-device/:hid"
 /////////////////////////////////////////////////////////
 
 /**

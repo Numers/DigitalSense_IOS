@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "AppUtils.h"
+#import "UIDevice+IphoneModel.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #endif
 //打印宏定义

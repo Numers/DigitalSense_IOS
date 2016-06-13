@@ -15,4 +15,6 @@
 @property(nonatomic, copy) NSString *fruitRFID;
 
 @property(nonatomic) NSInteger tag; //专用于排序
+
+-(void)setFruitImageWithDic:(NSDictionary *)dic;
 @end

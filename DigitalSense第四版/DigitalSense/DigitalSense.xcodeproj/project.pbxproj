@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
+		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
 		84595C8C1CFE8229007DB272 /* ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84595C8B1CFE8229007DB272 /* ViewModel.m */; };
 		846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 846582261D06CDC0009C5A9E /* SmellSkin.m */; };
 		8466677C1CF82AD400EFBE66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677B1CF82AD400EFBE66 /* main.m */; };
@@ -46,6 +47,8 @@
 /* Begin PBXFileReference section */
 		0DD69D7F367F145CFE3F4D3A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BC7B1DE18EBD5B7CC403DD4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IphoneModel.h"; sourceTree = "<group>"; };
+		845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IphoneModel.m"; sourceTree = "<group>"; };
 		84595C8A1CFE8229007DB272 /* ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewModel.h; sourceTree = "<group>"; };
 		84595C8B1CFE8229007DB272 /* ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewModel.m; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
@@ -137,6 +140,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		845456F71D0EAB65006E7FF6 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */,
+				845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		8466676E1CF82AD400EFBE66 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +171,7 @@
 		846667791CF82AD400EFBE66 /* DigitalSense */ = {
 			isa = PBXGroup;
 			children = (
+				845456F71D0EAB65006E7FF6 /* Category */,
 				846A76E81D016DD00055E54E /* NetWorkManager */,
 				847EC4DA1CFD6654000D77AE /* Util */,
 				847EC4C11CFD65E5000D77AE /* Helper */,
@@ -477,6 +490,7 @@
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
 				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
+				845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */,
 				846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */,
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
