@@ -376,7 +376,7 @@
     
     Fruit *fruit = nil;
     for (Fruit *f in list) {
-        NSArray *nameList = [f.fruitName componentsSeparatedByString:@"|"];
+        NSArray *nameList = [f.fruitKeyWords componentsSeparatedByString:@"|"];
         for (NSString *name in nameList) {
             if ([name isEqualToString:fruitName]) {
                 fruit = f;

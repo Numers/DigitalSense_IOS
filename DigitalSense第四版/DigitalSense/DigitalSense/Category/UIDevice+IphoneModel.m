@@ -56,7 +56,7 @@
     return UnKnown;
 }
 
-+(CGFloat)adaptTextFontSizeWithIphone5FontSize:(CGFloat)size
++(CGFloat)adaptTextFontSizeWithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
 {
     CGFloat returnSize = size;
     iPhoneModel model = [self iPhonesModel];
@@ -90,98 +90,161 @@
     return returnSize;
 }
 
-+(void)adaptUILabelTextFont:(UILabel *)label WithIphone5FontSize:(CGFloat)size
++(void)adaptUILabelTextFont:(UILabel *)label WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
 {
     iPhoneModel model = [self iPhonesModel];
     switch (model) {
         case iPhone4:
         {
-            [label setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [label setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [label setFont:[UIFont systemFontOfSize:size]];
+            }
         }
         break;
         case iPhone5:
         {
-            [label setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [label setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [label setFont:[UIFont systemFontOfSize:size]];
+            }
         }
         break;
         case iPhone6:
         {
-            [label setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [label setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [label setFont:[UIFont systemFontOfSize:size]];
+            }
         }
         break;
         case iPhone6Plus:
         {
-            [label setFont:[UIFont systemFontOfSize:size*1.5]];
+            if (bold) {
+                [label setFont:[UIFont boldSystemFontOfSize:size*1.5]];
+            }else{
+                [label setFont:[UIFont systemFontOfSize:size*1.5]];
+            }
         }
         break;
         default:
         {
-            [label setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [label setFont:[UIFont boldSystemFontOfSize:size*1.5]];
+            }else{
+                [label setFont:[UIFont systemFontOfSize:size*1.5]];
+            }
         }
         break;
     }
 }
 
-+(void)adaptUITextFieldTextFont:(UITextField *)textField WithIphone5FontSize:(CGFloat)size
++(void)adaptUITextFieldTextFont:(UITextField *)textField WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
 {
     iPhoneModel model = [self iPhonesModel];
     switch (model) {
         case iPhone4:
         {
-            [textField setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [textField setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [textField setFont:[UIFont systemFontOfSize:size]];
+            }
         }
         break;
         case iPhone5:
         {
-            [textField setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [textField setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [textField setFont:[UIFont systemFontOfSize:size]];
+            }
+
         }
         break;
         case iPhone6:
         {
-            [textField setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [textField setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [textField setFont:[UIFont systemFontOfSize:size]];
+            }
+
         }
         break;
         case iPhone6Plus:
         {
-            [textField setFont:[UIFont systemFontOfSize:size*1.5]];
+            if (bold) {
+                [textField setFont:[UIFont boldSystemFontOfSize:size * 1.5]];
+            }else{
+                [textField setFont:[UIFont systemFontOfSize:size * 1.5]];
+            }
+
         }
         break;
         default:
         {
-            [textField setFont:[UIFont systemFontOfSize:size]];
+            if (bold) {
+                [textField setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [textField setFont:[UIFont systemFontOfSize:size]];
+            }
         }
         break;
     }
 
 }
 
-+(void)adaptUIBarButtonItemTextFont:(UIBarButtonItem *)item WithIphone5FontSize:(CGFloat)size
++(void)adaptUIBarButtonItemTextFont:(UIBarButtonItem *)item WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
 {
     iPhoneModel model = [self iPhonesModel];
     switch (model) {
         case iPhone4:
         {
-            [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            if (bold) {
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:size]} forState:UIControlStateNormal];
+            }else{
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            }
         }
         break;
         case iPhone5:
         {
-            [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            if (bold) {
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:size]} forState:UIControlStateNormal];
+            }else{
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            }
         }
         break;
         case iPhone6:
         {
-            [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            if (bold) {
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:size]} forState:UIControlStateNormal];
+            }else{
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            }
         }
         break;
         case iPhone6Plus:
         {
-            [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size * 1.2]} forState:UIControlStateNormal];
+            if (bold) {
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:size * 1.2]} forState:UIControlStateNormal];
+            }else{
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size * 1.2]} forState:UIControlStateNormal];
+            }
         }
         break;
         default:
         {
-            [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            if (bold) {
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:size]} forState:UIControlStateNormal];
+            }else{
+                [item setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:size]} forState:UIControlStateNormal];
+            }
         }
         break;
     }

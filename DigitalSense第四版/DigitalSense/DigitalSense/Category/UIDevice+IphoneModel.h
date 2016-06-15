@@ -16,8 +16,8 @@ typedef NS_ENUM(char, iPhoneModel){//0~3
 };
 @interface UIDevice (IphoneModel)
 +(iPhoneModel)iPhonesModel;
-+(CGFloat)adaptTextFontSizeWithIphone5FontSize:(CGFloat)size;
-+(void)adaptUILabelTextFont:(UILabel *)label WithIphone5FontSize:(CGFloat)size;
-+(void)adaptUITextFieldTextFont:(UITextField *)label WithIphone5FontSize:(CGFloat)size;
-+(void)adaptUIBarButtonItemTextFont:(UIBarButtonItem *)item WithIphone5FontSize:(CGFloat)size;
++(CGFloat)adaptTextFontSizeWithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
++(void)adaptUILabelTextFont:(UILabel *)label WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
++(void)adaptUITextFieldTextFont:(UITextField *)label WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
++(void)adaptUIBarButtonItemTextFont:(UIBarButtonItem *)item WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
 @end

@@ -52,6 +52,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
+    //适配TitleLabel的字体大小
+    [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
+    
+    //获取本地缓存的皮肤
     SmellSkin *skin = [SmellSkin getLocalSkin];
     [self renderingSkinWithSmellSkin:skin];
     
@@ -59,56 +63,6 @@
     LewReorderableLayout *layout = (LewReorderableLayout *)[_collectionView collectionViewLayout];
     layout.delegate = self;
     layout.dataSource = self;
-    
-//    [self.cellFakeImageView.layer setShadowOffset:CGSizeMake(1, 1)];
-//    [self.cellFakeImageView.layer setShadowRadius:5];
-//    [self.cellFakeImageView.layer setShadowOpacity:1.f];
-//    [self.cellFakeImageView.layer setShadowColor:[UIColor blackColor].CGColor];
-    
-    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
-    rfIdOrderList = [NSArray arrayWithContentsOfFile:path];
-    
-    bottleInfoList = [NSMutableArray array];
-    
-    hasNewFruit = NO;
-    _fruitsList = [NSMutableArray array];
-    
-//    /*********************添加假数据**********************/
-//    Fruit *fruit1 = [[Fruit alloc] init];
-//    fruit1.fruitName = @"苹果";
-////    fruit1.fruitImage = @"AppleImage_Normal";
-//    fruit1.fruitImage = @"http://www.frenchrevolutionfood.com/wp-content/uploads/2009/04/Twitter-Bird.png";
-//    fruit1.fruitRFID = @"FFFFFFFF";
-//    [self addFruitByOrder:fruit1];
-//    
-//    Fruit *fruit2 = [[Fruit alloc] init];
-//    fruit2.fruitName = @"椰子";
-////    fruit2.fruitImage = @"CoconutImage_Normal";
-//    fruit2.fruitImage = @"http://thecustomizewindows.com/wp-content/uploads/2011/11/Nicest-Android-Live-Wallpapers.png";
-//    fruit2.fruitRFID = @"8765E394";
-//    [self addFruitByOrder:fruit2];
-//    
-//    Fruit *fruit3 = [[Fruit alloc] init];
-//    fruit3.fruitName = @"猕猴桃";
-//    fruit3.fruitImage = @"KiwifruitImage_Normal";
-//    fruit3.fruitRFID = @"8765E393";
-//    [self addFruitByOrder:fruit3];
-//    
-//    Fruit *fruit4 = [[Fruit alloc] init];
-//    fruit4.fruitName = @"芒果";
-//    fruit4.fruitImage = @"MangoImage_Normal";
-//    fruit4.fruitRFID = @"8765E392";
-//    [self addFruitByOrder:fruit4];
-//    
-//    Fruit *fruit5 = [[Fruit alloc] init];
-//    fruit5.fruitName = @"橙子";
-//    fruit5.fruitImage = @"OrangeImage_Normal";
-//    fruit5.fruitRFID = @"8765E391";
-//    [self addFruitByOrder:fruit5];
-//    /****************************************************/
-    
-    selectTag = CloseTag;
     
     [[BluetoothMacManager defaultManager] startBluetoothDevice];
     
@@ -236,6 +190,7 @@
                             for (NSDictionary *dic in dataArr) {
                                 Fruit *fruit = [[Fruit alloc] init];
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
+                                fruit.fruitKeyWords = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
                                 fruit.fruitRFID = [[dic objectForKey:@"sn"] uppercaseString];
@@ -254,6 +209,32 @@
 }
 
 #pragma -mark private function
+/**
+ *  @author RenRenFenQi, 16-06-14 20:06:07
+ *
+ *  初始化数据
+ */
+-(void)initlizedData
+{
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [NSString stringWithFormat:@"%@/%@",[documentPaths objectAtIndex:0],LocalSmellRFIDOrderFile];
+    rfIdOrderList = [NSArray arrayWithContentsOfFile:path];
+    
+    if (bottleInfoList) {
+        [bottleInfoList removeAllObjects];
+    }else{
+        bottleInfoList = [NSMutableArray array];
+    }
+    
+    if (_fruitsList) {
+        [_fruitsList removeAllObjects];
+    }else{
+        _fruitsList = [NSMutableArray array];
+    }
+    
+    hasNewFruit = NO;
+    selectTag = CloseTag;
+}
 //连接智能设备蓝牙
 -(void)connectToBluetooth
 {
@@ -261,9 +242,7 @@
     [[BluetoothMacManager defaultManager] startScanBluetoothDevice:ConnectToDevice callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
         if (completely) {
             [self.lblTitle setText:@"设备已连接"];
-            if (bottleInfoList.count > 0) {
-                [bottleInfoList removeAllObjects];
-            }
+            [self initlizedData];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
@@ -436,7 +415,7 @@
 {
     NSMutableString *content = [[NSMutableString alloc] initWithString:@"#ABNF 1.0 UTF-8;\nlanguage zh-CN; \nmode voice;\n\nroot $main;\n$main = $place1;\n$place1 = "];
     for (Fruit *fruit in _fruitsList) {
-        [content appendString:fruit.fruitName];
+        [content appendString:fruit.fruitKeyWords];
         [content appendString:@"|"];
     }
     [content appendString:@"关|关闭;"];
@@ -612,7 +591,12 @@
 
 -(IBAction)clickRefreshBtn:(id)sender
 {
-    [self connectToBluetooth];
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        [self initlizedData];
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+    }else{
+        [self connectToBluetooth];
+    }
 }
 
 #pragma mark - LewReorderableLayoutDataSource
