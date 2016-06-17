@@ -614,7 +614,8 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         scriptVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptViewIdentify"];
     }
-    
+    NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
+    [scriptVC setMacAddress:macAddress];
     [self.navigationController pushViewController:scriptVC animated:YES];
 }
 #pragma mark - LewReorderableLayoutDataSource

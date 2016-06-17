@@ -91,6 +91,15 @@ typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, 
 -(void)writeCharacteristicWithCommand:(BluetoothCommand)command;
 
 /**
+ *  @author RenRenFenQi, 16-06-17 13:06:43
+ *
+ *  给硬件设备发送指令
+ *
+ *  @param commandStr 指令字符串
+ */
+-(void)writeCharacteristicWithCommandStr:(NSString *)commandStr;
+
+/**
  *  @author RenRenFenQi, 16-05-31 17:05:30
  *
  *  给硬件设备发送开启设备味道指令

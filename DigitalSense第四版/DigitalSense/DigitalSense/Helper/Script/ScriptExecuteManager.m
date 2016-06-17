@@ -9,6 +9,8 @@
 #import "ScriptExecuteManager.h"
 #import "Script.h"
 #import "ScriptCommand.h"
+
+#import "BluetoothMacManager.h"
 static ScriptExecuteManager *scriptExecuteManager;
 static NSInteger currentSecond = -1;
 @implementation ScriptExecuteManager
@@ -75,6 +77,23 @@ static NSInteger currentSecond = -1;
     }
     
     //开始解析脚本
+    ScriptCommand *command = [[ScriptCommand alloc] init];
+    command.startRelativeTime = 5;
+    command.command = @"";
+    command.desc = @"发出苹果气味";
+    [scriptCommandQueue addObject:command];
+    
+    ScriptCommand *command1 = [[ScriptCommand alloc] init];
+    command1.startRelativeTime = 8;
+    command1.command = @"";
+    command1.desc = @"发出香蕉气味";
+    [scriptCommandQueue addObject:command1];
+    
+    ScriptCommand *command2 = [[ScriptCommand alloc] init];
+    command2.startRelativeTime = 10;
+    command2.command = @"";
+    command2.desc = @"发出菠萝气味";
+    [scriptCommandQueue addObject:command2];
 }
 
 /**
@@ -116,7 +135,15 @@ static NSInteger currentSecond = -1;
         [self playOverRelativeTimeScript];
     }else{
         [[NSNotificationCenter defaultCenter] postNotificationName:PlayProgressSecondNotification object:[NSNumber numberWithInteger:currentSecond]];
-        [self searchTimeToExecuteCommand];
+        if (currentPlayingScript.isLoop) {
+            ScriptCommand *command = [scriptCommandQueue lastObject];
+            if (command.startRelativeTime < currentSecond) {
+                NSInteger tempSecond = currentSecond % (command.startRelativeTime + command.duration);
+                [self searchTimeToExecuteCommand:tempSecond];
+            }
+        }else{
+            [self searchTimeToExecuteCommand:currentSecond];
+        }
     }
 }
 
@@ -125,16 +152,18 @@ static NSInteger currentSecond = -1;
  *
  *  查找时间点，如有记录则执行对应指令
  */
--(void)searchTimeToExecuteCommand
+-(void)searchTimeToExecuteCommand:(NSInteger)second
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.startRelativeTime == %ld",currentSecond];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.startRelativeTime == %ld",second];
     NSArray *filterArr = [scriptCommandQueue filteredArrayUsingPredicate:predicate];
     if (filterArr && filterArr.count > 0) {
         ScriptCommand *command = [filterArr objectAtIndex:0];
         //往蓝牙发送command
-        
-        //往UI通知当前执行的命令
-        [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
+        if ([[BluetoothMacManager defaultManager] isConnected]) {
+            [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
+            //往UI通知当前执行的命令
+            [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
+        }
     }
 }
 /**
@@ -154,6 +183,46 @@ static NSInteger currentSecond = -1;
     currentPlayingScript = nil;
     [self playRelativeTimeScript];
 }
+
+/**
+ *  @author RenRenFenQi, 16-06-17 14:06:26
+ *
+ *  组成相对时间播放气味指令字符串
+ *
+ *  @param rfId     设备RFID
+ *  @param duration 播放时长
+ *
+ *  @return 指令字符串
+ */
+-(NSString *)executeRelativeTimeCommand:(NSString *)rfId WithDuration:(NSInteger)duration
+{
+    NSMutableString *result = [[NSMutableString alloc] initWithString:@"F501"];
+    [result appendFormat:@"%@%04lX55",rfId,duration];
+    return [NSString stringWithString:result];
+}
+
+-(NSString *)loopExecuteRelativeTimeCommand:(NSString *)rfId WithDuration:(NSInteger)duration WithInterval:(NSInteger)interval WithTimes:(NSInteger)times
+{
+    NSMutableString *result = [[NSMutableString alloc] initWithString:@"F401"];
+    [result appendFormat:@"%@%04lX%04lX%02lX55",rfId,duration,interval,times];
+    return [NSString stringWithString:result];
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-17 13:06:27
+ *
+ *  将一个十六进制的数字(不包含0x)转成十进制
+ *
+ *  @param value 十六进制数字(以十进制形式表现)
+ *
+ *  @return 十六进制数字的十进制格式
+ */
+-(NSInteger)hexIntToInteger:(NSInteger)value
+{
+    NSInteger tempValue1 = (value / 10) * 16;
+    NSInteger tempValue2 = value % 10;
+    return tempValue1 + tempValue2;
+}
 /**
  *  @author RenRenFenQi, 16-06-16 16:06:52
  *
@@ -164,5 +233,39 @@ static NSInteger currentSecond = -1;
 -(void)executeAbsoluteTimeScript:(NSArray *)scriptArr
 {
     
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-17 14:06:07
+ *
+ *  组成绝对时间指令字符串
+ *
+ *  @param time     时间戳
+ *  @param rfId     设备RFID
+ *  @param duration 播放气味时长
+ *  @param index    第几组
+ *
+ *  @return 指令字符串
+ */
+-(NSString *)executeAbsoluteTimeCommand:(NSTimeInterval)time WithRFID:(NSString *)rfId WithDuration:(NSInteger)duration WithIndex:(NSInteger)index
+{
+    NSDate *dateTime = [NSDate dateWithTimeIntervalSince1970:time];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yy-MM-dd-HH-mm-ss"];
+    NSString *dateStr = [formatter stringFromDate:dateTime];
+    NSArray *timeArr = [dateStr componentsSeparatedByString:@"-"];
+    NSInteger year = [[timeArr objectAtIndex:0] integerValue];
+    NSInteger month = [[timeArr objectAtIndex:1] integerValue];
+    NSInteger day = [[timeArr objectAtIndex:2] integerValue];
+    NSInteger hour = [[timeArr objectAtIndex:3] integerValue];
+    NSInteger minite = [[timeArr objectAtIndex:4] integerValue];
+    NSInteger second = [[timeArr objectAtIndex:5] integerValue];
+    NSMutableString *result = [[NSMutableString alloc] initWithString:@"F600"];
+    [result appendFormat:@"%02lX%02lX%02lX%02lX%02lX%02lX",[self hexIntToInteger:year],[self hexIntToInteger:month],[self hexIntToInteger:day],[self hexIntToInteger:hour],[self hexIntToInteger:minite],[self hexIntToInteger:second]];
+    [result appendString:rfId];
+    [result appendFormat:@"%04lX",duration];
+    [result appendFormat:@"%02lX",index];
+    [result appendString:@"55"];
+    return [NSString stringWithString:result];
 }
 @end

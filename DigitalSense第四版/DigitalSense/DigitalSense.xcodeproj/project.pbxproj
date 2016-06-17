@@ -10,6 +10,10 @@
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
 		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
 		8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */; };
+		8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */; };
+		8463B9DF1D13FE4F00EACECD /* RelativeTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */; };
+		8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9E11D13FF7D00EACECD /* SCScriptManager.m */; };
+		8463B9E51D140A6F00EACECD /* ScriptViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9E41D140A6F00EACECD /* ScriptViewModel.m */; };
 		846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 846582261D06CDC0009C5A9E /* SmellSkin.m */; };
 		8466677C1CF82AD400EFBE66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677B1CF82AD400EFBE66 /* main.m */; };
 		8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677E1CF82AD400EFBE66 /* AppDelegate.m */; };
@@ -59,6 +63,14 @@
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
 		8463B9D71D13961500EACECD /* ScriptPlayDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptPlayDetailsViewController.h; sourceTree = "<group>"; };
 		8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptPlayDetailsViewController.m; sourceTree = "<group>"; };
+		8463B9DA1D13FC2300EACECD /* AbsoluteTimeScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbsoluteTimeScript.h; sourceTree = "<group>"; };
+		8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbsoluteTimeScript.m; sourceTree = "<group>"; };
+		8463B9DD1D13FE4F00EACECD /* RelativeTimeScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelativeTimeScript.h; sourceTree = "<group>"; };
+		8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelativeTimeScript.m; sourceTree = "<group>"; };
+		8463B9E01D13FF7D00EACECD /* SCScriptManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCScriptManager.h; sourceTree = "<group>"; };
+		8463B9E11D13FF7D00EACECD /* SCScriptManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCScriptManager.m; sourceTree = "<group>"; };
+		8463B9E31D140A6F00EACECD /* ScriptViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptViewModel.h; sourceTree = "<group>"; };
+		8463B9E41D140A6F00EACECD /* ScriptViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptViewModel.m; sourceTree = "<group>"; };
 		846582251D06CDC0009C5A9E /* SmellSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmellSkin.h; sourceTree = "<group>"; };
 		846582261D06CDC0009C5A9E /* SmellSkin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmellSkin.m; sourceTree = "<group>"; };
 		846667771CF82AD400EFBE66 /* DigitalSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,6 +277,8 @@
 			children = (
 				846A76EA1D016DD00055E54E /* SCDeviceInfoManager.h */,
 				846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */,
+				8463B9E01D13FF7D00EACECD /* SCScriptManager.h */,
+				8463B9E11D13FF7D00EACECD /* SCScriptManager.m */,
 			);
 			path = NetWorkAPIManager;
 			sourceTree = "<group>";
@@ -280,6 +294,10 @@
 				8482CF6D1D127A9F0020CEEA /* Script.m */,
 				8482CF6F1D12A40B0020CEEA /* ScriptCommand.h */,
 				8482CF701D12A40B0020CEEA /* ScriptCommand.m */,
+				8463B9DA1D13FC2300EACECD /* AbsoluteTimeScript.h */,
+				8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */,
+				8463B9DD1D13FE4F00EACECD /* RelativeTimeScript.h */,
+				8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -416,6 +434,8 @@
 				8482CF661D1278CE0020CEEA /* ScriptTableViewCell */,
 				8482CF631D125A570020CEEA /* ScriptViewController.h */,
 				8482CF641D125A570020CEEA /* ScriptViewController.m */,
+				8463B9E31D140A6F00EACECD /* ScriptViewModel.h */,
+				8463B9E41D140A6F00EACECD /* ScriptViewModel.m */,
 			);
 			path = ScriptViewController;
 			sourceTree = "<group>";
@@ -564,9 +584,11 @@
 			files = (
 				847EC4D91CFD65E5000D77AE /* PcmPlayer.m in Sources */,
 				8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */,
+				8463B9DF1D13FE4F00EACECD /* RelativeTimeScript.m in Sources */,
 				847EC4D81CFD65E5000D77AE /* IFlySpeechSynthesizerManager.m in Sources */,
 				8482CF621D12594D0020CEEA /* ViewModel.m in Sources */,
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
+				8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
 				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
 				8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */,
@@ -574,6 +596,7 @@
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
 				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
+				8463B9E51D140A6F00EACECD /* ScriptViewModel.m in Sources */,
 				8482CF611D12594D0020CEEA /* ViewController.m in Sources */,
 				845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */,
 				846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */,
@@ -584,6 +607,7 @@
 				8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
 				8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */,
+				8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */,
 				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,
 				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
 				8482CF6E1D127A9F0020CEEA /* Script.m in Sources */,

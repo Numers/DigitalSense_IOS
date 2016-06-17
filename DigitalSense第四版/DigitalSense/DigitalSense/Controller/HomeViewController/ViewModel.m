@@ -71,6 +71,10 @@
             [result appendFormat:@"%02X",value];
         }
         self.macAddress = [NSString stringWithString:result];
+        [[NSUserDefaults standardUserDefaults] setObject:result forKey:KMY_BlutoothMacAddress_Key];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter] postNotificationName:BluetoothMacAddressNotify object:result];
+        
         [subscriber sendNext:result];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{

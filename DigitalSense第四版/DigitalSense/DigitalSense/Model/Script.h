@@ -15,15 +15,19 @@ typedef enum{
 } ScriptState;
 
 typedef enum{
-    ScriptIsAbsoluteTime, //绝对时间脚本
-    ScriptIsRelativeTime //相对时间脚本
+    ScriptIsAbsoluteTime = 2, //绝对时间脚本
+    ScriptIsRelativeTime = 1 //相对时间脚本
 } ScriptType;
 @interface Script : NSObject
 @property(nonatomic, copy) NSString *scriptId;
 @property(nonatomic, copy) NSString *scriptName;
-@property(nonatomic, copy) NSString *scriptContent;
+@property(nonatomic, copy) NSString *sceneName;
+@property(nonatomic, strong) NSMutableArray *scriptCommandList;
 @property(nonatomic) NSInteger scriptTime;
+@property(nonatomic) BOOL isLoop;
 
 @property(nonatomic) ScriptState state;
 @property(nonatomic) ScriptType type;
+
+-(id)initWithDictionary:(NSDictionary *)dic;
 @end

@@ -8,7 +8,9 @@
 
 #import "ScriptViewController.h"
 #import "ScriptTableViewCell.h"
-#import "Script.h"
+#import "RelativeTimeScript.h"
+#import "AbsoluteTimeScript.h"
+#import "ScriptViewModel.h"
 
 #import "ScriptExecuteManager.h"
 #import "ScriptPlayDetailsViewController.h"
@@ -19,6 +21,14 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     NSMutableArray *scriptList;
     Script *currentPlayScript;
     ScriptPlayDetailsViewController *scriptPlayDetailsVC;
+    ScriptViewModel *scriptViewModel;
+    
+    NSString *currentMacAddress;
+    
+    RACDisposable *playScriptDisposable;
+    RACDisposable *playOverAllScriptDisposable;
+    RACDisposable *playProgressSecondDisposable;
+    RACDisposable *macAddressDisposable;
 }
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
 @end
@@ -35,7 +45,6 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     script.scriptId = @"1";
     script.scriptName = @"魔兽1";
     script.scriptTime = 10;
-    script.scriptContent = @"";
     script.state = ScriptIsNormal;
     script.type = ScriptIsRelativeTime;
     [scriptList addObject:script];
@@ -44,16 +53,14 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     script1.scriptId = @"1";
     script1.scriptName = @"魔兽2";
     script1.scriptTime = 75;
-    script1.scriptContent = @"";
+    
     script1.state = ScriptIsNormal;
     script1.type = ScriptIsRelativeTime;
     [scriptList addObject:script1];
-    
     Script *script2 = [[Script alloc] init];
     script2.scriptId = @"1";
     script2.scriptName = @"魔兽3";
     script2.scriptTime = 50;
-    script2.scriptContent = @"";
     script2.state = ScriptIsNormal;
     script2.type = ScriptIsRelativeTime;
     [scriptList addObject:script2];
@@ -62,7 +69,6 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     script3.scriptId = @"1";
     script3.scriptName = @"魔兽4";
     script3.scriptTime = 13;
-    script3.scriptContent = @"";
     script3.state = ScriptIsNormal;
     script3.type = ScriptIsRelativeTime;
     [scriptList addObject:script3];
@@ -71,11 +77,11 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     script4.scriptId = @"1";
     script4.scriptName = @"魔兽5";
     script4.scriptTime = 14;
-    script4.scriptContent = @"";
     script4.state = ScriptIsNormal;
     script4.type = ScriptIsRelativeTime;
     [scriptList addObject:script4];
     /************************************************************/
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"ScriptTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentify];
     
     if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
@@ -87,6 +93,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     }
     
     [self.tableView setTableFooterView:[UIView new]];
+    
+    scriptViewModel = [[ScriptViewModel alloc] init];
+    
+    if (currentMacAddress) {
+        [self requestScriptInfoWithMacAddress:currentMacAddress];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -99,7 +111,9 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self disposeAllSignal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -107,9 +121,42 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     // Dispose of any resources that can be recreated.
 }
 #pragma -mark private Functions
+-(void)setMacAddress:(NSString *)macAddr
+{
+    currentMacAddress = macAddr;
+}
+
 -(void)setCurrentScript:(Script *)script
 {
     currentPlayScript = script;
+}
+
+-(void)requestScriptInfoWithMacAddress:(NSString *)macAddress
+{
+    if (macAddress) {
+        [[scriptViewModel requestScriptInfoWithMacAddress:macAddress] subscribeNext:^(id x) {
+            NSDictionary *resultDic = (NSDictionary *)x;
+            if (resultDic) {
+                NSArray *dataArr = [resultDic objectForKey:@"data"];
+                if (dataArr && dataArr.count > 0) {
+                    [scriptList removeAllObjects];
+                    for (NSDictionary *dic in dataArr) {
+                        ScriptType type = (ScriptType)[[dic objectForKey:@"trigger"] integerValue];
+                        if (type == ScriptIsRelativeTime) {
+                            Script *relativeTimeScript = [[RelativeTimeScript alloc] initWithDictionary:dic];
+                            [scriptList addObject:relativeTimeScript];
+                        }
+                        
+                        if (type == ScriptIsAbsoluteTime) {
+                            Script *absoluteTimeScript = [[AbsoluteTimeScript alloc] initWithDictionary:dic];
+                            [scriptList addObject:absoluteTimeScript];
+                        }
+                    }
+                    [self.tableView reloadData];
+                }
+            }
+        }];
+    }
 }
 
 #pragma -mark Notificaiton
@@ -122,7 +169,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 
 -(void)registeNotifications
 {
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
+    playScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
         id obj = [x object];
         if ([obj isKindOfClass:[Script class]]) {
             Script *script = (Script *)obj;
@@ -130,11 +177,11 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         }
     }];
     
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
+    playOverAllScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
         [self setCurrentScript:nil];
     }];
     
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
+    playProgressSecondDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
         if (currentPlayScript == nil) {
             return;
         }
@@ -151,8 +198,44 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
             [cell setProgressSecond:[seconds integerValue]];
         }
     }];
+    
+    macAddressDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:BluetoothMacAddressNotify object:nil] subscribeNext:^(id x) {
+        [self requestScriptInfoWithMacAddress:x];
+    }];
 
 }
+
+-(void)disposeAllSignal
+{
+    if (playScriptDisposable) {
+        if (![playScriptDisposable isDisposed]) {
+            [playScriptDisposable dispose];
+            playScriptDisposable = nil;
+        }
+    }
+    
+    if (playOverAllScriptDisposable) {
+        if (![playOverAllScriptDisposable isDisposed]) {
+            [playOverAllScriptDisposable dispose];
+            playOverAllScriptDisposable = nil;
+        }
+    }
+    
+    if (playProgressSecondDisposable) {
+        if (![playProgressSecondDisposable isDisposed]) {
+            [playProgressSecondDisposable dispose];
+            playProgressSecondDisposable = nil;
+        }
+    }
+    
+    if (macAddressDisposable) {
+        if (![macAddressDisposable isDisposed]) {
+            [macAddressDisposable dispose];
+            macAddressDisposable = nil;
+        }
+    }
+}
+
 
 #pragma -mark ButtonEvent
 -(IBAction)clickBackBtn:(id)sender

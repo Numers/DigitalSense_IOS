@@ -225,18 +225,38 @@ static BluetoothMacManager *bluetoothMacManager;
     }
 }
 
--(NSData*) hexToBytes:(NSString *)str {
-    NSMutableData* data = [NSMutableData data];
-    int idx;
-    for (idx = 0; idx+2 <= str.length; idx+=2) {
-        NSRange range = NSMakeRange(idx, 2);
-        NSString* hexStr = [str substringWithRange:range];
-        NSScanner* scanner = [NSScanner scannerWithString:hexStr];
-        unsigned int intValue;
-        [scanner scanHexInt:&intValue];
-        [data appendBytes:&intValue length:1];
+/**
+ *  @author RenRenFenQi, 16-06-17 13:06:43
+ *
+ *  给硬件设备发送指令
+ *
+ *  @param commandStr 指令字符串
+ */
+-(void)writeCharacteristicWithCommandStr:(NSString *)commandStr
+{
+    if (!self.peripheral) {
+        return;
     }
-    return data;
+    
+    if (self.peripheral.services == nil || self.peripheral.services.count == 0) {
+        isConnected = NO;
+        [self callBackDevice:NO WithCallbackType:CallbackDisconnect];
+        return;
+    }
+    
+    for ( CBService *service in self.peripheral.services ) {
+        if ([service.UUID isEqual:[CBUUID UUIDWithString:kServiceUUID]]) {
+            for ( CBCharacteristic *characteristic in service.characteristics ) {
+                if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:kCharacteristicWriteUUID]]) {
+                    /*EVERYTHING IS FOUND, WRITE characteristic !*/
+                    NSData *msgData = [self hexToBytes:commandStr];
+                    if (msgData) {
+                        [self.peripheral writeValue:msgData forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+                    }
+                }
+            }
+        }
+    }
 }
 
 -(NSData *)writeDataWithCommand:(BluetoothCommand)command
@@ -292,6 +312,21 @@ static BluetoothMacManager *bluetoothMacManager;
     }
     return [self hexToBytes:writeStr];
 }
+
+-(NSData*) hexToBytes:(NSString *)str {
+    NSMutableData* data = [NSMutableData data];
+    int idx;
+    for (idx = 0; idx+2 <= str.length; idx+=2) {
+        NSRange range = NSMakeRange(idx, 2);
+        NSString* hexStr = [str substringWithRange:range];
+        NSScanner* scanner = [NSScanner scannerWithString:hexStr];
+        unsigned int intValue;
+        [scanner scanHexInt:&intValue];
+        [data appendBytes:&intValue length:1];
+    }
+    return data;
+}
+
 
 -(NSNumber *)hexIntToInteger:(NSInteger)value
 {

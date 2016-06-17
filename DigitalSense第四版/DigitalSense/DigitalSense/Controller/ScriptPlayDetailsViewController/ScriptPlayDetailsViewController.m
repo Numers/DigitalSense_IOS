@@ -14,6 +14,11 @@
 @interface ScriptPlayDetailsViewController ()
 {
     Script *currentScript;
+    
+    RACDisposable *playScriptDisposable;
+    RACDisposable *playOverAllScriptDisposable;
+    RACDisposable *playProgressSecondDisposable;
+    RACDisposable *sendScriptCommandDisposable;
 }
 @property(nonatomic, strong) IBOutlet UILabel *lblScriptName;
 @property(nonatomic, strong) IBOutlet UILabel *lblPlayTime;
@@ -41,7 +46,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self disposeAllSignal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -52,7 +57,7 @@
 #pragma -mark Notification
 -(void)registeNotifications
 {
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
+    playScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
         id obj = [x object];
         if ([obj isKindOfClass:[Script class]]) {
             Script *script = (Script *)obj;
@@ -60,11 +65,11 @@
         }
     }];
     
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
+    playOverAllScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
         [self setCurrentScript:nil];
     }];
     
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
+    playProgressSecondDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
         id obj = [x object];
         if ([obj isKindOfClass:[NSNumber class]]) {
             NSNumber *seconds = (NSNumber *)obj;
@@ -79,9 +84,44 @@
         }
     }];
     
-    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SendScriptCommandNotification object:nil] subscribeNext:^(id x) {
-        
+    sendScriptCommandDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SendScriptCommandNotification object:nil] subscribeNext:^(id x) {
+        id obj = [x object];
+        if([obj isKindOfClass:[ScriptCommand class]]){
+            ScriptCommand *command = (ScriptCommand *)obj;
+            [_textView setText:[NSString stringWithFormat:@"%@\n%@",_textView.text,command.desc]];
+        }
     }];
+}
+
+-(void)disposeAllSignal
+{
+    if (playScriptDisposable) {
+        if (![playScriptDisposable isDisposed]) {
+            [playScriptDisposable dispose];
+            playScriptDisposable = nil;
+        }
+    }
+    
+    if (playOverAllScriptDisposable) {
+        if (![playOverAllScriptDisposable isDisposed]) {
+            [playOverAllScriptDisposable dispose];
+            playOverAllScriptDisposable = nil;
+        }
+    }
+    
+    if (playProgressSecondDisposable) {
+        if (![playProgressSecondDisposable isDisposed]) {
+            [playProgressSecondDisposable dispose];
+            playProgressSecondDisposable = nil;
+        }
+    }
+    
+    if (sendScriptCommandDisposable) {
+        if (![sendScriptCommandDisposable isDisposed]) {
+            [sendScriptCommandDisposable dispose];
+            sendScriptCommandDisposable = nil;
+        }
+    }
 }
 
 #pragma -mark Public Functions
