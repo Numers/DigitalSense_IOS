@@ -41,6 +41,21 @@ static NSInteger currentSecond = -1;
 }
 
 /**
+ *  @author RenRenFenQi, 16-06-17 10:06:43
+ *
+ *  取消排队中的相对时间脚本
+ *
+ *  @param script 脚本
+ */
+-(void)cancelExecuteRelativeTimeScript:(Script *)script
+{
+    if ([scriptQueue containsObject:script]) {
+        [scriptQueue removeObject:script];
+        script.state =  ScriptIsNormal;
+    }
+}
+
+/**
  *  @author RenRenFenQi, 16-06-16 16:06:00
  *
  *  解析一个相对时间脚本

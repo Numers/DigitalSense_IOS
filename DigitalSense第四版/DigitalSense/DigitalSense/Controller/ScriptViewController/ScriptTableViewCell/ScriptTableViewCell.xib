@@ -3,49 +3,77 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ScriptTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="63" id="KGk-i7-Jjw" customClass="ScriptTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y0q-d5-ZYm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+                        <color key="progressTintColor" red="0.4941176471" green="0.82745098039999998" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </progressView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="魔兽" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYg-b8-fH4">
-                        <rect key="frame" x="15" y="11" width="262" height="21"/>
+                        <rect key="frame" x="15" y="11" width="239" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-Hr-ZEK">
-                        <rect key="frame" x="277" y="0.0" width="43" height="43"/>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-Hr-ZEK">
+                        <rect key="frame" x="254" y="0.0" width="66" height="62"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="bFw-Hr-ZEK" secondAttribute="height" multiplier="1:1" id="qWh-aa-6WH"/>
+                            <constraint firstAttribute="width" constant="66" id="GFQ-OO-mQW"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <state key="normal" title="排队中"/>
+                        <state key="normal" title="取消排队"/>
                         <connections>
                             <action selector="clickPlayScriptBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1CN-b0-0Ty"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进度 00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdU-uP-uX1">
+                        <rect key="frame" x="15" y="39" width="80" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="总时长 00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wqB-cV-0ji">
+                        <rect key="frame" x="100" y="39" width="92" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="bFw-Hr-ZEK" firstAttribute="leading" secondItem="yYg-b8-fH4" secondAttribute="trailing" id="2F7-by-VsV"/>
+                    <constraint firstItem="wqB-cV-0ji" firstAttribute="leading" secondItem="xdU-uP-uX1" secondAttribute="trailing" constant="5" id="6zi-IR-wkz"/>
+                    <constraint firstItem="xdU-uP-uX1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="ANh-xE-WCC"/>
+                    <constraint firstItem="wqB-cV-0ji" firstAttribute="centerY" secondItem="xdU-uP-uX1" secondAttribute="centerY" id="BOR-6q-WaC"/>
+                    <constraint firstItem="xdU-uP-uX1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="15" id="Fmv-fy-iPr"/>
+                    <constraint firstAttribute="trailing" secondItem="Y0q-d5-ZYm" secondAttribute="trailing" id="HU5-Tp-4wm"/>
                     <constraint firstItem="yYg-b8-fH4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="I1j-1u-XjI"/>
                     <constraint firstItem="bFw-Hr-ZEK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Rnx-EO-Wf1"/>
-                    <constraint firstItem="yYg-b8-fH4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UFY-RD-GuB"/>
                     <constraint firstAttribute="bottom" secondItem="bFw-Hr-ZEK" secondAttribute="bottom" id="Xxz-gE-Uqg"/>
+                    <constraint firstItem="yYg-b8-fH4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-10" id="bz1-yE-Ur2"/>
                     <constraint firstAttribute="trailing" secondItem="bFw-Hr-ZEK" secondAttribute="trailing" id="gEO-Yc-s3q"/>
-                    <constraint firstItem="bFw-Hr-ZEK" firstAttribute="leading" secondItem="yYg-b8-fH4" secondAttribute="trailing" id="lxG-vg-abG"/>
+                    <constraint firstAttribute="bottom" secondItem="Y0q-d5-ZYm" secondAttribute="bottom" id="nEL-XV-aOy"/>
+                    <constraint firstItem="Y0q-d5-ZYm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="oUi-CZ-LMB"/>
+                    <constraint firstItem="Y0q-d5-ZYm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="wpn-mN-0HU"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="btnPlayScript" destination="bFw-Hr-ZEK" id="4ge-CG-RDQ"/>
+                <outlet property="lblAllTime" destination="wqB-cV-0ji" id="Odn-g3-6cC"/>
+                <outlet property="lblProgress" destination="xdU-uP-uX1" id="YVb-x0-V5g"/>
                 <outlet property="lblScriptName" destination="yYg-b8-fH4" id="9n5-XF-Q4t"/>
+                <outlet property="progressView" destination="Y0q-d5-ZYm" id="N4Q-HK-QgC"/>
             </connections>
+            <point key="canvasLocation" x="444" y="311.5"/>
         </tableViewCell>
     </objects>
 </document>

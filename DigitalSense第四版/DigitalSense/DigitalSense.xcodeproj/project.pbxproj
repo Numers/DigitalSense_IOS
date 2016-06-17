@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
 		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
+		8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */; };
 		846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 846582261D06CDC0009C5A9E /* SmellSkin.m */; };
 		8466677C1CF82AD400EFBE66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677B1CF82AD400EFBE66 /* main.m */; };
 		8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677E1CF82AD400EFBE66 /* AppDelegate.m */; };
@@ -56,6 +57,8 @@
 		845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IphoneModel.h"; sourceTree = "<group>"; };
 		845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IphoneModel.m"; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
+		8463B9D71D13961500EACECD /* ScriptPlayDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptPlayDetailsViewController.h; sourceTree = "<group>"; };
+		8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptPlayDetailsViewController.m; sourceTree = "<group>"; };
 		846582251D06CDC0009C5A9E /* SmellSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmellSkin.h; sourceTree = "<group>"; };
 		846582261D06CDC0009C5A9E /* SmellSkin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmellSkin.m; sourceTree = "<group>"; };
 		846667771CF82AD400EFBE66 /* DigitalSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigitalSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,6 +167,15 @@
 				845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8463B9D71D13961500EACECD /* ScriptPlayDetailsViewController.h */,
+				8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */,
+			);
+			path = ScriptPlayDetailsViewController;
 			sourceTree = "<group>";
 		};
 		8466676E1CF82AD400EFBE66 = {
@@ -380,6 +392,7 @@
 		8482CF5A1D12594D0020CEEA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */,
 				8482CF5B1D12594D0020CEEA /* HomeViewController */,
 				8482CF601D12594D0020CEEA /* ScriptViewController */,
 			);
@@ -550,6 +563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				847EC4D91CFD65E5000D77AE /* PcmPlayer.m in Sources */,
+				8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */,
 				847EC4D81CFD65E5000D77AE /* IFlySpeechSynthesizerManager.m in Sources */,
 				8482CF621D12594D0020CEEA /* ViewModel.m in Sources */,
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,

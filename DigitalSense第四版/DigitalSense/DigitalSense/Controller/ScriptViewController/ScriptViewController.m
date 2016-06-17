@@ -11,11 +11,14 @@
 #import "Script.h"
 
 #import "ScriptExecuteManager.h"
+#import "ScriptPlayDetailsViewController.h"
 
 static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 @interface ScriptViewController ()<ScriptTableViewCellProtocol,UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableArray *scriptList;
+    Script *currentPlayScript;
+    ScriptPlayDetailsViewController *scriptPlayDetailsVC;
 }
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
 @end
@@ -30,7 +33,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     /**************************假数据***************************/
     Script *script = [[Script alloc] init];
     script.scriptId = @"1";
-    script.scriptName = @"魔兽";
+    script.scriptName = @"魔兽1";
     script.scriptTime = 10;
     script.scriptContent = @"";
     script.state = ScriptIsNormal;
@@ -39,8 +42,8 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     Script *script1 = [[Script alloc] init];
     script1.scriptId = @"1";
-    script1.scriptName = @"魔兽";
-    script1.scriptTime = 10;
+    script1.scriptName = @"魔兽2";
+    script1.scriptTime = 75;
     script1.scriptContent = @"";
     script1.state = ScriptIsNormal;
     script1.type = ScriptIsRelativeTime;
@@ -48,8 +51,8 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     Script *script2 = [[Script alloc] init];
     script2.scriptId = @"1";
-    script2.scriptName = @"魔兽";
-    script2.scriptTime = 10;
+    script2.scriptName = @"魔兽3";
+    script2.scriptTime = 50;
     script2.scriptContent = @"";
     script2.state = ScriptIsNormal;
     script2.type = ScriptIsRelativeTime;
@@ -57,8 +60,8 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     Script *script3 = [[Script alloc] init];
     script3.scriptId = @"1";
-    script3.scriptName = @"魔兽";
-    script3.scriptTime = 10;
+    script3.scriptName = @"魔兽4";
+    script3.scriptTime = 13;
     script3.scriptContent = @"";
     script3.state = ScriptIsNormal;
     script3.type = ScriptIsRelativeTime;
@@ -66,20 +69,31 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     Script *script4 = [[Script alloc] init];
     script4.scriptId = @"1";
-    script4.scriptName = @"魔兽";
-    script4.scriptTime = 10;
+    script4.scriptName = @"魔兽5";
+    script4.scriptTime = 14;
     script4.scriptContent = @"";
     script4.state = ScriptIsNormal;
     script4.type = ScriptIsRelativeTime;
     [scriptList addObject:script4];
     /************************************************************/
     [self.tableView registerNib:[UINib nibWithNibName:@"ScriptTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentify];
+    
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    [self.tableView setTableFooterView:[UIView new]];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scriptStateComfirmed:) name:ScriptStateComfirmed object:nil];
+    [self registeNotifications];
     [self.tableView reloadData];
 }
 
@@ -92,6 +106,11 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+#pragma -mark private Functions
+-(void)setCurrentScript:(Script *)script
+{
+    currentPlayScript = script;
+}
 
 #pragma -mark Notificaiton
 -(void)scriptStateComfirmed:(NSNotification *)notify
@@ -99,6 +118,40 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
+}
+
+-(void)registeNotifications
+{
+    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
+        id obj = [x object];
+        if ([obj isKindOfClass:[Script class]]) {
+            Script *script = (Script *)obj;
+            [self setCurrentScript:script];
+        }
+    }];
+    
+    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
+        [self setCurrentScript:nil];
+    }];
+    
+    [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
+        if (currentPlayScript == nil) {
+            return;
+        }
+        if (![scriptList containsObject:currentPlayScript]) {
+            return;
+        }
+        ScriptTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[scriptList indexOfObject:currentPlayScript] inSection:0]];
+        if (cell == nil) {
+            return;
+        }
+        id obj = [x object];
+        if ([obj isKindOfClass:[NSNumber class]]) {
+            NSNumber *seconds = (NSNumber *)obj;
+            [cell setProgressSecond:[seconds integerValue]];
+        }
+    }];
+
 }
 
 #pragma -mark ButtonEvent
@@ -116,9 +169,20 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 }
 */
 #pragma -mark UITableViewDelegate And UITableViewDataSource
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.0f;
+    return 63.0f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -144,6 +208,21 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     }
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    Script *script = [scriptList objectAtIndex:indexPath.row];
+    if (script.type == ScriptIsRelativeTime) {
+        if (script.state == ScriptIsPlaying) {
+            if (scriptPlayDetailsVC == nil) {
+                scriptPlayDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ScriptPlayDetailsViewIdentify"];
+            }
+            [scriptPlayDetailsVC setCurrentScript:script];
+            [self.navigationController pushViewController:scriptPlayDetailsVC animated:YES];
+        }
+    }
+}
 #pragma -mark ScriptTableViewCellProtocol
 -(void)playScript:(Script *)script
 {
@@ -151,6 +230,16 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         if (script.type == ScriptIsRelativeTime) {
             [[ScriptExecuteManager defaultManager] executeRelativeTimeScript:script];
         }
+    }
+}
+
+-(void)cancelInline:(Script *)script
+{
+    if (script) {
+        if (script.type == ScriptIsRelativeTime) {
+            [[ScriptExecuteManager defaultManager] cancelExecuteRelativeTimeScript:script];
+        }
+
     }
 }
 @end

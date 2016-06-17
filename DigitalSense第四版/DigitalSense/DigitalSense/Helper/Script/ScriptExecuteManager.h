@@ -29,6 +29,15 @@
  *  @param script 脚本
  */
 -(void)executeRelativeTimeScript:(Script *)script;
+
+/**
+ *  @author RenRenFenQi, 16-06-17 10:06:43
+ *
+ *  取消排队中的相对时间脚本
+ *
+ *  @param script 脚本
+ */
+-(void)cancelExecuteRelativeTimeScript:(Script *)script;
 /**
  *  @author RenRenFenQi, 16-06-16 16:06:52
  *
@@ -37,6 +46,4 @@
  *  @param scriptArr 绝对时间脚本数组
  */
 -(void)executeAbsoluteTimeScript:(NSArray *)scriptArr;
-
--(rac)
 @end

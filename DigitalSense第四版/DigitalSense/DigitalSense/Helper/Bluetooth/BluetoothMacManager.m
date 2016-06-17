@@ -266,7 +266,7 @@ static BluetoothMacManager *bluetoothMacManager;
             NSInteger hour = [[timeArr objectAtIndex:3] integerValue];
             NSInteger minite = [[timeArr objectAtIndex:4] integerValue];
             NSInteger second = [[timeArr objectAtIndex:5] integerValue];
-            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(0x63),@(year),@(month),@(day),@(hour),@(minite),@(second),@(0x55),nil];
+            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(0x63),[self hexIntToInteger:year],[self hexIntToInteger:month],[self hexIntToInteger:day],[self hexIntToInteger:hour],[self hexIntToInteger:minite],[self hexIntToInteger:second],@(0x55),nil];
         }
             break;
         case CommandOpenDeviceTime:
@@ -291,6 +291,13 @@ static BluetoothMacManager *bluetoothMacManager;
         return nil;
     }
     return [self hexToBytes:writeStr];
+}
+
+-(NSNumber *)hexIntToInteger:(NSInteger)value
+{
+    NSInteger tempValue1 = (value / 10) * 16;
+    NSInteger tempValue2 = value % 10;
+    return @(tempValue1 + tempValue2);
 }
 
 -(NSData *)writeDataWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
