@@ -76,6 +76,10 @@ static NSInteger currentSecond = -1;
         scriptCommandQueue = [NSMutableArray array];
     }
     
+    if (script.scriptCommandList && script.scriptCommandList.count > 0) {
+        [scriptCommandQueue addObjectsFromArray:script.scriptCommandList];
+    }
+    
     //开始解析脚本
     ScriptCommand *command = [[ScriptCommand alloc] init];
     command.startRelativeTime = 5;
@@ -137,9 +141,11 @@ static NSInteger currentSecond = -1;
         [[NSNotificationCenter defaultCenter] postNotificationName:PlayProgressSecondNotification object:[NSNumber numberWithInteger:currentSecond]];
         if (currentPlayingScript.isLoop) {
             ScriptCommand *command = [scriptCommandQueue lastObject];
-            if (command.startRelativeTime < currentSecond) {
-                NSInteger tempSecond = currentSecond % (command.startRelativeTime + command.duration);
+            if ((command.startRelativeTime + command.duration) < currentSecond) {
+                NSInteger tempSecond = currentSecond % (command.startRelativeTime + command.duration + 1);
                 [self searchTimeToExecuteCommand:tempSecond];
+            }else{
+                [self searchTimeToExecuteCommand:currentSecond];
             }
         }else{
             [self searchTimeToExecuteCommand:currentSecond];

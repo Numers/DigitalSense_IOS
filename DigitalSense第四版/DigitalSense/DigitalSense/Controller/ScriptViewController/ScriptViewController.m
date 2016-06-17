@@ -52,6 +52,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     Script *script1 = [[Script alloc] init];
     script1.scriptId = @"1";
     script1.scriptName = @"魔兽2";
+    script1.isLoop = YES;
     script1.scriptTime = 75;
     
     script1.state = ScriptIsNormal;
