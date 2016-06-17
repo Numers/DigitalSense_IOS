@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
 		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
-		84595C8C1CFE8229007DB272 /* ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84595C8B1CFE8229007DB272 /* ViewModel.m */; };
 		846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */ = {isa = PBXBuildFile; fileRef = 846582261D06CDC0009C5A9E /* SmellSkin.m */; };
 		8466677C1CF82AD400EFBE66 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677B1CF82AD400EFBE66 /* main.m */; };
 		8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8466677E1CF82AD400EFBE66 /* AppDelegate.m */; };
-		846667821CF82AD400EFBE66 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846667811CF82AD400EFBE66 /* ViewController.m */; };
 		846667851CF82AD400EFBE66 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667831CF82AD400EFBE66 /* Main.storyboard */; };
 		846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 846667861CF82AD500EFBE66 /* Assets.xcassets */; };
 		8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */; };
@@ -42,6 +40,14 @@
 		847EC4F11CFD6757000D77AE /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F01CFD6757000D77AE /* CoreBluetooth.framework */; };
 		847EC4F31CFD676C000D77AE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F21CFD676C000D77AE /* CoreTelephony.framework */; };
 		847EC4F51CFD6779000D77AE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F41CFD6779000D77AE /* libz.tbd */; };
+		8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF581D1258960020CEEA /* ScriptExecuteManager.m */; };
+		8482CF611D12594D0020CEEA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF5D1D12594D0020CEEA /* ViewController.m */; };
+		8482CF621D12594D0020CEEA /* ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF5F1D12594D0020CEEA /* ViewModel.m */; };
+		8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF641D125A570020CEEA /* ScriptViewController.m */; };
+		8482CF6A1D1278DF0020CEEA /* ScriptTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF681D1278DF0020CEEA /* ScriptTableViewCell.m */; };
+		8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8482CF691D1278DF0020CEEA /* ScriptTableViewCell.xib */; };
+		8482CF6E1D127A9F0020CEEA /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF6D1D127A9F0020CEEA /* Script.m */; };
+		8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF701D12A40B0020CEEA /* ScriptCommand.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,8 +55,6 @@
 		5BC7B1DE18EBD5B7CC403DD4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IphoneModel.h"; sourceTree = "<group>"; };
 		845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IphoneModel.m"; sourceTree = "<group>"; };
-		84595C8A1CFE8229007DB272 /* ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewModel.h; sourceTree = "<group>"; };
-		84595C8B1CFE8229007DB272 /* ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewModel.m; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
 		846582251D06CDC0009C5A9E /* SmellSkin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmellSkin.h; sourceTree = "<group>"; };
 		846582261D06CDC0009C5A9E /* SmellSkin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SmellSkin.m; sourceTree = "<group>"; };
@@ -58,8 +62,6 @@
 		8466677B1CF82AD400EFBE66 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8466677D1CF82AD400EFBE66 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8466677E1CF82AD400EFBE66 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		846667801CF82AD400EFBE66 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		846667811CF82AD400EFBE66 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		846667841CF82AD400EFBE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		846667861CF82AD500EFBE66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		846667891CF82AD500EFBE66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -105,6 +107,21 @@
 		847EC4F01CFD6757000D77AE /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		847EC4F21CFD676C000D77AE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		847EC4F41CFD6779000D77AE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		8482CF571D1258960020CEEA /* ScriptExecuteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptExecuteManager.h; sourceTree = "<group>"; };
+		8482CF581D1258960020CEEA /* ScriptExecuteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptExecuteManager.m; sourceTree = "<group>"; };
+		8482CF5C1D12594D0020CEEA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		8482CF5D1D12594D0020CEEA /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		8482CF5E1D12594D0020CEEA /* ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewModel.h; sourceTree = "<group>"; };
+		8482CF5F1D12594D0020CEEA /* ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewModel.m; sourceTree = "<group>"; };
+		8482CF631D125A570020CEEA /* ScriptViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptViewController.h; sourceTree = "<group>"; };
+		8482CF641D125A570020CEEA /* ScriptViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptViewController.m; sourceTree = "<group>"; };
+		8482CF671D1278DF0020CEEA /* ScriptTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptTableViewCell.h; sourceTree = "<group>"; };
+		8482CF681D1278DF0020CEEA /* ScriptTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptTableViewCell.m; sourceTree = "<group>"; };
+		8482CF691D1278DF0020CEEA /* ScriptTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScriptTableViewCell.xib; sourceTree = "<group>"; };
+		8482CF6C1D127A9F0020CEEA /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		8482CF6D1D127A9F0020CEEA /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
+		8482CF6F1D12A40B0020CEEA /* ScriptCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptCommand.h; sourceTree = "<group>"; };
+		8482CF701D12A40B0020CEEA /* ScriptCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptCommand.m; sourceTree = "<group>"; };
 		A1CA930BEBDE5359E5E28A20 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,16 +193,10 @@
 				847EC4DA1CFD6654000D77AE /* Util */,
 				847EC4C11CFD65E5000D77AE /* Helper */,
 				8471AB0C1CFC320D00CB5DB6 /* Model */,
+				8482CF5A1D12594D0020CEEA /* Controller */,
+				846667831CF82AD400EFBE66 /* Main.storyboard */,
 				8466677D1CF82AD400EFBE66 /* AppDelegate.h */,
 				8466677E1CF82AD400EFBE66 /* AppDelegate.m */,
-				846667801CF82AD400EFBE66 /* ViewController.h */,
-				846667811CF82AD400EFBE66 /* ViewController.m */,
-				84595C8A1CFE8229007DB272 /* ViewModel.h */,
-				84595C8B1CFE8229007DB272 /* ViewModel.m */,
-				846667831CF82AD400EFBE66 /* Main.storyboard */,
-				846667861CF82AD500EFBE66 /* Assets.xcassets */,
-				846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */,
-				8466678B1CF82AD500EFBE66 /* Info.plist */,
 				8466677A1CF82AD400EFBE66 /* Supporting Files */,
 			);
 			path = DigitalSense;
@@ -194,6 +205,9 @@
 		8466677A1CF82AD400EFBE66 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				846667861CF82AD500EFBE66 /* Assets.xcassets */,
+				846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */,
+				8466678B1CF82AD500EFBE66 /* Info.plist */,
 				8466677B1CF82AD400EFBE66 /* main.m */,
 				84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */,
 			);
@@ -250,6 +264,10 @@
 				8471AB0E1CFC321F00CB5DB6 /* Fruit.m */,
 				846582251D06CDC0009C5A9E /* SmellSkin.h */,
 				846582261D06CDC0009C5A9E /* SmellSkin.m */,
+				8482CF6C1D127A9F0020CEEA /* Script.h */,
+				8482CF6D1D127A9F0020CEEA /* Script.m */,
+				8482CF6F1D12A40B0020CEEA /* ScriptCommand.h */,
+				8482CF701D12A40B0020CEEA /* ScriptCommand.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,6 +275,7 @@
 		847EC4C11CFD65E5000D77AE /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				8482CF561D12583F0020CEEA /* Script */,
 				846735C21D0033D00073ED9D /* FMDB */,
 				847EC4C21CFD65E5000D77AE /* Bluetooth */,
 				847EC4C81CFD65E5000D77AE /* IflyRecognizer */,
@@ -349,6 +368,55 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8482CF561D12583F0020CEEA /* Script */ = {
+			isa = PBXGroup;
+			children = (
+				8482CF571D1258960020CEEA /* ScriptExecuteManager.h */,
+				8482CF581D1258960020CEEA /* ScriptExecuteManager.m */,
+			);
+			path = Script;
+			sourceTree = "<group>";
+		};
+		8482CF5A1D12594D0020CEEA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8482CF5B1D12594D0020CEEA /* HomeViewController */,
+				8482CF601D12594D0020CEEA /* ScriptViewController */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8482CF5B1D12594D0020CEEA /* HomeViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8482CF5C1D12594D0020CEEA /* ViewController.h */,
+				8482CF5D1D12594D0020CEEA /* ViewController.m */,
+				8482CF5E1D12594D0020CEEA /* ViewModel.h */,
+				8482CF5F1D12594D0020CEEA /* ViewModel.m */,
+			);
+			path = HomeViewController;
+			sourceTree = "<group>";
+		};
+		8482CF601D12594D0020CEEA /* ScriptViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8482CF661D1278CE0020CEEA /* ScriptTableViewCell */,
+				8482CF631D125A570020CEEA /* ScriptViewController.h */,
+				8482CF641D125A570020CEEA /* ScriptViewController.m */,
+			);
+			path = ScriptViewController;
+			sourceTree = "<group>";
+		};
+		8482CF661D1278CE0020CEEA /* ScriptTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				8482CF671D1278DF0020CEEA /* ScriptTableViewCell.h */,
+				8482CF681D1278DF0020CEEA /* ScriptTableViewCell.m */,
+				8482CF691D1278DF0020CEEA /* ScriptTableViewCell.xib */,
+			);
+			path = ScriptTableViewCell;
+			sourceTree = "<group>";
+		};
 		F90CB3385D07F23CA9F15056 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +489,7 @@
 				847EC4D61CFD65E5000D77AE /* grammar_sample.abnf in Resources */,
 				8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */,
 				846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */,
+				8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */,
 				846667851CF82AD400EFBE66 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,23 +551,28 @@
 			files = (
 				847EC4D91CFD65E5000D77AE /* PcmPlayer.m in Sources */,
 				847EC4D81CFD65E5000D77AE /* IFlySpeechSynthesizerManager.m in Sources */,
+				8482CF621D12594D0020CEEA /* ViewModel.m in Sources */,
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
-				846667821CF82AD400EFBE66 /* ViewController.m in Sources */,
 				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
-				84595C8C1CFE8229007DB272 /* ViewModel.m in Sources */,
+				8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */,
+				8482CF6A1D1278DF0020CEEA /* ScriptTableViewCell.m in Sources */,
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
 				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
+				8482CF611D12594D0020CEEA /* ViewController.m in Sources */,
 				845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */,
 				846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */,
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
+				8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
+				8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */,
 				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,
 				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
+				8482CF6E1D127A9F0020CEEA /* Script.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

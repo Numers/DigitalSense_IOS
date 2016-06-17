@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ScriptViewController.h"
 #import "LewReorderableLayout.h"
 #import "UIImageView+Webcache.h"
 #import "Fruit.h"
@@ -37,6 +38,8 @@
     NSArray *rfIdOrderList;
     NSMutableArray *bottleInfoList;
     BOOL hasNewFruit;
+    
+    ScriptViewController *scriptVC;
 }
 @property (nonatomic, weak)IBOutlet UICollectionView *collectionView;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
@@ -52,6 +55,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
+    [self.navigationController setNavigationBarHidden:YES];
     //适配TitleLabel的字体大小
     [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
     
@@ -196,6 +200,7 @@
                                 fruit.fruitRFID = [[dic objectForKey:@"sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
+                            [self saveOrderFile];
                             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                         }
                     }
@@ -395,6 +400,10 @@
  */
 -(void)saveOrderFile
 {
+    if (_fruitsList == nil || _fruitsList.count == 0) {
+        return;
+    }
+    
     NSMutableArray *orderList = [NSMutableArray array];
     for (Fruit *fruit in _fruitsList) {
         [orderList addObject:fruit.fruitRFID];
@@ -599,11 +608,29 @@
     }
 }
 
+-(IBAction)clickScriptBtn:(id)sender
+{
+    if (scriptVC == nil) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        scriptVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptViewIdentify"];
+    }
+    
+    [self.navigationController pushViewController:scriptVC animated:YES];
+}
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     UIImageView *backImageView = [cell viewWithTag:1];
     UIView *frontView = [cell viewWithTag:3];
+    
+    UIView *firstLine = [cell viewWithTag:4];
+    [firstLine setHidden:YES];
+    UIView *secondLine = [cell viewWithTag:5];
+    [secondLine setHidden:YES];
+    UIView *thirdLine = [cell viewWithTag:6];
+    [thirdLine setHidden:YES];
+    UIView *fourthLine = [cell viewWithTag:7];
+    [fourthLine setHidden:YES];
     
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
     [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"] options:SDWebImageLowPriority|SDWebImageRetryFailed];
@@ -631,7 +658,7 @@
 //        CGFloat perPieceWidth = floor(screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1)));
         CGFloat screenWidth = CGRectGetWidth([UIScreen mainScreen].bounds)-0.5;
         CGFloat perPieceWidth = screenWidth / (CellItemCount * 1.0f) - ((CellMargin / (CellItemCount * 1.0f)) * (CellItemCount - 1));
-        CGFloat perPieceHeight = perPieceWidth * 480.0f / 414.0f;
+        CGFloat perPieceHeight = perPieceWidth * 520.0f / 413.0f;
         return CGSizeMake(perPieceWidth, perPieceHeight);
     }
     return CGSizeMake(0, 0);
@@ -663,6 +690,34 @@
     [_fruitsList insertObject:fruit atIndex:toIndexPath.item];
     
     [self saveOrderFile];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Will begin Dragging");
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    UIView *firstLine = [cell viewWithTag:4];
+    [firstLine setHidden:NO];
+    UIView *secondLine = [cell viewWithTag:5];
+    [secondLine setHidden:NO];
+    UIView *thirdLine = [cell viewWithTag:6];
+    [thirdLine setHidden:NO];
+    UIView *fourthLine = [cell viewWithTag:7];
+    [fourthLine setHidden:NO];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willEndDraggingItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Will End Dragging");
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    UIView *firstLine = [cell viewWithTag:4];
+    [firstLine setHidden:YES];
+    UIView *secondLine = [cell viewWithTag:5];
+    [secondLine setHidden:YES];
+    UIView *thirdLine = [cell viewWithTag:6];
+    [thirdLine setHidden:YES];
+    UIView *fourthLine = [cell viewWithTag:7];
+    [fourthLine setHidden:YES];
 }
 
 #pragma -mark UICollectionViewDelegate
