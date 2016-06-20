@@ -80,25 +80,6 @@ static NSInteger currentSecond = -1;
     if (script.scriptCommandList && script.scriptCommandList.count > 0) {
         [scriptCommandQueue addObjectsFromArray:script.scriptCommandList];
     }
-    
-    //开始解析脚本
-    ScriptCommand *command = [[ScriptCommand alloc] init];
-    command.startRelativeTime = 5;
-    command.command = @"";
-    command.desc = @"发出苹果气味";
-    [scriptCommandQueue addObject:command];
-    
-    ScriptCommand *command1 = [[ScriptCommand alloc] init];
-    command1.startRelativeTime = 8;
-    command1.command = @"";
-    command1.desc = @"发出香蕉气味";
-    [scriptCommandQueue addObject:command1];
-    
-    ScriptCommand *command2 = [[ScriptCommand alloc] init];
-    command2.startRelativeTime = 10;
-    command2.command = @"";
-    command2.desc = @"发出菠萝气味";
-    [scriptCommandQueue addObject:command2];
 }
 
 /**
