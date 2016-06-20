@@ -19,4 +19,10 @@
 
 +(void)showInfo:(NSString *)text;
 + (BOOL)isNullStr:(NSString *)str;
+
+/**
+ *  显示在指定VIEW中心
+ */
++ (void)showProgressBarForView:(UIView *)view;
++ (void)hideProgressBarForView:(UIView *)view;
 @end

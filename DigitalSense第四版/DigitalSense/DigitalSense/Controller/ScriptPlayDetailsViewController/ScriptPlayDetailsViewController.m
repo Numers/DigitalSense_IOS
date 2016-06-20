@@ -133,7 +133,7 @@
         [_lblAllTime setText:[self switchSecondsToTime:script.scriptTime]];
     }else{
         [_lblScriptName setText:nil];
-        [_lblAllTime setText:nil];
+        [_lblAllTime setText:@"00:00:00"];
         [_lblPlayTime setText:@"00:00:00"];
         [_progressView setProgress:0.0f];
         [_textView setText:nil];

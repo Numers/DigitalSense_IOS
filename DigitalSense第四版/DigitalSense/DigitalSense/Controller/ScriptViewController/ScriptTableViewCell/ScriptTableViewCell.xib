@@ -20,22 +20,11 @@
                         <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </progressView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="魔兽" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yYg-b8-fH4">
-                        <rect key="frame" x="15" y="11" width="239" height="21"/>
+                        <rect key="frame" x="15" y="11" width="222" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-Hr-ZEK">
-                        <rect key="frame" x="254" y="0.0" width="66" height="62"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="66" id="GFQ-OO-mQW"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <state key="normal" title="取消排队"/>
-                        <connections>
-                            <action selector="clickPlayScriptBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1CN-b0-0Ty"/>
-                        </connections>
-                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="进度 00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xdU-uP-uX1">
                         <rect key="frame" x="15" y="39" width="80" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -48,6 +37,20 @@
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFw-Hr-ZEK">
+                        <rect key="frame" x="237" y="16" width="73" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="EgR-9d-9ze"/>
+                            <constraint firstAttribute="width" constant="73" id="rus-Gg-3ud"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                        <state key="normal" title="取消排队" backgroundImage="ScriptWaitingBtn_Normal">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="clickPlayScriptBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1CN-b0-0Ty"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="bFw-Hr-ZEK" firstAttribute="leading" secondItem="yYg-b8-fH4" secondAttribute="trailing" id="2F7-by-VsV"/>
@@ -57,10 +60,9 @@
                     <constraint firstItem="xdU-uP-uX1" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="15" id="Fmv-fy-iPr"/>
                     <constraint firstAttribute="trailing" secondItem="Y0q-d5-ZYm" secondAttribute="trailing" id="HU5-Tp-4wm"/>
                     <constraint firstItem="yYg-b8-fH4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="I1j-1u-XjI"/>
-                    <constraint firstItem="bFw-Hr-ZEK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Rnx-EO-Wf1"/>
-                    <constraint firstAttribute="bottom" secondItem="bFw-Hr-ZEK" secondAttribute="bottom" id="Xxz-gE-Uqg"/>
+                    <constraint firstItem="bFw-Hr-ZEK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="QnT-I6-A0g"/>
                     <constraint firstItem="yYg-b8-fH4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="-10" id="bz1-yE-Ur2"/>
-                    <constraint firstAttribute="trailing" secondItem="bFw-Hr-ZEK" secondAttribute="trailing" id="gEO-Yc-s3q"/>
+                    <constraint firstAttribute="trailing" secondItem="bFw-Hr-ZEK" secondAttribute="trailing" constant="10" id="gEO-Yc-s3q"/>
                     <constraint firstAttribute="bottom" secondItem="Y0q-d5-ZYm" secondAttribute="bottom" id="nEL-XV-aOy"/>
                     <constraint firstItem="Y0q-d5-ZYm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="oUi-CZ-LMB"/>
                     <constraint firstItem="Y0q-d5-ZYm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="wpn-mN-0HU"/>
@@ -76,4 +78,7 @@
             <point key="canvasLocation" x="444" y="311.5"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="ScriptWaitingBtn_Normal" width="46" height="20"/>
+    </resources>
 </document>

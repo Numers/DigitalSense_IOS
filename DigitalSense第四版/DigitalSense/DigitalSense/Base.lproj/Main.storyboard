@@ -51,9 +51,9 @@
                                             <action selector="clickRefreshBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xVB-Yx-lXM"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y55-nk-rEo">
-                                        <rect key="frame" x="5" y="28" width="30" height="30"/>
-                                        <state key="normal" title="脚本">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y55-nk-rEo">
+                                        <rect key="frame" x="5" y="21" width="50" height="44"/>
+                                        <state key="normal" image="PointImage_Normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -250,13 +250,22 @@
                                             <action selector="clickBackBtn:" destination="SAr-rz-KS4" eventType="touchUpInside" id="zGd-BD-zvS"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ba-hO-gjQ">
+                                        <rect key="frame" x="329" y="20" width="46" height="44"/>
+                                        <state key="normal" image="RefreshImage_Normal"/>
+                                        <connections>
+                                            <action selector="clickRefreshBtn:" destination="SAr-rz-KS4" eventType="touchUpInside" id="qfG-zL-zZB"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="7ba-hO-gjQ" firstAttribute="centerY" secondItem="vct-kA-6Zg" secondAttribute="centerY" id="AsE-ex-21j"/>
                                     <constraint firstItem="vct-kA-6Zg" firstAttribute="centerX" secondItem="oXl-Fb-P8v" secondAttribute="centerX" id="EVh-4S-3Pe"/>
                                     <constraint firstItem="vct-kA-6Zg" firstAttribute="centerY" secondItem="oXl-Fb-P8v" secondAttribute="centerY" constant="10" id="GLF-fM-y4o"/>
                                     <constraint firstAttribute="height" constant="64" id="Pl2-QU-ymn"/>
                                     <constraint firstItem="vct-kA-6Zg" firstAttribute="centerY" secondItem="2fa-fh-JU6" secondAttribute="centerY" id="bVG-hh-BIN"/>
+                                    <constraint firstAttribute="trailing" secondItem="7ba-hO-gjQ" secondAttribute="trailing" id="fmN-M5-Sbd"/>
                                     <constraint firstItem="2fa-fh-JU6" firstAttribute="leading" secondItem="oXl-Fb-P8v" secondAttribute="leading" constant="5" id="r7i-Ap-NJo"/>
                                 </constraints>
                             </view>
@@ -404,6 +413,7 @@
     </scenes>
     <resources>
         <image name="FruitDefaultImage" width="137" height="173"/>
+        <image name="PointImage_Normal" width="50" height="44"/>
         <image name="PopbackImage" width="22" height="22"/>
         <image name="PressedImage" width="50" height="50"/>
         <image name="RefreshImage_Normal" width="46" height="44"/>

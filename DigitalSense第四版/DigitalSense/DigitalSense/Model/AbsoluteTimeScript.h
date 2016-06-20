@@ -9,11 +9,7 @@
 #import "Script.h"
 
 @interface AbsoluteTimeScript : Script
-@property(nonatomic, copy) NSString *startDay;
-@property(nonatomic, copy) NSString *endDay;
-@property(nonatomic, copy) NSString *week;
-@property(nonatomic, copy) NSString *startTime;
-@property(nonatomic, copy) NSString *endTime;
+@property(nonatomic, strong) NSMutableArray *TaskTimeList;
 
 -(id)initWithDictionary:(NSDictionary *)dic;
 @end

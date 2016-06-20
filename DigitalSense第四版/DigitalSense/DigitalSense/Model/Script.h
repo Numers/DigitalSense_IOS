@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ScriptCommand.h"
 #define ScriptStateComfirmed @"ScriptStateComfirmed"
 typedef enum{
     ScriptIsNormal, //未播放状态

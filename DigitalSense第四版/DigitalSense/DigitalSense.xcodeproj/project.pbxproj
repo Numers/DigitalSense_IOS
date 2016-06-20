@@ -45,6 +45,8 @@
 		847EC4F11CFD6757000D77AE /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F01CFD6757000D77AE /* CoreBluetooth.framework */; };
 		847EC4F31CFD676C000D77AE /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F21CFD676C000D77AE /* CoreTelephony.framework */; };
 		847EC4F51CFD6779000D77AE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 847EC4F41CFD6779000D77AE /* libz.tbd */; };
+		847EEFAA1D17CAC3009765E6 /* ScriptTaskTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EEFA91D17CAC3009765E6 /* ScriptTaskTime.m */; };
+		847EEFAF1D17D597009765E6 /* LZProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EEFAE1D17D597009765E6 /* LZProgressView.m */; };
 		8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF581D1258960020CEEA /* ScriptExecuteManager.m */; };
 		8482CF611D12594D0020CEEA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF5D1D12594D0020CEEA /* ViewController.m */; };
 		8482CF621D12594D0020CEEA /* ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF5F1D12594D0020CEEA /* ViewModel.m */; };
@@ -122,6 +124,10 @@
 		847EC4F01CFD6757000D77AE /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		847EC4F21CFD676C000D77AE /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		847EC4F41CFD6779000D77AE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		847EEFA81D17CAC3009765E6 /* ScriptTaskTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptTaskTime.h; sourceTree = "<group>"; };
+		847EEFA91D17CAC3009765E6 /* ScriptTaskTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptTaskTime.m; sourceTree = "<group>"; };
+		847EEFAD1D17D597009765E6 /* LZProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZProgressView.h; sourceTree = "<group>"; };
+		847EEFAE1D17D597009765E6 /* LZProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZProgressView.m; sourceTree = "<group>"; };
 		8482CF571D1258960020CEEA /* ScriptExecuteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptExecuteManager.h; sourceTree = "<group>"; };
 		8482CF581D1258960020CEEA /* ScriptExecuteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptExecuteManager.m; sourceTree = "<group>"; };
 		8482CF5C1D12594D0020CEEA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -212,6 +218,7 @@
 		846667791CF82AD400EFBE66 /* DigitalSense */ = {
 			isa = PBXGroup;
 			children = (
+				847EEFAB1D17D597009765E6 /* ThirdPartPlugins */,
 				845456F71D0EAB65006E7FF6 /* Category */,
 				846A76E81D016DD00055E54E /* NetWorkManager */,
 				847EC4DA1CFD6654000D77AE /* Util */,
@@ -298,6 +305,8 @@
 				8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */,
 				8463B9DD1D13FE4F00EACECD /* RelativeTimeScript.h */,
 				8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */,
+				847EEFA81D17CAC3009765E6 /* ScriptTaskTime.h */,
+				847EEFA91D17CAC3009765E6 /* ScriptTaskTime.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -396,6 +405,23 @@
 				847EC4E21CFD6716000D77AE /* AddressBook.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		847EEFAB1D17D597009765E6 /* ThirdPartPlugins */ = {
+			isa = PBXGroup;
+			children = (
+				847EEFAC1D17D597009765E6 /* LZProgressView */,
+			);
+			path = ThirdPartPlugins;
+			sourceTree = "<group>";
+		};
+		847EEFAC1D17D597009765E6 /* LZProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				847EEFAD1D17D597009765E6 /* LZProgressView.h */,
+				847EEFAE1D17D597009765E6 /* LZProgressView.m */,
+			);
+			path = LZProgressView;
 			sourceTree = "<group>";
 		};
 		8482CF561D12583F0020CEEA /* Script */ = {
@@ -603,9 +629,11 @@
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
+				847EEFAF1D17D597009765E6 /* LZProgressView.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
+				847EEFAA1D17CAC3009765E6 /* ScriptTaskTime.m in Sources */,
 				8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */,
 				8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */,
 				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,

@@ -7,7 +7,8 @@
 //
 
 #import "ScriptExecuteManager.h"
-#import "Script.h"
+#import "AbsoluteTimeScript.h"
+#import "RelativeTimeScript.h"
 #import "ScriptCommand.h"
 
 #import "BluetoothMacManager.h"
@@ -238,40 +239,15 @@ static NSInteger currentSecond = -1;
  */
 -(void)executeAbsoluteTimeScript:(NSArray *)scriptArr
 {
-    
-}
-
-/**
- *  @author RenRenFenQi, 16-06-17 14:06:07
- *
- *  组成绝对时间指令字符串
- *
- *  @param time     时间戳
- *  @param rfId     设备RFID
- *  @param duration 播放气味时长
- *  @param index    第几组
- *
- *  @return 指令字符串
- */
--(NSString *)executeAbsoluteTimeCommand:(NSTimeInterval)time WithRFID:(NSString *)rfId WithDuration:(NSInteger)duration WithIndex:(NSInteger)index
-{
-    NSDate *dateTime = [NSDate dateWithTimeIntervalSince1970:time];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yy-MM-dd-HH-mm-ss"];
-    NSString *dateStr = [formatter stringFromDate:dateTime];
-    NSArray *timeArr = [dateStr componentsSeparatedByString:@"-"];
-    NSInteger year = [[timeArr objectAtIndex:0] integerValue];
-    NSInteger month = [[timeArr objectAtIndex:1] integerValue];
-    NSInteger day = [[timeArr objectAtIndex:2] integerValue];
-    NSInteger hour = [[timeArr objectAtIndex:3] integerValue];
-    NSInteger minite = [[timeArr objectAtIndex:4] integerValue];
-    NSInteger second = [[timeArr objectAtIndex:5] integerValue];
-    NSMutableString *result = [[NSMutableString alloc] initWithString:@"F600"];
-    [result appendFormat:@"%02lX%02lX%02lX%02lX%02lX%02lX",[self hexIntToInteger:year],[self hexIntToInteger:month],[self hexIntToInteger:day],[self hexIntToInteger:hour],[self hexIntToInteger:minite],[self hexIntToInteger:second]];
-    [result appendString:rfId];
-    [result appendFormat:@"%04lX",duration];
-    [result appendFormat:@"%02lX",index];
-    [result appendString:@"55"];
-    return [NSString stringWithString:result];
+    if (scriptArr && scriptArr.count > 0) {
+        for (AbsoluteTimeScript *aScript in scriptArr) {
+            for (ScriptCommand *command in aScript.scriptCommandList) {
+                if ([[BluetoothMacManager defaultManager] isConnected])
+                {
+                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
+                }
+            }
+        }
+    }
 }
 @end

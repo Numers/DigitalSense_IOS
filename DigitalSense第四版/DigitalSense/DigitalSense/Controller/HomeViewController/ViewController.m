@@ -610,6 +610,12 @@
 
 -(IBAction)clickScriptBtn:(id)sender
 {
+    if (![[BluetoothMacManager defaultManager] isConnected])
+    {
+        [AppUtils showInfo:@"请等待蓝牙连接"];
+        return;
+    }
+    
     if (scriptVC == nil) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         scriptVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptViewIdentify"];

@@ -8,9 +8,11 @@
 
 #import "AppUtils.h"
 #import "MBProgressHUD.h"
+#import "LZProgressView.h"
 #import "URLManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #define MBTAG  1001
+#define AMTAG  1111
 @implementation AppUtils
 +(void)setUrlWithState:(BOOL)state
 {
@@ -99,5 +101,26 @@
     }
     
     return NO;
+}
+
++ (void)showProgressBarForView:(UIView *)view
+{
+    LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
+    if (HUD == nil) {
+        CGRect frame = CGRectMake(0, 0, 26, 26);
+        HUD = [[LZProgressView alloc] initWithFrame:frame andLineWidth:3.0f andLineColor:@[[UIColor orangeColor],[UIColor grayColor]]];
+        HUD.tag = AMTAG;
+        HUD.center = CGPointMake(view.center.x, view.center.y);
+        [view addSubview:HUD];
+    }
+    [HUD startAnimation];
+}
+
++ (void)hideProgressBarForView:(UIView *)view
+{
+    LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
+    if (HUD != nil) {
+        [HUD stopAnimation];
+    }
 }
 @end

@@ -42,6 +42,10 @@
         [self.lblScriptName setText:script.scriptName];
         if (st.type == ScriptIsAbsoluteTime) {
             [self.btnPlayScript setHidden:YES];
+            [self.lblAllTime setText:nil];
+            [self.lblProgress setText:st.sceneName];
+            [self.progressView setProgress:0.0f];
+            return;
         }
         
         if (st.type == ScriptIsRelativeTime) {
@@ -50,18 +54,24 @@
         
         if (st.state == ScriptIsNormal) {
             [self.btnPlayScript setTitle:@"播放" forState:UIControlStateNormal];
+            [self.btnPlayScript setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.btnPlayScript setBackgroundImage:[UIImage imageNamed:@"ScriptNormalBtn_Normal"] forState:UIControlStateNormal];
             [self.btnPlayScript setEnabled:YES];
             [_progressView setProgress:0.0f];
         }
         
         if (st.state == ScriptIsWaiting) {
             [self.btnPlayScript setTitle:@"取消排队" forState:UIControlStateNormal];
+            [self.btnPlayScript setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [self.btnPlayScript setBackgroundImage:[UIImage imageNamed:@"ScriptWaitingBtn_Normal"] forState:UIControlStateNormal];
             [self.btnPlayScript setEnabled:YES];
             [_progressView setProgress:0.0f];
         }
         
         if (st.state == ScriptIsPlaying) {
             [self.btnPlayScript setTitle:@"播放中" forState:UIControlStateNormal];
+            [self.btnPlayScript setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            [self.btnPlayScript setBackgroundImage:[UIImage imageNamed:@"ScriptPlayingBtn_Normal"] forState:UIControlStateNormal];
             [self.btnPlayScript setEnabled:NO];
         }
         

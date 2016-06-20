@@ -40,48 +40,48 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     // Do any additional setup after loading the view.
     scriptList = [NSMutableArray array];
     
-    /**************************假数据***************************/
-    Script *script = [[Script alloc] init];
-    script.scriptId = @"1";
-    script.scriptName = @"魔兽1";
-    script.scriptTime = 10;
-    script.state = ScriptIsNormal;
-    script.type = ScriptIsRelativeTime;
-    [scriptList addObject:script];
-    
-    Script *script1 = [[Script alloc] init];
-    script1.scriptId = @"1";
-    script1.scriptName = @"魔兽2";
-    script1.isLoop = YES;
-    script1.scriptTime = 75;
-    
-    script1.state = ScriptIsNormal;
-    script1.type = ScriptIsRelativeTime;
-    [scriptList addObject:script1];
-    Script *script2 = [[Script alloc] init];
-    script2.scriptId = @"1";
-    script2.scriptName = @"魔兽3";
-    script2.scriptTime = 50;
-    script2.state = ScriptIsNormal;
-    script2.type = ScriptIsRelativeTime;
-    [scriptList addObject:script2];
-    
-    Script *script3 = [[Script alloc] init];
-    script3.scriptId = @"1";
-    script3.scriptName = @"魔兽4";
-    script3.scriptTime = 13;
-    script3.state = ScriptIsNormal;
-    script3.type = ScriptIsRelativeTime;
-    [scriptList addObject:script3];
-    
-    Script *script4 = [[Script alloc] init];
-    script4.scriptId = @"1";
-    script4.scriptName = @"魔兽5";
-    script4.scriptTime = 14;
-    script4.state = ScriptIsNormal;
-    script4.type = ScriptIsRelativeTime;
-    [scriptList addObject:script4];
-    /************************************************************/
+//    /**************************假数据***************************/
+//    Script *script = [[Script alloc] init];
+//    script.scriptId = @"1";
+//    script.scriptName = @"魔兽1";
+//    script.scriptTime = 10;
+//    script.state = ScriptIsNormal;
+//    script.type = ScriptIsRelativeTime;
+//    [scriptList addObject:script];
+//    
+//    Script *script1 = [[Script alloc] init];
+//    script1.scriptId = @"1";
+//    script1.scriptName = @"魔兽2";
+//    script1.isLoop = YES;
+//    script1.scriptTime = 75;
+//    
+//    script1.state = ScriptIsNormal;
+//    script1.type = ScriptIsRelativeTime;
+//    [scriptList addObject:script1];
+//    Script *script2 = [[Script alloc] init];
+//    script2.scriptId = @"1";
+//    script2.scriptName = @"魔兽3";
+//    script2.scriptTime = 50;
+//    script2.state = ScriptIsNormal;
+//    script2.type = ScriptIsRelativeTime;
+//    [scriptList addObject:script2];
+//    
+//    Script *script3 = [[Script alloc] init];
+//    script3.scriptId = @"1";
+//    script3.scriptName = @"魔兽4";
+//    script3.scriptTime = 13;
+//    script3.state = ScriptIsNormal;
+//    script3.type = ScriptIsRelativeTime;
+//    [scriptList addObject:script3];
+//    
+//    Script *script4 = [[Script alloc] init];
+//    script4.scriptId = @"1";
+//    script4.scriptName = @"魔兽5";
+//    script4.scriptTime = 14;
+//    script4.state = ScriptIsNormal;
+//    script4.type = ScriptIsRelativeTime;
+//    [scriptList addObject:script4];
+//    /************************************************************/
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ScriptTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentify];
     
@@ -135,12 +135,14 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 -(void)requestScriptInfoWithMacAddress:(NSString *)macAddress
 {
     if (macAddress) {
+        [AppUtils showProgressBarForView:self.view];
         [[scriptViewModel requestScriptInfoWithMacAddress:macAddress] subscribeNext:^(id x) {
             NSDictionary *resultDic = (NSDictionary *)x;
             if (resultDic) {
                 NSArray *dataArr = [resultDic objectForKey:@"data"];
                 if (dataArr && dataArr.count > 0) {
                     [scriptList removeAllObjects];
+                    NSMutableArray *absoluteScriptList = [NSMutableArray array];
                     for (NSDictionary *dic in dataArr) {
                         ScriptType type = (ScriptType)[[dic objectForKey:@"trigger"] integerValue];
                         if (type == ScriptIsRelativeTime) {
@@ -151,13 +153,35 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                         if (type == ScriptIsAbsoluteTime) {
                             Script *absoluteTimeScript = [[AbsoluteTimeScript alloc] initWithDictionary:dic];
                             [scriptList addObject:absoluteTimeScript];
+                            [absoluteScriptList addObject:absoluteTimeScript];
                         }
                     }
+                    [[ScriptExecuteManager defaultManager] executeAbsoluteTimeScript:absoluteScriptList];
                     [self.tableView reloadData];
                 }
             }
+        } error:^(NSError *error) {
+            
+        } completed:^{
+            [AppUtils hideProgressBarForView:self.view];
         }];
     }
+}
+
+-(Script *)searchPlayingScriptInList:(NSArray *)list
+{
+    if (list == nil) {
+        return nil;
+    }
+    
+    Script *script = nil;
+    for (Script *sc in list) {
+        if (sc.state == ScriptIsPlaying) {
+            script = sc;
+            break;
+        }
+    }
+    return script;
 }
 
 #pragma -mark Notificaiton
@@ -189,6 +213,14 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         if (![scriptList containsObject:currentPlayScript]) {
             return;
         }
+        
+        if (currentPlayScript.state != ScriptIsPlaying) {
+            currentPlayScript = [self searchPlayingScriptInList:scriptList];
+            if (currentPlayScript == nil) {
+                return;
+            }
+        }
+        
         ScriptTableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[scriptList indexOfObject:currentPlayScript] inSection:0]];
         if (cell == nil) {
             return;
@@ -242,6 +274,15 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 -(IBAction)clickBackBtn:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(IBAction)clickRefreshBtn:(id)sender
+{
+    if (currentPlayScript && currentPlayScript.state == ScriptIsPlaying) {
+        [AppUtils showInfo:@"当前有脚本正在播放中"];
+        return;
+    }
+    [self requestScriptInfoWithMacAddress:currentMacAddress];
 }
 /*
 #pragma mark - Navigation
