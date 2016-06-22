@@ -13,7 +13,7 @@
 {
     self = [super initWithDictionary:dic];
     if (self) {
-        self.scriptTime = [[dic objectForKey:@"long"] integerValue];
+        self.scriptTime = [[dic objectForKey:@"long"] integerValue] * 60;
         self.scriptCommandList = [NSMutableArray array];
         NSArray *commandArr = [dic objectForKey:@"schedule"];
         if (commandArr) {

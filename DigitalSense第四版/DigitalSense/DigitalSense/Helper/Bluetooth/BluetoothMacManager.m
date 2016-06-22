@@ -277,7 +277,7 @@ static BluetoothMacManager *bluetoothMacManager;
         {
             NSDate *now = [NSDate date];
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yy-MM-dd-HH-mm-ss"];
+            [formatter setDateFormat:@"yy-MM-dd-HH-mm-ss-ee"];
             NSString *dateStr = [formatter stringFromDate:now];
             NSArray *timeArr = [dateStr componentsSeparatedByString:@"-"];
             NSInteger year = [[timeArr objectAtIndex:0] integerValue];
@@ -286,7 +286,8 @@ static BluetoothMacManager *bluetoothMacManager;
             NSInteger hour = [[timeArr objectAtIndex:3] integerValue];
             NSInteger minite = [[timeArr objectAtIndex:4] integerValue];
             NSInteger second = [[timeArr objectAtIndex:5] integerValue];
-            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(0x63),[self hexIntToInteger:year],[self hexIntToInteger:month],[self hexIntToInteger:day],[self hexIntToInteger:hour],[self hexIntToInteger:minite],[self hexIntToInteger:second],@(0x55),nil];
+            NSInteger week = [[timeArr objectAtIndex:6] integerValue] - 1;
+            writeStr = [self stringByCalculateValues:@(WakeUpDevice),@(0x63),[self hexIntToInteger:year],[self hexIntToInteger:month],[self hexIntToInteger:day],[self hexIntToInteger:hour],[self hexIntToInteger:minite],[self hexIntToInteger:second],@(week),@(0x55),nil];
         }
             break;
         case CommandOpenDeviceTime:
