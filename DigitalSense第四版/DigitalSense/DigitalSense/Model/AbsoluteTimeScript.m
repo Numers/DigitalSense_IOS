@@ -45,7 +45,7 @@
                                             for (NSDictionary *tempDic in commandArr) {
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
+                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                     break;
@@ -80,7 +80,7 @@
                                         for (NSDictionary *tempDic in commandArr) {
                                             ScriptCommand *command = [[ScriptCommand alloc] init];
                                             command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                            command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
+                                            command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                                             command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                             if ((startTime + command.startRelativeTime) >= endTime) {
                                                 break;
@@ -115,7 +115,7 @@
                                                 for (NSDictionary *tempDic in commandArr) {
                                                     ScriptCommand *command = [[ScriptCommand alloc] init];
                                                     command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                    command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
+                                                    command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                                                     command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                     if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                         break;
@@ -150,7 +150,7 @@
                                             for (NSDictionary *tempDic in commandArr) {
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
+                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((startTime + command.startRelativeTime) >= endTime) {
                                                     break;

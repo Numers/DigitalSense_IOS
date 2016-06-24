@@ -44,7 +44,8 @@ typedef enum{
 
 typedef enum{
     ConnectToDevice = 1,
-    ConnectForSearch
+    ConnectForSearch,
+    ConnectForScan
 }ConnectType;
 typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, ConnectType connectType);
 @protocol BluetoothManagerProtocol <NSObject>
@@ -135,12 +136,40 @@ typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, 
 -(void)connectToPeripheral:(CBPeripheral *)peripheral callBack:(BluetoothCallBak)callBack;
 
 /**
+ *  @author RenRenFenQi, 16-06-24 15:06:17
+ *
+ *  根据设备名连接设备
+ *
+ *  @param peripheralName 设备名
+ *  @param callBack       回调函数
+ */
+-(void)connectToPeripheralWithName:(NSString *)peripheralName callBack:(BluetoothCallBak)callBack;
+/**
  *  @author RenRenFenQi, 16-03-25 14:03:55
  *
- *  获取搜索到的所有智能设备
+ *  获取搜索到的所有智能设备及mac地址
  *
  *  @return 智能设备字典 @{@"peripheral":peripheral,@"mac":macAdress}
  */
 -(NSArray *)returnAllSearchedPeripheralsDictionary;
 
+/**
+ *  @author RenRenFenQi, 16-06-24 15:06:46
+ *
+ *  获取搜索到的所有智能设备
+ *
+ *  @return 智能设备列表
+ */
+-(NSArray *)returnAllScanPeripherals;
+
+/**
+ *  @author RenRenFenQi, 16-06-24 18:06:11
+ *
+ *  判断名字与当前连接蓝牙是否匹配
+ *
+ *  @param name 设备
+ *
+ *  @return YES/匹配 NO/不匹配
+ */
+-(BOOL)isMatchConnectedPeripheral:(CBPeripheral *)peripheral;
 @end

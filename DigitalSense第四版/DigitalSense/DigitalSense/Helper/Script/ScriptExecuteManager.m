@@ -124,7 +124,7 @@ static NSInteger currentSecond = -1;
         if (currentPlayingScript.isLoop) {
             ScriptCommand *command = [scriptCommandQueue lastObject];
             if ((command.startRelativeTime + command.duration) < currentSecond) {
-                NSInteger tempSecond = currentSecond % (command.startRelativeTime + command.duration + 1);
+                NSInteger tempSecond = currentSecond % (command.startRelativeTime + command.duration);
                 [self searchTimeToExecuteCommand:tempSecond];
             }else{
                 [self searchTimeToExecuteCommand:currentSecond];

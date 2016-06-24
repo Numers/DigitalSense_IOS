@@ -55,6 +55,7 @@
 		8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8482CF691D1278DF0020CEEA /* ScriptTableViewCell.xib */; };
 		8482CF6E1D127A9F0020CEEA /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF6D1D127A9F0020CEEA /* Script.m */; };
 		8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF701D12A40B0020CEEA /* ScriptCommand.m */; };
+		84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7719C1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -143,6 +144,8 @@
 		8482CF6D1D127A9F0020CEEA /* Script.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Script.m; sourceTree = "<group>"; };
 		8482CF6F1D12A40B0020CEEA /* ScriptCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptCommand.h; sourceTree = "<group>"; };
 		8482CF701D12A40B0020CEEA /* ScriptCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptCommand.m; sourceTree = "<group>"; };
+		84F7719B1D1D239C00591B24 /* ScanBluetoothDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanBluetoothDeviceViewController.h; sourceTree = "<group>"; };
+		84F7719C1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanBluetoothDeviceViewController.m; sourceTree = "<group>"; };
 		A1CA930BEBDE5359E5E28A20 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -436,6 +439,7 @@
 		8482CF5A1D12594D0020CEEA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				84F7719A1D1D238300591B24 /* ScanBluetoothDeviceViewController */,
 				8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */,
 				8482CF5B1D12594D0020CEEA /* HomeViewController */,
 				8482CF601D12594D0020CEEA /* ScriptViewController */,
@@ -474,6 +478,15 @@
 				8482CF691D1278DF0020CEEA /* ScriptTableViewCell.xib */,
 			);
 			path = ScriptTableViewCell;
+			sourceTree = "<group>";
+		};
+		84F7719A1D1D238300591B24 /* ScanBluetoothDeviceViewController */ = {
+			isa = PBXGroup;
+			children = (
+				84F7719B1D1D239C00591B24 /* ScanBluetoothDeviceViewController.h */,
+				84F7719C1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m */,
+			);
+			path = ScanBluetoothDeviceViewController;
 			sourceTree = "<group>";
 		};
 		F90CB3385D07F23CA9F15056 /* Frameworks */ = {
@@ -616,6 +629,7 @@
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
 				8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
+				84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */,
 				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
 				8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */,
 				8482CF6A1D1278DF0020CEEA /* ScriptTableViewCell.m in Sources */,

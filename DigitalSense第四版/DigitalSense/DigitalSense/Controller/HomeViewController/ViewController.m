@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "ScriptViewController.h"
+#import "ScanBluetoothDeviceViewController.h"
 #import "LewReorderableLayout.h"
 #import "UIImageView+Webcache.h"
 #import "Fruit.h"
@@ -20,6 +21,8 @@
 
 #import "ViewModel.h"
 
+#define LastConnectDeviceNameKey @"LastConnectDeviceNameKey"
+
 #define SpeakDelay 0.5f
 #define SmellEmitDuration 15
 #define CellMargin 0.5f
@@ -29,7 +32,7 @@
 #define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
-@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol>
 {
     NSString *selectTag;
     NSTimer *smellEmitTimer;
@@ -45,6 +48,7 @@
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @property(nonatomic, strong) IBOutlet UIView *tabBarView;
 @property(nonatomic, strong) IBOutlet UIButton *btnVoice;
+@property(nonatomic, strong) IBOutlet UIButton *btnSelectDevice;
 
 @property(nonatomic, strong) NSMutableArray *fruitsList;
 @property(nonatomic, strong) ViewModel *viewModel;
@@ -98,7 +102,7 @@
 #pragma -mark Notification
 -(void)bluetoothPowerOn:(NSNotification *)notify
 {
-    [self connectToBluetooth];
+    [self scanBluetooth];
 }
 
 -(void)bluetoothPowerOff:(NSNotification *)notify
@@ -135,7 +139,7 @@
                     
                 }];
             }
-                break;
+                break; 
             case WakeUpDevice:
             {
                 [[self.viewModel wakeUpDeviceReturn:byte] subscribeNext:^(id x) {
@@ -239,6 +243,86 @@
     
     hasNewFruit = NO;
     selectTag = CloseTag;
+}
+
+//搜索智能设备蓝牙
+-(void)scanBluetooth
+{
+    [self.lblTitle setText:@"正在搜索智能设备..."];
+    [self.btnSelectDevice setHidden:YES];
+    [[BluetoothMacManager defaultManager] startScanBluetoothDevice:ConnectForScan callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
+        if (completely) {
+            
+        }else{
+            if(backType == CallbackBluetoothPowerOff)
+            {
+                [self.lblTitle setText:@"设备未开启蓝牙"];
+            }else if(backType == CallbackTimeout){
+                [self.lblTitle setText:@"请选择您需要连接的设备"];
+                [self.btnSelectDevice setHidden:NO];
+                NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
+                if (lastConnectDeviceName) {
+                    [self connectToBluetooth:lastConnectDeviceName WithPeripheral:nil];
+                }
+            }else{
+                [self.lblTitle setText:@"设备已断开"];
+                [self.btnSelectDevice setHidden:NO];
+            }
+        }
+    }];
+}
+
+-(void)connectToBluetooth:(NSString *)deviceName WithPeripheral:(id)peripheral
+{
+    [self.lblTitle setText:@"连接中..."];
+    if (peripheral) {
+        [[BluetoothMacManager defaultManager] connectToPeripheral:peripheral callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
+            if (completely) {
+                [self.lblTitle setText:@"设备已连接"];
+                [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self initlizedData];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+            }else{
+                if(backType == CallbackBluetoothPowerOff)
+                {
+                    [self.lblTitle setText:@"设备未开启蓝牙"];
+                }else if(backType == CallbackTimeout){
+                    [self.lblTitle setText:@"未发现有效设备"];
+                }else{
+                    [self.lblTitle setText:@"设备已断开"];
+                }
+            }
+
+        }];
+    }else{
+        [[BluetoothMacManager defaultManager] connectToPeripheralWithName:deviceName callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
+            if (completely) {
+                [self.lblTitle setText:@"设备已连接"];
+                [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self initlizedData];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+            }else{
+                if(backType == CallbackBluetoothPowerOff)
+                {
+                    [self.lblTitle setText:@"设备未开启蓝牙"];
+                }else if(backType == CallbackTimeout){
+                    [self.lblTitle setText:@"未发现有效设备"];
+                }else{
+                    [self.lblTitle setText:@"设备已断开"];
+                }
+            }
+        }];
+    }
 }
 //连接智能设备蓝牙
 -(void)connectToBluetooth
@@ -604,7 +688,7 @@
         [self initlizedData];
         [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
     }else{
-        [self connectToBluetooth];
+        [self scanBluetooth];
     }
 }
 
@@ -623,6 +707,14 @@
     NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
     [scriptVC setMacAddress:macAddress];
     [self.navigationController pushViewController:scriptVC animated:YES];
+}
+
+-(IBAction)clickSelectDeviceBtn:(id)sender
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ScanBluetoothDeviceViewController *scanBluetoothDeviceVC = [storyboard instantiateViewControllerWithIdentifier:@"ScanBluetoothDeviceViewIdentify"];
+    scanBluetoothDeviceVC.delegate = self;
+    [self.navigationController pushViewController:scanBluetoothDeviceVC animated:YES];
 }
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -740,5 +832,13 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"deselect %ld",indexPath.item);
+}
+
+#pragma -mark ScanBluetoothDeviceViewProtocol
+-(void)connectToBluetoothWithPeripheral:(id)peripheral WithName:(NSString *)name;
+{
+    if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
+        [self connectToBluetooth:name WithPeripheral:peripheral];
+    }
 }
 @end

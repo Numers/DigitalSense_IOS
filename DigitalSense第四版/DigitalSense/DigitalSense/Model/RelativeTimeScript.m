@@ -20,7 +20,7 @@
             for (NSDictionary *tempDic in commandArr) {
                 ScriptCommand *command = [[ScriptCommand alloc] init];
                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
+                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                 command.desc = [tempDic objectForKey:@"input"];
                 command.command = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,command.duration];

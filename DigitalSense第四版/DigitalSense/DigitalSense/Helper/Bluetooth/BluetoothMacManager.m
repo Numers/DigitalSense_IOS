@@ -10,7 +10,7 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "DataAnalizer.h"
 
-#define ConnectTimeOut 8
+#define ConnectTimeOut 15
 #define kServiceUUID @"FFF0" //服务的UUID
 #define kMacServiceUUID @"180A"//获取Mac地址的UUID
 #define kCharacteristicNotifyUUID @"FFF1" //通知特征的UUID
@@ -53,23 +53,8 @@ static BluetoothMacManager *bluetoothMacManager;
 -(void)callBackDevice:(BOOL)connectCompelete WithCallbackType:(CallbackType)type
 {
     isConnected = connectCompelete;
-    if (connectType == ConnectForSearch) {
-        if (deviceCallBack) {
-            deviceCallBack(connectCompelete,type,self.peripheralMacArray, connectType);
-        }
-        
-        if (connectCallBack) {
-            connectCallBack(connectCompelete,type,self.peripheralMacArray, connectType);
-        }
-    }else{
-        if (deviceCallBack) {
-            deviceCallBack(connectCompelete,type,self.peripherals, connectType);
-        }
-        
-        if (connectCallBack) {
-            connectCallBack(connectCompelete,type,self.peripherals, connectType);
-        }
-    }
+    BluetoothCallBak tempConnectCallBack = connectCallBack;
+    BluetoothCallBak tempDeviceCallBack = deviceCallBack;
     if (timer) {
         if ([timer isValid]) {
             [timer invalidate];
@@ -78,6 +63,23 @@ static BluetoothMacManager *bluetoothMacManager;
     }
     if (!connectCompelete) {
         [self stopBluetoothDevice];
+    }
+    if (connectType == ConnectForSearch) {
+        if (tempConnectCallBack) {
+            tempConnectCallBack(connectCompelete,type,self.peripheralMacArray, connectType);
+        }
+        
+        if (tempDeviceCallBack) {
+            tempDeviceCallBack(connectCompelete,type,self.peripheralMacArray, connectType);
+        }
+    }else{
+        if (tempConnectCallBack) {
+            tempConnectCallBack(connectCompelete,type,self.peripherals, connectType);
+        }
+        
+        if (tempDeviceCallBack) {
+            tempDeviceCallBack(connectCompelete,type,self.peripherals, connectType);
+        }
     }
 }
 
@@ -99,6 +101,7 @@ static BluetoothMacManager *bluetoothMacManager;
 {
     [self inilizedDataBeforeBluetoothScan];
     deviceCallBack = callBack;
+    connectCallBack = nil;
     connectType = type;
     [self.centralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
@@ -404,7 +407,14 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(void)connectToPeripheral:(CBPeripheral *)peripheral callBack:(BluetoothCallBak)callBack
 {
+    if (self.peripheral) {
+        [self.centralManager cancelPeripheralConnection:self.peripheral];
+        self.peripheral = nil;
+        isConnected = NO;
+    }
+
     connectCallBack = callBack;
+    deviceCallBack = nil;
     connectType = ConnectToDevice;
     if (peripheral && self.centralManager) {
         if (connectType == ConnectToDevice) {
@@ -417,11 +427,94 @@ static BluetoothMacManager *bluetoothMacManager;
     }
 }
 
+/**
+ *  @author RenRenFenQi, 16-06-24 15:06:17
+ *
+ *  根据设备名连接设备
+ *
+ *  @param peripheralName 设备名
+ *  @param callBack       回调函数
+ */
+-(void)connectToPeripheralWithName:(NSString *)peripheralName callBack:(BluetoothCallBak)callBack
+{
+    if (self.peripheral) {
+        [self.centralManager cancelPeripheralConnection:self.peripheral];
+        self.peripheral = nil;
+        isConnected = NO;
+    }
+
+    connectCallBack = callBack;
+    deviceCallBack = nil;
+    connectType = ConnectToDevice;
+    CBPeripheral *peripheral = [self searchPeripheralWithName:peripheralName];
+    if (peripheral == nil) {
+        [self callBackDevice:NO WithCallbackType:CallbackDidFailToConnectPeriphera];
+        return;
+    }
+    
+    if (peripheral && self.centralManager) {
+        if (connectType == ConnectToDevice) {
+            //停止扫描
+            [self.centralManager stopScan];
+        }
+        self.peripheral = peripheral;
+        NSLog(@"开始连接外围设备...");
+        [self.centralManager connectPeripheral:peripheral options:nil];
+    }
+
+}
+
+-(CBPeripheral *)searchPeripheralWithName:(NSString *)name
+{
+    CBPeripheral *peripheral = nil;
+    if (name) {
+        for (CBPeripheral *p in self.peripherals) {
+            if ([p.name isEqualToString:name]) {
+                peripheral = p;
+                break;
+            }
+        }
+    }
+    return peripheral;
+}
+
 -(NSArray *)returnAllSearchedPeripheralsDictionary
 {
     return [NSArray arrayWithArray:self.peripheralMacArray];
 }
 
+/**
+ *  @author RenRenFenQi, 16-06-24 15:06:46
+ *
+ *  获取搜索到的所有智能设备
+ *
+ *  @return 智能设备列表
+ */
+-(NSArray *)returnAllScanPeripherals
+{
+    return self.peripherals;
+}
+
+/**
+ *  @author RenRenFenQi, 16-06-24 18:06:11
+ *
+ *  判断名字与当前连接蓝牙是否匹配
+ *
+ *  @param name 设备
+ *
+ *  @return YES/匹配  NO/不匹配
+ */
+-(BOOL)isMatchConnectedPeripheral:(CBPeripheral *)peripheral;
+{
+    if (isConnected) {
+        if (self.peripheral) {
+            if ([self.peripheral isEqual:peripheral]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
 #pragma mark - CBCentralManager代理方法
 //中心服务器状态更新后
 -(void)centralManagerDidUpdateState:(CBCentralManager *)central{
@@ -464,7 +557,9 @@ static BluetoothMacManager *bluetoothMacManager;
             return;
         }
         
-        [self connectToPeripheral:peripheral];
+        if (connectType != ConnectForScan) {
+            [self connectToPeripheral:peripheral];
+        }
     }
     
 }
