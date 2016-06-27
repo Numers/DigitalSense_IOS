@@ -30,6 +30,8 @@
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
+    
+    self.tableView.tableFooterView = [UIView new];
 
     
     NSArray *peripherals = [[BluetoothMacManager defaultManager] returnAllScanPeripherals];

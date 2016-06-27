@@ -64,17 +64,16 @@
  */
 -(RACSignal *)getMacAddressReturn:(Byte*)byte
 {
+    NSMutableString *result = [[NSMutableString alloc] init];
+    for (int i = 1; i <= 6; i ++) {
+        int value = byte[i];
+        [result appendFormat:@"%02X",value];
+    }
+    self.macAddress = [NSString stringWithString:result];
+    [[NSUserDefaults standardUserDefaults] setObject:result forKey:KMY_BlutoothMacAddress_Key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:BluetoothMacAddressNotify object:result];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSMutableString *result = [[NSMutableString alloc] init];
-        for (int i = 1; i <= 6; i ++) {
-            int value = byte[i];
-            [result appendFormat:@"%02X",value];
-        }
-        self.macAddress = [NSString stringWithString:result];
-        [[NSUserDefaults standardUserDefaults] setObject:result forKey:KMY_BlutoothMacAddress_Key];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [[NSNotificationCenter defaultCenter] postNotificationName:BluetoothMacAddressNotify object:result];
-        
         [subscriber sendNext:result];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{
@@ -92,16 +91,16 @@
  */
 -(RACSignal *)getOpenDeviceTimeReturn:(Byte *)byte
 {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSMutableString *result = [[NSMutableString alloc] init];
-        for (int i = 1; i <= 6; i ++) {
-            int value = byte[i];
-            [result appendFormat:@"%02d",value];
-            if (i != 6) {
-                [result appendString:@"-"];
-            }
+    NSMutableString *result = [[NSMutableString alloc] init];
+    for (int i = 1; i <= 6; i ++) {
+        int value = byte[i];
+        [result appendFormat:@"%02d",value];
+        if (i != 6) {
+            [result appendString:@"-"];
         }
-        self.openDeviceTime = [NSString stringWithString:result];
+    }
+    self.openDeviceTime = [NSString stringWithString:result];
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         [subscriber sendNext:result];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{
@@ -119,16 +118,16 @@
  */
 -(RACSignal *)getCloseDeviceTimeReturn:(Byte *)byte
 {
-    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSMutableString *result = [[NSMutableString alloc] init];
-        for (int i = 1; i <= 6; i ++) {
-            int value = byte[i];
-            [result appendFormat:@"%02d",value];
-            if (i != 6) {
-                [result appendString:@"-"];
-            }
+    NSMutableString *result = [[NSMutableString alloc] init];
+    for (int i = 1; i <= 6; i ++) {
+        int value = byte[i];
+        [result appendFormat:@"%02d",value];
+        if (i != 6) {
+            [result appendString:@"-"];
         }
-        self.closeDeviceTime = [NSString stringWithString:result];
+    }
+    self.closeDeviceTime = [NSString stringWithString:result];
+    return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         [subscriber sendNext:result];
         [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{
@@ -148,8 +147,8 @@
  */
 -(RACSignal *)wakeUpDeviceReturn:(Byte *)byte
 {
+    int value = byte[1];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        int value = byte[1];
         if (value == 0x63) {
             [subscriber sendNext:@(YES)];
         }else{
@@ -173,8 +172,8 @@
  */
 -(RACSignal *)sleepDeviceReturn:(Byte *)byte
 {
+    int value = byte[1];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        int value = byte[1];
         if (value == 0x64) {
             [subscriber sendNext:@(YES)];
         }else{
@@ -198,15 +197,15 @@
  */
 -(RACSignal *)getBottleInfoReturn:(Byte *)byte
 {
+    NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
+    
+    NSString *temp2 = [NSString stringWithFormat:@"0x%02X%02X",byte[5],byte[6]];
+    NSScanner *scanner2 = [NSScanner scannerWithString:temp2];
+    unsigned long long useTime;
+    [scanner2 scanHexLongLong:&useTime];
+    
+    NSDictionary *dic = @{BottleKey:cardNo,BottleUseTimeKey:@(useTime)};
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[1],byte[2],byte[3],byte[4]];
-        
-        NSString *temp2 = [NSString stringWithFormat:@"0x%02X%02X",byte[5],byte[6]];
-        NSScanner *scanner2 = [NSScanner scannerWithString:temp2];
-        unsigned long long useTime;
-        [scanner2 scanHexLongLong:&useTime];
-        
-        NSDictionary *dic = @{BottleKey:cardNo,BottleUseTimeKey:@(useTime)};
         [subscriber sendNext:dic];
         [subscriber sendCompleted];
 
@@ -228,8 +227,12 @@
  */
 -(RACSignal *)getBottleInfoCompletelyReturn:(Byte *)byte WithBottleInfoList:(NSArray *)list
 {
+    int value = byte[1];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        int value = byte[1];
+        while ((self.macAddress == nil || list.count != value)) {
+            NSLog(@"mac地址为空或者水果列表个数为0");
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+        }
         if (value == list.count)
         {
             if(self.macAddress == nil)
@@ -294,14 +297,17 @@
  */
 -(RACSignal *)emitSmellReturn:(Byte *)byte
 {
+    int value = byte[1];
+    NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[2],byte[3],byte[4],byte[5]];
+    
+    NSString *durationStr = [NSString stringWithFormat:@"%02X%02X",byte[6],byte[7]];
+    NSScanner *scanner = [NSScanner scannerWithString:durationStr];
+    unsigned int duration;
+    [scanner scanHexInt:&duration];
+    NSDictionary *dic = @{EmitSmellNoKey:cardNo,EmitSmellDurationKey:@(duration)};
+    
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        int value = byte[1];
         if (value == 0x66) {
-            NSString *cardNo = [NSString stringWithFormat:@"%02X%02X%02X%02X",byte[2],byte[3],byte[4],byte[5]];
-            
-            NSInteger duration = byte[6];
-            
-            NSDictionary *dic = @{EmitSmellNoKey:cardNo,EmitSmellDurationKey:@(duration)};
             [subscriber sendNext:dic];
             [subscriber sendCompleted];
         }

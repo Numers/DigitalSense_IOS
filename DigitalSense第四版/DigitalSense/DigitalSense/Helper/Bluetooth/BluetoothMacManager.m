@@ -368,7 +368,7 @@ static BluetoothMacManager *bluetoothMacManager;
 {
     NSMutableString *result = [[NSMutableString alloc] initWithFormat:@"%02X66",EmitSmell];
     [result appendFormat:@"%@",rfId];
-    [result appendFormat:@"%02X",interval];
+    [result appendFormat:@"%04X",interval];
     [result appendFormat:@"55"];
     return result;
 }
@@ -697,7 +697,6 @@ static BluetoothMacManager *bluetoothMacManager;
 #pragma -mark DataAnalizerProtocol
 -(void)outputData:(NSData *)data
 {
-    NSLog(@"输出数据:%@",data);
     [[NSNotificationCenter defaultCenter] postNotificationName:BluetoothDeliveryDataNotify object:data];
     if ([self.delegate respondsToSelector:@selector(deliveryData:)]) {
         [self.delegate deliveryData:data];

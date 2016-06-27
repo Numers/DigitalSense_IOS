@@ -13,7 +13,7 @@
 
 @interface DataAnalizer : NSObject
 {
-    BOOL dataIsCompletely;
+    NSMutableData *cacheData;
 }
 @property(nonatomic, assign) id<DataAnalizerProtocol> delegate;
 -(void)inputData:(NSData *)data;

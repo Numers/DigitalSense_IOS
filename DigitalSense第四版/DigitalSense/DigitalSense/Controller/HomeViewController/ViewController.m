@@ -201,7 +201,7 @@
                                 fruit.fruitKeyWords = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
-                                fruit.fruitRFID = [[dic objectForKey:@"sn"] uppercaseString];
+                                fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
                             [self saveOrderFile];
@@ -279,14 +279,7 @@
         [[BluetoothMacManager defaultManager] connectToPeripheral:peripheral callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
             if (completely) {
                 [self.lblTitle setText:@"设备已连接"];
-                [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [self initlizedData];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+                [self executeBluetoothCommand:deviceName];
             }else{
                 if(backType == CallbackBluetoothPowerOff)
                 {
@@ -303,14 +296,7 @@
         [[BluetoothMacManager defaultManager] connectToPeripheralWithName:deviceName callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
             if (completely) {
                 [self.lblTitle setText:@"设备已连接"];
-                [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-                [self initlizedData];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+                [self executeBluetoothCommand:deviceName];
             }else{
                 if(backType == CallbackBluetoothPowerOff)
                 {
@@ -324,6 +310,22 @@
         }];
     }
 }
+
+-(void)executeBluetoothCommand:(NSString *)deviceName
+{
+    [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self initlizedData];
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
+
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
+
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
+
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+
+    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+}
 //连接智能设备蓝牙
 -(void)connectToBluetooth
 {
@@ -335,8 +337,8 @@
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandCloseDeviceTime];
-            [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
             [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandWakeUpDevice];
+            [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
         }else{
             if(backType == CallbackBluetoothPowerOff)
             {
