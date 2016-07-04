@@ -262,6 +262,10 @@
                 }
                     break;
                 default:
+                {
+                    //如果数据错乱或程序执行错乱，清空数据
+                    [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                }
                     break;
             }
             
