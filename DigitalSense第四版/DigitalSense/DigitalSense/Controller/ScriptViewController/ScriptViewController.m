@@ -158,6 +158,8 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                     }
                     [[ScriptExecuteManager defaultManager] executeAbsoluteTimeScript:absoluteScriptList];
                     [self.tableView reloadData];
+                }else{
+                    [AppUtils showInfo:@"无脚本记录"];
                 }
             }
         } error:^(NSError *error) {

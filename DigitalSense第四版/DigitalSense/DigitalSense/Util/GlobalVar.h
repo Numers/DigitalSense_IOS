@@ -23,7 +23,7 @@
  *  请求气味信息API
  */
 //////////////////////////////////////////////////////////
-#define SC_FruitInfo_API @"/app/v1/smell-bottle/amount"
+#define SC_FruitInfo_API @"/app/v1/smell-bottle/amount?type=ios&new=1"
 /////////////////////////////////////////////////////////
 
 /**
@@ -37,7 +37,7 @@
  *  请求皮肤包API
  */
 //////////////////////////////////////////////////////////
-#define SC_SmellSkinPacket_API @"/app/v1/smell-skin/:id"
+#define SC_SmellSkinPacket_API @"/app/v1/smell-skin/:id?type=ios"
 /////////////////////////////////////////////////////////
 /*********************API接口****************************/
 
@@ -45,7 +45,7 @@
  *  请求脚本API
  */
 //////////////////////////////////////////////////////////+
-#define SC_Script_API @"/web/v1/schedule"
+#define SC_Script_API @"/app/v1/schedule-device/:sn"
 /////////////////////////////////////////////////////////
 /*********************API接口****************************/
 #endif /* GlobalVar_h */

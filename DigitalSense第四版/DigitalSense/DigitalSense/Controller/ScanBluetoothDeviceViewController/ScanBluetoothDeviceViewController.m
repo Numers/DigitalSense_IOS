@@ -40,6 +40,7 @@
     }else{
         deviceList = [NSArray array];
     }
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,8 +89,6 @@
                 });
             }
         });
-    }else{
-        return [UITableViewCell new];
     }
     return cell;
 }

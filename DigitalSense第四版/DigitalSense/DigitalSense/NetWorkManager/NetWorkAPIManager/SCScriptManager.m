@@ -29,7 +29,7 @@ static SCScriptManager *scScriptManager;
  */
 -(void)requestScriptInfoWithMacAddress:(NSString *)macAddress Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:macAddress,@"macaddress",nil];
-    [[SCNetWorkManager defaultManager] get:SC_Script_API parameters:parameters success:success error:error failed:failed isNotify:YES];
+    NSString *uri = [SC_Script_API stringByReplacingOccurrencesOfString:@":sn" withString:[NSString stringWithFormat:@"%@",macAddress]];
+    [[SCNetWorkManager defaultManager] get:uri parameters:nil success:success error:error failed:failed isNotify:YES];
 }
 @end

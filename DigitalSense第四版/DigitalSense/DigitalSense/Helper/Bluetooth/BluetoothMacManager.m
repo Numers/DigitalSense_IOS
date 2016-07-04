@@ -412,6 +412,7 @@ static BluetoothMacManager *bluetoothMacManager;
         self.peripheral = nil;
         isConnected = NO;
     }
+    
 
     connectCallBack = callBack;
     deviceCallBack = nil;
@@ -423,7 +424,10 @@ static BluetoothMacManager *bluetoothMacManager;
         }
         self.peripheral = peripheral;
         NSLog(@"开始连接外围设备...");
-        [self.centralManager connectPeripheral:peripheral options:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.centralManager connectPeripheral:peripheral options:nil];
+        });
+        
     }
 }
 
@@ -459,7 +463,9 @@ static BluetoothMacManager *bluetoothMacManager;
         }
         self.peripheral = peripheral;
         NSLog(@"开始连接外围设备...");
-        [self.centralManager connectPeripheral:peripheral options:nil];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.centralManager connectPeripheral:peripheral options:nil];
+        });
     }
 
 }
@@ -546,19 +552,19 @@ static BluetoothMacManager *bluetoothMacManager;
     //连接外围设备
     if (peripheral) {
         //找到口罩设备的蓝牙信号
-        if(![peripheral.name hasPrefix:@"HJ-580"]){
+        if(![peripheral.name hasPrefix:@"renrenkeji"] && ![peripheral.name hasPrefix:@"HJ-580"]){
             return;
-        }
-        
-        //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
-        if(![self.peripherals containsObject:peripheral]){
-            [self.peripherals addObject:peripheral];
         }else{
-            return;
-        }
-        
-        if (connectType != ConnectForScan) {
-            [self connectToPeripheral:peripheral];
+            //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
+            if(![self.peripherals containsObject:peripheral]){
+                [self.peripherals addObject:peripheral];
+            }else{
+                return;
+            }
+            
+            if (connectType != ConnectForScan) {
+                [self connectToPeripheral:peripheral];
+            }
         }
     }
     

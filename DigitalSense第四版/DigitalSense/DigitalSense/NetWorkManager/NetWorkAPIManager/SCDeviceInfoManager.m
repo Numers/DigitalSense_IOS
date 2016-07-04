@@ -33,7 +33,7 @@ static SCDeviceInfoManager *scDeviceInfoManager;
 -(void)requestFruitInfo:(NSString *)hid WithRFIDSequence:(NSString *)rfIdSequece WithUseTimeSequence:(NSString *)useTimeSequence IsNew:(NSString *)isNew Success:(ApiSuccessCallback)success Error:(ApiErrorCallback)error Failed:(ApiFailedCallback)failed
 {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hid,@"hid",rfIdSequece,@"rfid",useTimeSequence,@"used",isNew,@"new",@"ios",@"type",nil];
-    [[SCNetWorkManager defaultManager] put:SC_FruitInfo_API parameters:parameters success:success error:error failed:failed isNotify:NO];
+    [[SCNetWorkManager defaultManager] put:SC_FruitInfo_API parameters:parameters success:success error:error failed:failed isNotify:YES];
 }
 
 /**

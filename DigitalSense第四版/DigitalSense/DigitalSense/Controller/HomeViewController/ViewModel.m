@@ -229,7 +229,7 @@
 {
     int value = byte[1];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        while ((self.macAddress == nil || list.count != value)) {
+        while ((self.macAddress == nil || list.count == 0)) {
             NSLog(@"mac地址为空或者水果列表个数为0");
             [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
         }
@@ -241,12 +241,15 @@
             }else{
                 NSDictionary *bottleInfoDic = [self dowithBottleInfoList:list];
                 [[SCDeviceInfoManager defaultManager] requestFruitInfo:self.macAddress WithRFIDSequence:[bottleInfoDic objectForKey:@"RFID"] WithUseTimeSequence:[bottleInfoDic objectForKey:@"useTime"] IsNew:@"1" Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"网络请求瓶子信息成功%@",responseObject);
                     [subscriber sendNext:responseObject];
                     [subscriber sendCompleted];
                 } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    NSLog(@"网络请求瓶子信息错误%@",responseObject);
                     [subscriber sendCompleted];
                 } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
                     [subscriber sendCompleted];
+                    NSLog(@"网络请求瓶子信息失败%@",error);
                 }];
             }
         }else{
@@ -309,8 +312,8 @@
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
         if (value == 0x66) {
             [subscriber sendNext:dic];
-            [subscriber sendCompleted];
         }
+        [subscriber sendCompleted];
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"开启味道信号销毁");
         }];

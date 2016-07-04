@@ -76,14 +76,16 @@
     
     self.viewModel = [[ViewModel alloc] init];
     [self requestSmellSkinWithSkinId:skin.skinId];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deliveryData:) name:BluetoothDeliveryDataNotify object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bluetoothPowerOn:) name:kBluetoothPowerOnNotify object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bluetoothPowerOff:) name:kBluetoothPowerOffNotify object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deliveryData:) name:BluetoothDeliveryDataNotify object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bluetoothPowerOn:) name:kBluetoothPowerOnNotify object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bluetoothPowerOff:) name:kBluetoothPowerOffNotify object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -102,12 +104,12 @@
 #pragma -mark Notification
 -(void)bluetoothPowerOn:(NSNotification *)notify
 {
-    [self scanBluetooth];
+    [self performSelectorOnMainThread:@selector(scanBluetooth) withObject:nil waitUntilDone:NO];
 }
 
 -(void)bluetoothPowerOff:(NSNotification *)notify
 {
-    [self disConnectBluetooth:@"设备未开启蓝牙"];
+    [self performSelectorOnMainThread:@selector(disConnectBluetooth:) withObject:@"设备未开启蓝牙" waitUntilDone:NO];
 }
 
 -(void)deliveryData:(NSNotification *)notify
@@ -241,6 +243,8 @@
         _fruitsList = [NSMutableArray array];
     }
     
+    [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    
     hasNewFruit = NO;
     selectTag = CloseTag;
 }
@@ -251,6 +255,7 @@
     [self.lblTitle setText:@"正在搜索智能设备..."];
     [self.btnSelectDevice setHidden:YES];
     [[BluetoothMacManager defaultManager] startScanBluetoothDevice:ConnectForScan callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
+        [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
         if (completely) {
             
         }else{
@@ -304,7 +309,7 @@
                 }else if(backType == CallbackTimeout){
                     [self.lblTitle setText:@"未发现有效设备"];
                 }else{
-                    [self.lblTitle setText:@"设备已断开"];
+                    [self.lblTitle setText:@"设备未连接"];
                 }
             }
         }];
@@ -692,6 +697,12 @@
     }else{
         [self scanBluetooth];
     }
+    
+    UIButton *btnRefresh = (UIButton *)sender;
+    [btnRefresh setEnabled:NO];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [btnRefresh setEnabled:YES];
+    });
 }
 
 -(IBAction)clickScriptBtn:(id)sender
