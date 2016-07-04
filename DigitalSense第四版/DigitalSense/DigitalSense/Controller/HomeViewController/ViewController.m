@@ -176,15 +176,19 @@
                     NSNumber *duration = [dic objectForKey:EmitSmellDurationKey];
                     if ([duration integerValue] == 0) {
                         [self setSelectTag:CloseTag];
-                        if (smellEmitTimer) {
-                            if ([smellEmitTimer isValid]) {
-                                [smellEmitTimer invalidate];
-                                smellEmitTimer = nil;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (smellEmitTimer) {
+                                if ([smellEmitTimer isValid]) {
+                                    [smellEmitTimer invalidate];
+                                    smellEmitTimer = nil;
+                                }
                             }
-                        }
+                        });
                     }else{
                         [self setSelectTag:rfId];
-                        [self startTimerWithDuration:[duration intValue]];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self startTimerWithDuration:[duration intValue]];
+                        });
                     }
                 }];
             }

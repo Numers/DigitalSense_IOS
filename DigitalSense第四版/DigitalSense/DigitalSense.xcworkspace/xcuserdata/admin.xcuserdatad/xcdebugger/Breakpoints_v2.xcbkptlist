@@ -1354,11 +1354,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489054267.777723"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "718"
-            endingLineNumber = "718"
+            startingLineNumber = "722"
+            endingLineNumber = "722"
             landmarkName = "-clickScriptBtn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1530,11 +1530,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "488957012.417055"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "-deliveryData:"
             landmarkType = "5">
             <Locations>
@@ -1578,11 +1578,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "488957012.417055"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
+            startingLineNumber = "200"
+            endingLineNumber = "200"
             landmarkName = "-deliveryData:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1658,11 +1658,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "694"
-            endingLineNumber = "694"
+            startingLineNumber = "698"
+            endingLineNumber = "698"
             landmarkName = "-clickRefreshBtn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2090,11 +2090,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "272"
+            endingLineNumber = "272"
             landmarkName = "-scanBluetooth"
             landmarkType = "5">
          </BreakpointContent>
@@ -2106,11 +2106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "-connectToBluetooth:WithPeripheral:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2186,11 +2186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489054267.777723"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "854"
-            endingLineNumber = "854"
+            startingLineNumber = "858"
+            endingLineNumber = "858"
             landmarkName = "-connectToBluetoothWithPeripheral:WithName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2202,11 +2202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489054267.777723"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "853"
-            endingLineNumber = "853"
+            startingLineNumber = "857"
+            endingLineNumber = "857"
             landmarkName = "-connectToBluetoothWithPeripheral:WithName:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2410,11 +2410,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "488957012.417055"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "209"
-            endingLineNumber = "209"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "-deliveryData:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2570,11 +2570,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "696"
-            endingLineNumber = "696"
+            startingLineNumber = "700"
+            endingLineNumber = "700"
             landmarkName = "-clickRefreshBtn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2586,11 +2586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489054267.777723"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "838"
-            endingLineNumber = "838"
+            startingLineNumber = "842"
+            endingLineNumber = "842"
             landmarkName = "-collectionView:didSelectItemAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2618,11 +2618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "637"
-            endingLineNumber = "637"
+            startingLineNumber = "641"
+            endingLineNumber = "641"
             landmarkName = "-TouchUpinsideVoiceBtn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2634,11 +2634,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "633"
-            endingLineNumber = "633"
+            startingLineNumber = "637"
+            endingLineNumber = "637"
             landmarkName = "-TouchUpinsideVoiceBtn:"
             landmarkType = "5">
             <Locations>
@@ -2682,11 +2682,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "629"
-            endingLineNumber = "629"
+            startingLineNumber = "633"
+            endingLineNumber = "633"
             landmarkName = "-TouchUpinsideVoiceBtn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2698,11 +2698,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Helper/Bluetooth/DataAnalizer/DataAnalizer.m"
-            timestampString = "489320990.960398"
+            timestampString = "489323345.086344"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
             landmarkName = "-hexToBytes:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3001,11 +3001,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "304"
-            endingLineNumber = "304"
+            startingLineNumber = "308"
+            endingLineNumber = "308"
             landmarkName = "-connectToBluetooth:WithPeripheral:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3017,11 +3017,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "321"
-            endingLineNumber = "321"
+            startingLineNumber = "325"
+            endingLineNumber = "325"
             landmarkName = "-executeBluetoothCommand:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3049,11 +3049,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "312"
-            endingLineNumber = "312"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
             landmarkName = "-connectToBluetooth:WithPeripheral:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3065,11 +3065,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "310"
-            endingLineNumber = "310"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
             landmarkName = "-connectToBluetooth:WithPeripheral:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3177,11 +3177,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "448"
-            endingLineNumber = "448"
+            startingLineNumber = "452"
+            endingLineNumber = "452"
             landmarkName = "-writeDataWithRFID:WithTimeInterval:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3353,11 +3353,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
             landmarkName = "-scanBluetooth"
             landmarkType = "5">
          </BreakpointContent>
@@ -3369,11 +3369,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
-            timestampString = "489053204.938686"
+            timestampString = "489323843.822967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "262"
+            endingLineNumber = "262"
             landmarkName = "-scanBluetooth"
             landmarkType = "5">
          </BreakpointContent>
@@ -3551,6 +3551,22 @@
             startingLineNumber = "144"
             endingLineNumber = "144"
             landmarkName = "-stopBluetoothDevice"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DigitalSense/Controller/HomeViewController/ViewController.m"
+            timestampString = "489323887.619096"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "427"
+            endingLineNumber = "427"
+            landmarkName = "-countdown"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
