@@ -49,6 +49,7 @@
     @synchronized (self) {
         NSLog(@"开始执行一次循环");
         while (cacheData.length > 0) {
+            NSLog(@"剩余数据:%@",cacheData);
             Byte *byte = (Byte *)[cacheData bytes];
             CommandType command = byte[0];
             switch (command) {
@@ -58,6 +59,7 @@
                         Byte check = byte[7];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 8)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -65,10 +67,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -79,6 +85,7 @@
                         Byte check = byte[7];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 8)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -86,10 +93,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -100,6 +111,7 @@
                         Byte check = byte[7];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 8)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -107,10 +119,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -121,6 +137,7 @@
                         Byte check = byte[9];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 10)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -128,10 +145,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -142,6 +163,7 @@
                         Byte check = byte[2];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 3)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -149,10 +171,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -163,6 +189,7 @@
                         Byte check = byte[7];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 8)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -170,10 +197,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -184,6 +215,7 @@
                         Byte check = byte[8];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 9)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -191,10 +223,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
@@ -205,6 +241,7 @@
                         Byte check = byte[2];
                         if (check == 0x55) {
                             NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 3)];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
@@ -212,10 +249,14 @@
                         }else{
                             //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
                             NSData *sendData = [self hexToBytes:[NSString stringWithFormat:@"%02X0055",BottleInfoCompletely]];
+                            NSLog(@"发送:%@",sendData);
                             if ([self.delegate respondsToSelector:@selector(outputData:)]) {
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                            });
                         }
                     }
                 }
