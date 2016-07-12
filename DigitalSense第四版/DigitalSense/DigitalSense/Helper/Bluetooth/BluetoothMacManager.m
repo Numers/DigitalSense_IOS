@@ -556,6 +556,14 @@ static BluetoothMacManager *bluetoothMacManager;
             return;
         }else{
             //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
+//            NSLog(@"kCBAdvDataManufacturerData : %@ ,kCBAdvDataServiceUUIDs : %@ , kCBAdvDataLocalName : %@",[advertisementData objectForKey:@"kCBAdvDataManufacturerData"],[advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"],[advertisementData objectForKey:@"kCBAdvDataLocalName"]);
+//            NSData *advData = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
+//            if (advData) {
+//                Byte *byte = (Byte *)[advData bytes];
+//                NSData *macData = [NSData dataWithBytes:byte length:sizeof(byte)];
+//                NSLog(@"MacAddressData : %@",macData);
+//            }
+            
             if(![self.peripherals containsObject:peripheral]){
                 [self.peripherals addObject:peripheral];
             }else{

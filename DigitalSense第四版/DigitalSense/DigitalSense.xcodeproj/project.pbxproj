@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
 		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
+		845BA4B91D2CF78D00669501 /* ScriptOperationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */; };
 		8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */; };
 		8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */; };
 		8463B9DF1D13FE4F00EACECD /* RelativeTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */; };
@@ -27,6 +28,12 @@
 		846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F01D016DD00055E54E /* SCNetWorkManager.m */; };
 		846A76F61D016DD00055E54E /* URLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F21D016DD00055E54E /* URLManager.m */; };
 		8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471AB0E1CFC321F00CB5DB6 /* Fruit.m */; };
+		8471F24B1D334DBC0029A409 /* ScriptSerialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F24A1D334DBC0029A409 /* ScriptSerialViewController.m */; };
+		8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F24D1D334DD10029A409 /* ScriptSelectViewController.m */; };
+		8471F2511D3351000029A409 /* ScriptSelectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F2501D3351000029A409 /* ScriptSelectCollectionViewCell.m */; };
+		8471F2541D33519E0029A409 /* ScriptSelectSmellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F2531D33519E0029A409 /* ScriptSelectSmellView.m */; };
+		847C58661D34E7D2002159AC /* ScriptSerialCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C58641D34E7D2002159AC /* ScriptSerialCollectionViewCell.m */; };
+		847C58671D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 847C58651D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib */; };
 		847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */; };
 		847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C71CFD65E5000D77AE /* DataAnalizer.m */; };
 		847EC4D61CFD65E5000D77AE /* grammar_sample.abnf in Resources */ = {isa = PBXBuildFile; fileRef = 847EC4CA1CFD65E5000D77AE /* grammar_sample.abnf */; };
@@ -64,6 +71,8 @@
 		845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IphoneModel.h"; sourceTree = "<group>"; };
 		845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IphoneModel.m"; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
+		845BA4B71D2CF78D00669501 /* ScriptOperationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptOperationViewController.h; sourceTree = "<group>"; };
+		845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptOperationViewController.m; sourceTree = "<group>"; };
 		8463B9D71D13961500EACECD /* ScriptPlayDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptPlayDetailsViewController.h; sourceTree = "<group>"; };
 		8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptPlayDetailsViewController.m; sourceTree = "<group>"; };
 		8463B9DA1D13FC2300EACECD /* AbsoluteTimeScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbsoluteTimeScript.h; sourceTree = "<group>"; };
@@ -99,6 +108,17 @@
 		846A76F21D016DD00055E54E /* URLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLManager.m; sourceTree = "<group>"; };
 		8471AB0D1CFC321F00CB5DB6 /* Fruit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
 		8471AB0E1CFC321F00CB5DB6 /* Fruit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
+		8471F2491D334DBC0029A409 /* ScriptSerialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSerialViewController.h; sourceTree = "<group>"; };
+		8471F24A1D334DBC0029A409 /* ScriptSerialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSerialViewController.m; sourceTree = "<group>"; };
+		8471F24C1D334DD10029A409 /* ScriptSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSelectViewController.h; sourceTree = "<group>"; };
+		8471F24D1D334DD10029A409 /* ScriptSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSelectViewController.m; sourceTree = "<group>"; };
+		8471F24F1D3351000029A409 /* ScriptSelectCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSelectCollectionViewCell.h; sourceTree = "<group>"; };
+		8471F2501D3351000029A409 /* ScriptSelectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSelectCollectionViewCell.m; sourceTree = "<group>"; };
+		8471F2521D33519E0029A409 /* ScriptSelectSmellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSelectSmellView.h; sourceTree = "<group>"; };
+		8471F2531D33519E0029A409 /* ScriptSelectSmellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSelectSmellView.m; sourceTree = "<group>"; };
+		847C58631D34E7D2002159AC /* ScriptSerialCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSerialCollectionViewCell.h; sourceTree = "<group>"; };
+		847C58641D34E7D2002159AC /* ScriptSerialCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSerialCollectionViewCell.m; sourceTree = "<group>"; };
+		847C58651D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScriptSerialCollectionViewCell.xib; sourceTree = "<group>"; };
 		847EC4C31CFD65E5000D77AE /* BluetoothMacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothMacManager.h; sourceTree = "<group>"; };
 		847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothMacManager.m; sourceTree = "<group>"; };
 		847EC4C61CFD65E5000D77AE /* DataAnalizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataAnalizer.h; sourceTree = "<group>"; };
@@ -188,6 +208,17 @@
 				845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */,
 			);
 			path = Category;
+			sourceTree = "<group>";
+		};
+		845BA4B61D2CF66700669501 /* ScriptOperationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8471F2411D3347860029A409 /* ScriptSelectViewController */,
+				8471F2421D3347860029A409 /* ScriptSerialViewController */,
+				845BA4B71D2CF78D00669501 /* ScriptOperationViewController.h */,
+				845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */,
+			);
+			path = ScriptOperationViewController;
 			sourceTree = "<group>";
 		};
 		8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */ = {
@@ -312,6 +343,39 @@
 				847EEFA91D17CAC3009765E6 /* ScriptTaskTime.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8471F2411D3347860029A409 /* ScriptSelectViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8471F24C1D334DD10029A409 /* ScriptSelectViewController.h */,
+				8471F24D1D334DD10029A409 /* ScriptSelectViewController.m */,
+				8471F24F1D3351000029A409 /* ScriptSelectCollectionViewCell.h */,
+				8471F2501D3351000029A409 /* ScriptSelectCollectionViewCell.m */,
+				8471F2521D33519E0029A409 /* ScriptSelectSmellView.h */,
+				8471F2531D33519E0029A409 /* ScriptSelectSmellView.m */,
+			);
+			path = ScriptSelectViewController;
+			sourceTree = "<group>";
+		};
+		8471F2421D3347860029A409 /* ScriptSerialViewController */ = {
+			isa = PBXGroup;
+			children = (
+				847C58621D34E7BC002159AC /* ScriptSerialCollectionViewCell */,
+				8471F2491D334DBC0029A409 /* ScriptSerialViewController.h */,
+				8471F24A1D334DBC0029A409 /* ScriptSerialViewController.m */,
+			);
+			path = ScriptSerialViewController;
+			sourceTree = "<group>";
+		};
+		847C58621D34E7BC002159AC /* ScriptSerialCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				847C58631D34E7D2002159AC /* ScriptSerialCollectionViewCell.h */,
+				847C58641D34E7D2002159AC /* ScriptSerialCollectionViewCell.m */,
+				847C58651D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib */,
+			);
+			path = ScriptSerialCollectionViewCell;
 			sourceTree = "<group>";
 		};
 		847EC4C11CFD65E5000D77AE /* Helper */ = {
@@ -439,6 +503,7 @@
 		8482CF5A1D12594D0020CEEA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				845BA4B61D2CF66700669501 /* ScriptOperationViewController */,
 				84F7719A1D1D238300591B24 /* ScanBluetoothDeviceViewController */,
 				8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */,
 				8482CF5B1D12594D0020CEEA /* HomeViewController */,
@@ -563,6 +628,7 @@
 				846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */,
 				8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */,
 				846667851CF82AD400EFBE66 /* Main.storyboard in Resources */,
+				847C58671D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,10 +696,14 @@
 				8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
 				84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */,
+				8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */,
 				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
 				8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */,
 				8482CF6A1D1278DF0020CEEA /* ScriptTableViewCell.m in Sources */,
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
+				8471F2541D33519E0029A409 /* ScriptSelectSmellView.m in Sources */,
+				8471F24B1D334DBC0029A409 /* ScriptSerialViewController.m in Sources */,
+				847C58661D34E7D2002159AC /* ScriptSerialCollectionViewCell.m in Sources */,
 				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
 				8463B9E51D140A6F00EACECD /* ScriptViewModel.m in Sources */,
@@ -641,6 +711,7 @@
 				845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */,
 				846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */,
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
+				8471F2511D3351000029A409 /* ScriptSelectCollectionViewCell.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				847EEFAF1D17D597009765E6 /* LZProgressView.m in Sources */,
@@ -652,6 +723,7 @@
 				8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */,
 				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,
 				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
+				845BA4B91D2CF78D00669501 /* ScriptOperationViewController.m in Sources */,
 				8482CF6E1D127A9F0020CEEA /* Script.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

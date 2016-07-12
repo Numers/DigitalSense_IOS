@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "ScriptViewController.h"
 #import "ScanBluetoothDeviceViewController.h"
+#import "ScriptOperationViewController.h"
 #import "LewReorderableLayout.h"
 #import "UIImageView+Webcache.h"
 #import "Fruit.h"
@@ -618,6 +619,10 @@
 -(IBAction)TouchDownVoiceBtn:(id)sender
 {
     NSLog(@"按钮按下了...");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    ScriptOperationViewController *scriptOperationVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptOperationViewIdentify"];
+    [self.navigationController pushViewController:scriptOperationVC animated:YES];
     
 }
 
