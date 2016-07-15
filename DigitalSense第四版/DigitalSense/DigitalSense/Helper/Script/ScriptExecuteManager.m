@@ -153,7 +153,9 @@ static NSInteger currentSecond = -1;
     if (filterArr && filterArr.count > 0) {
         ScriptCommand *command = [filterArr objectAtIndex:0];
         
+        #warning 需要删除这里的通知
         [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
+        
         //往蓝牙发送command
         if ([[BluetoothMacManager defaultManager] isConnected]) {
             if (command.command) {

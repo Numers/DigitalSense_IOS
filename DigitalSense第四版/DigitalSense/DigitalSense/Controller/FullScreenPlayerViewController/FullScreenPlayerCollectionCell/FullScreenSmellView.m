@@ -16,7 +16,8 @@
     if (self) {
         [self setBackgroundColor:[UIColor blueColor]];
         
-        self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, LabelHeight)];
+        self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, frame.size.height - LabelHeight)];
+        [self.lblFruitName setCenter:CGPointMake(frame.size.width / 2, (frame.size.height - LabelHeight)/2)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];
         [self.lblFruitName setFont:[UIFont systemFontOfSize:15.0f]];
         [self.lblFruitName setNumberOfLines:0];
@@ -40,7 +41,8 @@
     }
     
     if (self.lblDuration) {
-        [self.lblDuration setText:[NSString stringWithFormat:@"%lds",duration]];
+        NSString *durationStr = [NSString stringWithFormat:@"%lds",duration];
+        [self.lblDuration setText:durationStr];
     }
 }
 
@@ -67,7 +69,7 @@
     CGContextStrokePath(context);
     
     if (self.lblFruitName) {
-        [self.lblFruitName setFrame:CGRectMake(0, 0, self.frame.size.width, LabelHeight)];
+        [self.lblFruitName setCenter:CGPointMake(self.frame.size.width / 2, (self.frame.size.height - LabelHeight)/2)];
     }
     
     if (self.lblDuration) {

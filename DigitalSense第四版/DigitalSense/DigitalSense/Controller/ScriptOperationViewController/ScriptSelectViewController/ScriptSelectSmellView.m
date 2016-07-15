@@ -102,10 +102,12 @@
     
     if (self.lblFruitName) {
         [self.lblFruitName setFrame:CGRectMake(0, self.fruitImageView.frame.origin.y + self.fruitImageView.frame.size.height, self.frame.size.width, LabelHeight)];
+        [self.lblFruitName sizeThatFits:CGSizeMake(self.frame.size.width, LabelHeight)];
     }
     
     if (self.lblDuration) {
         [self.lblDuration setFrame:CGRectMake(0, self.frame.size.height - LabelHeight, self.frame.size.width, LabelHeight)];
+        [self.lblDuration sizeThatFits:CGSizeMake(self.frame.size.width, LabelHeight)];
     }
     
     if (self.fruitImageView.center.y > (self.fruitImageView.frame.size.height / 2.0f  + 2 * LabelHeight)) {
