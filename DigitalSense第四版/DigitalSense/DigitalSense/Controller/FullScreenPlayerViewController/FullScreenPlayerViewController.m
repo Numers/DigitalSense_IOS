@@ -60,12 +60,14 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
     [self playScript];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
