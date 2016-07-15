@@ -134,7 +134,7 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat height = (self.view.frame.size.height - 0.5)/ 2.0f;
+    CGFloat height = (collectionView.frame.size.height - 0.5)/ 2.0f;
     return CGSizeMake(height, height);
 }
 
@@ -151,11 +151,11 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath{
-    return YES;
+    return NO;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath canMoveToIndexPath:(NSIndexPath *)toIndexPath{
-    return YES;
+    return NO;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath{

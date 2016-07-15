@@ -27,12 +27,14 @@
         self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, self.fruitImageView.frame.origin.y + self.fruitImageView.frame.size.height, frame.size.width, LabelHeight)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];
         [self.lblFruitName setFont:[UIFont systemFontOfSize:15.0f]];
+        [self.lblFruitName setNumberOfLines:0];
         [self.lblFruitName setTextColor:[UIColor whiteColor]];
         [self addSubview:self.lblFruitName];
         
         self.lblDuration = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height - LabelHeight, frame.size.width, LabelHeight)];
         [self.lblDuration setTextAlignment:NSTextAlignmentCenter];
         [self.lblDuration setFont:[UIFont systemFontOfSize:12.0f]];
+        [self.lblDuration setNumberOfLines:0];
         [self.lblDuration setTextColor:[UIColor whiteColor]];
         [self addSubview:self.lblDuration];
         
@@ -75,7 +77,8 @@
     
     CGFloat vectorDy = previoisPoint.y - currentPoint.y;
     CGFloat height = vectorDy  + self.frame.size.height;
-    if ((height > self.frame.size.width - 2 * FruitImageMargin) && height <= maxHeight) {
+//    if ((height > self.frame.size.width - 2 * FruitImageMargin) && height <= maxHeight) {
+    if (height >= 0.0f && height <= maxHeight) {
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - vectorDy, self.frame.size.width, height);
         [self setNeedsDisplay];
         if ([self.delegate respondsToSelector:@selector(powerValueChanged:)]) {

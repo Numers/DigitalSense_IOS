@@ -11,12 +11,15 @@
 @class ScriptSelectSmellView,Fruit,ScriptCommand;
 @protocol ScriptSelectCollectionViewCellProtocol <NSObject>
 -(void)deleteCellWithFruit:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)command;
+-(void)showPickViewWithScriptCommand:(ScriptCommand *)command;
 @end
 @interface ScriptSelectCollectionViewCell : UICollectionViewCell<ScriptSelectSmellViewProtocol>
 {
     BOOL isShowCloseBtn;
     Fruit *currentFruit;
     ScriptCommand *currentScriptCommand;
+    
+    UITapGestureRecognizer *tapGestureRecognizer;
 }
 @property(nonatomic, assign) id<ScriptSelectCollectionViewCellProtocol> delegate;
 @property(nonatomic, strong) UIButton *btnClose;

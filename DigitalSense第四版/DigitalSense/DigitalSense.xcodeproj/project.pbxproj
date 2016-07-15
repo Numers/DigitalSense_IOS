@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4B919B6398061387E6DF7701 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DD69D7F367F145CFE3F4D3A /* libPods.a */; };
+		8452134A1D38886A009D91E0 /* FullScreenPlayerCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 845213491D38886A009D91E0 /* FullScreenPlayerCollectionCell.m */; };
+		8452134D1D388893009D91E0 /* FullScreenSmellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8452134C1D388893009D91E0 /* FullScreenSmellView.m */; };
 		845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */; };
 		845BA4B91D2CF78D00669501 /* ScriptOperationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */; };
+		8460DCFB1D35F3DB0040943E /* DataPickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8460DCFA1D35F3DB0040943E /* DataPickViewController.m */; };
 		8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */; };
 		8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DB1D13FC2300EACECD /* AbsoluteTimeScript.m */; };
 		8463B9DF1D13FE4F00EACECD /* RelativeTimeScript.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463B9DE1D13FE4F00EACECD /* RelativeTimeScript.m */; };
@@ -23,6 +26,13 @@
 		8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */; };
 		846735C51D0033D00073ED9D /* SDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735C41D0033D00073ED9D /* SDBManager.m */; };
 		846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 846735CB1D003A800073ED9D /* SFruitInfoDB.m */; };
+		846A61851D37240000250838 /* FullScreenPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A61841D37240000250838 /* FullScreenPlayerViewController.m */; };
+		846A61941D375C3100250838 /* UINavigationController+WXSTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A61891D375C3100250838 /* UINavigationController+WXSTransition.m */; };
+		846A61951D375C3100250838 /* UIViewController+WXSTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A618B1D375C3100250838 /* UIViewController+WXSTransition.m */; };
+		846A61961D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A618D1D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m */; };
+		846A61971D375C3100250838 /* WXSTransitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A618F1D375C3100250838 /* WXSTransitionManager.m */; };
+		846A61981D375C3100250838 /* WXSTransitionProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A61911D375C3100250838 /* WXSTransitionProperty.m */; };
+		846A619C1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A619B1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.m */; };
 		846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */; };
 		846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76ED1D016DD00055E54E /* RFGeneralManager.m */; };
 		846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F01D016DD00055E54E /* SCNetWorkManager.m */; };
@@ -68,11 +78,17 @@
 /* Begin PBXFileReference section */
 		0DD69D7F367F145CFE3F4D3A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BC7B1DE18EBD5B7CC403DD4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		845213481D38886A009D91E0 /* FullScreenPlayerCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPlayerCollectionCell.h; sourceTree = "<group>"; };
+		845213491D38886A009D91E0 /* FullScreenPlayerCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenPlayerCollectionCell.m; sourceTree = "<group>"; };
+		8452134B1D388893009D91E0 /* FullScreenSmellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenSmellView.h; sourceTree = "<group>"; };
+		8452134C1D388893009D91E0 /* FullScreenSmellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenSmellView.m; sourceTree = "<group>"; };
 		845456F81D0EAB65006E7FF6 /* UIDevice+IphoneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+IphoneModel.h"; sourceTree = "<group>"; };
 		845456F91D0EAB65006E7FF6 /* UIDevice+IphoneModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+IphoneModel.m"; sourceTree = "<group>"; };
 		84595C8D1CFEC2A6007DB272 /* DigitalSense-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DigitalSense-Prefix.pch"; sourceTree = "<group>"; };
 		845BA4B71D2CF78D00669501 /* ScriptOperationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptOperationViewController.h; sourceTree = "<group>"; };
 		845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptOperationViewController.m; sourceTree = "<group>"; };
+		8460DCF91D35F3DB0040943E /* DataPickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPickViewController.h; sourceTree = "<group>"; };
+		8460DCFA1D35F3DB0040943E /* DataPickViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPickViewController.m; sourceTree = "<group>"; };
 		8463B9D71D13961500EACECD /* ScriptPlayDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptPlayDetailsViewController.h; sourceTree = "<group>"; };
 		8463B9D81D13961500EACECD /* ScriptPlayDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptPlayDetailsViewController.m; sourceTree = "<group>"; };
 		8463B9DA1D13FC2300EACECD /* AbsoluteTimeScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbsoluteTimeScript.h; sourceTree = "<group>"; };
@@ -97,6 +113,21 @@
 		846735C41D0033D00073ED9D /* SDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBManager.m; sourceTree = "<group>"; };
 		846735CA1D003A800073ED9D /* SFruitInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFruitInfoDB.h; sourceTree = "<group>"; };
 		846735CB1D003A800073ED9D /* SFruitInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFruitInfoDB.m; sourceTree = "<group>"; };
+		846A61831D37240000250838 /* FullScreenPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenPlayerViewController.h; sourceTree = "<group>"; };
+		846A61841D37240000250838 /* FullScreenPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenPlayerViewController.m; sourceTree = "<group>"; };
+		846A61881D375C3100250838 /* UINavigationController+WXSTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+WXSTransition.h"; sourceTree = "<group>"; };
+		846A61891D375C3100250838 /* UINavigationController+WXSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+WXSTransition.m"; sourceTree = "<group>"; };
+		846A618A1D375C3100250838 /* UIViewController+WXSTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+WXSTransition.h"; sourceTree = "<group>"; };
+		846A618B1D375C3100250838 /* UIViewController+WXSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WXSTransition.m"; sourceTree = "<group>"; };
+		846A618C1D375C3100250838 /* WXSPercentDrivenInteractiveTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSPercentDrivenInteractiveTransition.h; sourceTree = "<group>"; };
+		846A618D1D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSPercentDrivenInteractiveTransition.m; sourceTree = "<group>"; };
+		846A618E1D375C3100250838 /* WXSTransitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSTransitionManager.h; sourceTree = "<group>"; };
+		846A618F1D375C3100250838 /* WXSTransitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSTransitionManager.m; sourceTree = "<group>"; };
+		846A61901D375C3100250838 /* WXSTransitionProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSTransitionProperty.h; sourceTree = "<group>"; };
+		846A61911D375C3100250838 /* WXSTransitionProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSTransitionProperty.m; sourceTree = "<group>"; };
+		846A61921D375C3100250838 /* WXSTypedefConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSTypedefConfig.h; sourceTree = "<group>"; };
+		846A619A1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+UIInterfaceOrientations.h"; sourceTree = "<group>"; };
+		846A619B1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+UIInterfaceOrientations.m"; sourceTree = "<group>"; };
 		846A76EA1D016DD00055E54E /* SCDeviceInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCDeviceInfoManager.h; sourceTree = "<group>"; };
 		846A76EB1D016DD00055E54E /* SCDeviceInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCDeviceInfoManager.m; sourceTree = "<group>"; };
 		846A76EC1D016DD00055E54E /* RFGeneralManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFGeneralManager.h; sourceTree = "<group>"; };
@@ -201,6 +232,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		845213471D388838009D91E0 /* FullScreenPlayerCollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				845213481D38886A009D91E0 /* FullScreenPlayerCollectionCell.h */,
+				845213491D38886A009D91E0 /* FullScreenPlayerCollectionCell.m */,
+				8452134B1D388893009D91E0 /* FullScreenSmellView.h */,
+				8452134C1D388893009D91E0 /* FullScreenSmellView.m */,
+			);
+			path = FullScreenPlayerCollectionCell;
+			sourceTree = "<group>";
+		};
 		845456F71D0EAB65006E7FF6 /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +261,15 @@
 				845BA4B81D2CF78D00669501 /* ScriptOperationViewController.m */,
 			);
 			path = ScriptOperationViewController;
+			sourceTree = "<group>";
+		};
+		8460DCF81D35F2990040943E /* DataPickViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8460DCF91D35F3DB0040943E /* DataPickViewController.h */,
+				8460DCFA1D35F3DB0040943E /* DataPickViewController.m */,
+			);
+			path = DataPickViewController;
 			sourceTree = "<group>";
 		};
 		8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */ = {
@@ -296,6 +347,43 @@
 				846735CB1D003A800073ED9D /* SFruitInfoDB.m */,
 			);
 			path = FruitInfoManager;
+			sourceTree = "<group>";
+		};
+		846A61821D3723CC00250838 /* FullScreenPlayerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				845213471D388838009D91E0 /* FullScreenPlayerCollectionCell */,
+				846A61831D37240000250838 /* FullScreenPlayerViewController.h */,
+				846A61841D37240000250838 /* FullScreenPlayerViewController.m */,
+			);
+			path = FullScreenPlayerViewController;
+			sourceTree = "<group>";
+		};
+		846A61861D375C3100250838 /* WXSTransition */ = {
+			isa = PBXGroup;
+			children = (
+				846A61881D375C3100250838 /* UINavigationController+WXSTransition.h */,
+				846A61891D375C3100250838 /* UINavigationController+WXSTransition.m */,
+				846A618A1D375C3100250838 /* UIViewController+WXSTransition.h */,
+				846A618B1D375C3100250838 /* UIViewController+WXSTransition.m */,
+				846A618C1D375C3100250838 /* WXSPercentDrivenInteractiveTransition.h */,
+				846A618D1D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m */,
+				846A618E1D375C3100250838 /* WXSTransitionManager.h */,
+				846A618F1D375C3100250838 /* WXSTransitionManager.m */,
+				846A61901D375C3100250838 /* WXSTransitionProperty.h */,
+				846A61911D375C3100250838 /* WXSTransitionProperty.m */,
+				846A61921D375C3100250838 /* WXSTypedefConfig.h */,
+			);
+			path = WXSTransition;
+			sourceTree = "<group>";
+		};
+		846A61991D378CEC00250838 /* UINavigationController+InterfaceOrientations */ = {
+			isa = PBXGroup;
+			children = (
+				846A619A1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.h */,
+				846A619B1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.m */,
+			);
+			path = "UINavigationController+InterfaceOrientations";
 			sourceTree = "<group>";
 		};
 		846A76E81D016DD00055E54E /* NetWorkManager */ = {
@@ -477,6 +565,8 @@
 		847EEFAB1D17D597009765E6 /* ThirdPartPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				846A61991D378CEC00250838 /* UINavigationController+InterfaceOrientations */,
+				846A61861D375C3100250838 /* WXSTransition */,
 				847EEFAC1D17D597009765E6 /* LZProgressView */,
 			);
 			path = ThirdPartPlugins;
@@ -503,6 +593,8 @@
 		8482CF5A1D12594D0020CEEA /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				846A61821D3723CC00250838 /* FullScreenPlayerViewController */,
+				8460DCF81D35F2990040943E /* DataPickViewController */,
 				845BA4B61D2CF66700669501 /* ScriptOperationViewController */,
 				84F7719A1D1D238300591B24 /* ScanBluetoothDeviceViewController */,
 				8463B9D61D1395C300EACECD /* ScriptPlayDetailsViewController */,
@@ -691,13 +783,18 @@
 				8463B9D91D13961500EACECD /* ScriptPlayDetailsViewController.m in Sources */,
 				8463B9DF1D13FE4F00EACECD /* RelativeTimeScript.m in Sources */,
 				847EC4D81CFD65E5000D77AE /* IFlySpeechSynthesizerManager.m in Sources */,
+				8460DCFB1D35F3DB0040943E /* DataPickViewController.m in Sources */,
 				8482CF621D12594D0020CEEA /* ViewModel.m in Sources */,
+				846A619C1D378D6B00250838 /* UINavigationController+UIInterfaceOrientations.m in Sources */,
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
 				8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
 				84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */,
 				8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */,
+				8452134A1D38886A009D91E0 /* FullScreenPlayerCollectionCell.m in Sources */,
 				846A76F31D016DD00055E54E /* SCDeviceInfoManager.m in Sources */,
+				846A61941D375C3100250838 /* UINavigationController+WXSTransition.m in Sources */,
+				846A61971D375C3100250838 /* WXSTransitionManager.m in Sources */,
 				8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */,
 				8482CF6A1D1278DF0020CEEA /* ScriptTableViewCell.m in Sources */,
 				847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */,
@@ -706,6 +803,7 @@
 				847C58661D34E7D2002159AC /* ScriptSerialCollectionViewCell.m in Sources */,
 				846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */,
 				8466677F1CF82AD400EFBE66 /* AppDelegate.m in Sources */,
+				846A61851D37240000250838 /* FullScreenPlayerViewController.m in Sources */,
 				8463B9E51D140A6F00EACECD /* ScriptViewModel.m in Sources */,
 				8482CF611D12594D0020CEEA /* ViewController.m in Sources */,
 				845456FA1D0EAB65006E7FF6 /* UIDevice+IphoneModel.m in Sources */,
@@ -714,13 +812,17 @@
 				8471F2511D3351000029A409 /* ScriptSelectCollectionViewCell.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
+				846A61951D375C3100250838 /* UIViewController+WXSTransition.m in Sources */,
+				846A61981D375C3100250838 /* WXSTransitionProperty.m in Sources */,
 				847EEFAF1D17D597009765E6 /* LZProgressView.m in Sources */,
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
 				847EEFAA1D17CAC3009765E6 /* ScriptTaskTime.m in Sources */,
+				846A61961D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m in Sources */,
 				8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */,
 				8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */,
+				8452134D1D388893009D91E0 /* FullScreenSmellView.m in Sources */,
 				846582271D06CDC0009C5A9E /* SmellSkin.m in Sources */,
 				846735C51D0033D00073ED9D /* SDBManager.m in Sources */,
 				845BA4B91D2CF78D00669501 /* ScriptOperationViewController.m in Sources */,
@@ -838,6 +940,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -857,6 +960,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

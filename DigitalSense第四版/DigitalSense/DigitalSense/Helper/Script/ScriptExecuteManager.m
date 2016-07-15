@@ -56,6 +56,12 @@ static NSInteger currentSecond = -1;
         [scriptQueue removeObject:script];
         script.state =  ScriptIsNormal;
     }
+    
+    if (script != nil) {
+        if ([script isEqual:currentPlayingScript]) {
+            [self playOverRelativeTimeScript];
+        }
+    }
 }
 
 /**
@@ -146,9 +152,13 @@ static NSInteger currentSecond = -1;
     NSArray *filterArr = [scriptCommandQueue filteredArrayUsingPredicate:predicate];
     if (filterArr && filterArr.count > 0) {
         ScriptCommand *command = [filterArr objectAtIndex:0];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
         //往蓝牙发送command
         if ([[BluetoothMacManager defaultManager] isConnected]) {
-            [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
+            if (command.command) {
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
+            }
             //往UI通知当前执行的命令
             [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
         }
@@ -168,7 +178,9 @@ static NSInteger currentSecond = -1;
         }
     }
     currentPlayingScript.state = ScriptIsNormal;
+    Script *script = currentPlayingScript;
     currentPlayingScript = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:PlayOverScriptNotification object:script];
     [self playRelativeTimeScript];
 }
 

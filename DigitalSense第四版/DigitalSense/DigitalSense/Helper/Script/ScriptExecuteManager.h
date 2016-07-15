@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #define PlayScriptNotification @"PlayScriptNotification"
+#define PlayOverScriptNotification @"PlayOverScriptNotification"
 #define PlayOverAllScriptsNotification @"PlayOverAllScriptsNotification"
 #define SendScriptCommandNotification @"SendScriptCommandNotification"
 #define PlayProgressSecondNotification @"PlayProgressSecondNotification"

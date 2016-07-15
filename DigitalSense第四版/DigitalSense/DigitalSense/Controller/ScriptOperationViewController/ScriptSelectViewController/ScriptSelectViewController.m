@@ -7,16 +7,21 @@
 //
 
 #import "ScriptSelectViewController.h"
+#import "DataPickViewController.h"
 #import "LewReorderableLayout.h"
 #import "ScriptSelectCollectionViewCell.h"
 
 #import "Fruit.h"
 #import "ScriptCommand.h"
 
-@interface ScriptSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSelectCollectionViewCellProtocol>
+@interface ScriptSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSelectCollectionViewCellProtocol,DataPickViewProtocol>
 {
     NSMutableArray *fruitList;
     NSMutableArray *scriptCommandList;
+    
+    DataPickViewController *dataPickVC;
+    
+    NSInteger allTime;
 }
 @property(nonatomic, strong) UICollectionView *collectionView;
 @end
@@ -56,98 +61,6 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     [self.collectionView registerClass:[ScriptSelectCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     // Do any additional setup after loading the view.
     [self inilizedData];
-    
-//    Fruit *fruit = [[Fruit alloc] init];
-//    fruit.fruitName = @"苹果";
-//    [fruitList addObject:fruit];
-//    
-//    Fruit *fruit1 = [[Fruit alloc] init];
-//    fruit1.fruitName = @"香蕉";
-//    [fruitList addObject:fruit1];
-//    
-//    Fruit *fruit2 = [[Fruit alloc] init];
-//    fruit2.fruitName = @"香蕉";
-//    [fruitList addObject:fruit2];
-//    
-//    Fruit *fruit3 = [[Fruit alloc] init];
-//    fruit3.fruitName = @"香蕉";
-//    [fruitList addObject:fruit3];
-//    
-//    Fruit *fruit4 = [[Fruit alloc] init];
-//    fruit4.fruitName = @"香蕉";
-//    [fruitList addObject:fruit4];
-//    
-//    Fruit *fruit5 = [[Fruit alloc] init];
-//    fruit5.fruitName = @"香蕉";
-//    [fruitList addObject:fruit5];
-//    
-//    Fruit *fruit6 = [[Fruit alloc] init];
-//    fruit6.fruitName = @"香蕉";
-//    [fruitList addObject:fruit6];
-//    
-//    Fruit *fruit7 = [[Fruit alloc] init];
-//    fruit7.fruitName = @"香蕉";
-//    [fruitList addObject:fruit7];
-//    
-//    Fruit *fruit8 = [[Fruit alloc] init];
-//    fruit8.fruitName = @"香蕉";
-//    [fruitList addObject:fruit8];
-//    
-//    Fruit *fruit9 = [[Fruit alloc] init];
-//    fruit9.fruitName = @"香蕉";
-//    [fruitList addObject:fruit9];
-//    
-//    ScriptCommand *command = [[ScriptCommand alloc] init];
-//    command.duration = 3;
-//    command.power = 0.5;
-//    [scriptCommandList addObject:command];
-//    
-//    ScriptCommand *command1 = [[ScriptCommand alloc] init];
-//    command1.duration = 3;
-//    command1.power = 0.5;
-//    [scriptCommandList addObject:command1];
-//    
-//    ScriptCommand *command2 = [[ScriptCommand alloc] init];
-//    command2.duration = 3;
-//    command2.power = 0.5;
-//    [scriptCommandList addObject:command2];
-//    
-//    ScriptCommand *command3 = [[ScriptCommand alloc] init];
-//    command3.duration = 3;
-//    command3.power = 0.5;
-//    [scriptCommandList addObject:command3];
-//    
-//    ScriptCommand *command4 = [[ScriptCommand alloc] init];
-//    command4.duration = 3;
-//    command4.power = 0.5;
-//    [scriptCommandList addObject:command4];
-//    
-//    ScriptCommand *command5 = [[ScriptCommand alloc] init];
-//    command5.duration = 3;
-//    command5.power = 0.5;
-//    [scriptCommandList addObject:command5];
-//    
-//    ScriptCommand *command6 = [[ScriptCommand alloc] init];
-//    command6.duration = 3;
-//    command6.power = 0.5;
-//    [scriptCommandList addObject:command6];
-//    
-//    ScriptCommand *command7 = [[ScriptCommand alloc] init];
-//    command7.duration = 3;
-//    command7.power = 0.5;
-//    [scriptCommandList addObject:command7];
-//    
-//    ScriptCommand *command8 = [[ScriptCommand alloc] init];
-//    command8.duration = 3;
-//    command8.power = 0.5;
-//    [scriptCommandList addObject:command8];
-//    
-//    ScriptCommand *command9 = [[ScriptCommand alloc] init];
-//    command9.duration = 3;
-//    command9.power = 0.5;
-//    [scriptCommandList addObject:command9];
-//    
-//    [self.collectionView reloadData];
 }
 
 -(void)inilizedData
@@ -163,6 +76,8 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     }else{
         scriptCommandList = [NSMutableArray array];
     }
+    
+    allTime = 0;
 }
 
 -(void)addFruit:(Fruit *)fruit
@@ -181,10 +96,26 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         command.rfId = fruit.fruitRFID;
         command.duration = 3;
         command.power = 0.5;
+        command.desc = addFruit.fruitName;
         [scriptCommandList addObject:command];
         
         [self.collectionView reloadData];
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+        
+        [self scriptTimeChanged:command.duration];
+    }
+}
+
+-(NSMutableArray *)returnAllScriptCommand
+{
+    return scriptCommandList;
+}
+
+-(void)scriptTimeChanged:(NSInteger)addTime
+{
+    allTime += addTime;
+    if ([self.delegate respondsToSelector:@selector(scriptCommandTimeDidChanged:)]) {
+        [self.delegate scriptCommandTimeDidChanged:allTime];
     }
 }
 
@@ -229,9 +160,10 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
-    CGFloat width = 15 * command.duration;
-    CGFloat height = self.view.frame.size.height;
+//    ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
+//    CGFloat width = 15 * command.duration;
+    CGFloat width = 45.0f;
+    CGFloat height = collectionView.frame.size.height;
     return CGSizeMake(width, height);
 }
 
@@ -300,5 +232,31 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     }
     
     [self.collectionView reloadData];
+    [self scriptTimeChanged:-command.duration];
+}
+
+-(void)showPickViewWithScriptCommand:(ScriptCommand *)command
+{
+    if (dataPickVC) {
+        dataPickVC = nil;
+    }
+    dataPickVC = [[DataPickViewController alloc] initWithDataArray:@[@1,@2,@3,@4,@5,@6,@7,@8] WithTitleArray:@[@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s"] WithIdentify:command];
+    dataPickVC.delegate = self;
+    [dataPickVC showInView:[self.view superview]];
+    
+}
+
+#pragma -mark DataPickViewProtocol
+-(void)pickData:(id)data WithIdentify:(id)identify
+{
+    if ([data isKindOfClass:[NSNumber class]] && [identify isKindOfClass:[ScriptCommand class]]) {
+        ScriptCommand *command = (ScriptCommand *)identify;
+        NSNumber *duration = (NSNumber *)data;
+        NSInteger added = [duration integerValue] - command.duration;
+        command.duration = [duration integerValue];
+        
+        [self.collectionView reloadData];
+        [self scriptTimeChanged:added];
+    }
 }
 @end

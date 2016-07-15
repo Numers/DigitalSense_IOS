@@ -8,11 +8,17 @@
 
 #import <UIKit/UIKit.h>
 @class Fruit;
+@protocol ScriptSelectViewProtocol <NSObject>
+
+-(void)scriptCommandTimeDidChanged:(NSInteger)time;
+
+@end
 @interface ScriptSelectViewController : UIViewController
 {
     CGRect controllerFrame;
 }
-
+@property(nonatomic, assign) id<ScriptSelectViewProtocol> delegate;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)addFruit:(Fruit *)fruit;
+-(NSMutableArray *)returnAllScriptCommand;
 @end
