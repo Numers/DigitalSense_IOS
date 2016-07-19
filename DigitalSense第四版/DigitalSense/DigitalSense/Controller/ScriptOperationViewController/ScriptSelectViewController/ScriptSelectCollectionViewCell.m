@@ -16,6 +16,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self setBackgroundColor:[UIColor redColor]];
+        [self.layer setCornerRadius:20.0f];
+        [self.layer setMasksToBounds:YES];
         self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(0, frame.size.height  / 2.0f, frame.size.width, frame.size.height  / 2.0f)];
         self.smellView.delegate = self;
         [self.smellView setUserInteractionEnabled:YES];

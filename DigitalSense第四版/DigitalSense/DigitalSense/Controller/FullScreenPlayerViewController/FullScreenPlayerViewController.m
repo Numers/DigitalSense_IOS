@@ -211,9 +211,11 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
         CGFloat lineViewSpeed = _collectionView.frame.size.width / currentScript.scriptTime;
         CGFloat linewidth = [self calculateCellWithPersecond];
         CGFloat scrollSpeed = linewidth - lineViewSpeed;
-        [UIView animateWithDuration:0.15 animations:^{
-            [lineView setFrame:CGRectMake([seconds integerValue] * lineViewSpeed + _collectionView.frame.origin.x, lineView.frame.origin.y, lineView.frame.size.width, lineView.frame.size.height)];
-        }];
+        
+        [lineView setFrame:CGRectMake([seconds integerValue] * lineViewSpeed + _collectionView.frame.origin.x, lineView.frame.origin.y, lineView.frame.size.width, lineView.frame.size.height)];
+//        [UIView animateWithDuration:0.1 animations:^{
+//            [lineView setFrame:CGRectMake([seconds integerValue] * lineViewSpeed + _collectionView.frame.origin.x, lineView.frame.origin.y, lineView.frame.size.width, lineView.frame.size.height)];
+//        }];
         
         if (scrollSpeed > 0) {
             [_collectionView setContentOffset:CGPointMake([seconds integerValue] * scrollSpeed, 0) animated:YES];

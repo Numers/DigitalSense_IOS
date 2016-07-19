@@ -20,16 +20,20 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setBackgroundColor:[UIColor blueColor]];
+        [self.layer setCornerRadius:20.0f];
+        [self.layer setMasksToBounds:YES];
         self.fruitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width - 2 * FruitImageMargin, frame.size.width - 2 * FruitImageMargin)];
-        self.fruitImageView.center = CGPointMake(frame.size.width / 2, frame.size.height / 2);
+        [self.fruitImageView setImage:[UIImage imageNamed:@"CircleForCell"]];
+        self.fruitImageView.center = CGPointMake(frame.size.width/ 2, frame.size.width/ 2);
         [self addSubview:self.fruitImageView];
         
-        self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, self.fruitImageView.frame.origin.y + self.fruitImageView.frame.size.height, frame.size.width, LabelHeight)];
+        self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, LabelHeight)];
+        [self.lblFruitName setCenter:CGPointMake(frame.size.width/ 2, frame.size.width/ 2)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];
-        [self.lblFruitName setFont:[UIFont systemFontOfSize:15.0f]];
+        [self.lblFruitName setFont:[UIFont systemFontOfSize:10.0f]];
         [self.lblFruitName setNumberOfLines:0];
         [self.lblFruitName setTextColor:[UIColor whiteColor]];
-        [self addSubview:self.lblFruitName];
+        [self insertSubview:self.lblFruitName aboveSubview:self.fruitImageView];
         
         self.lblDuration = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height - LabelHeight, frame.size.width, LabelHeight)];
         [self.lblDuration setTextAlignment:NSTextAlignmentCenter];
@@ -45,9 +49,9 @@
 
 -(void)setFruit:(Fruit *)fruit WithDuration:(NSInteger)duration
 {
-    if (self.fruitImageView) {
-        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
-    }
+//    if (self.fruitImageView) {
+//        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
+//    }
     
     if (self.lblFruitName) {
         [self.lblFruitName setText:fruit.fruitName];
@@ -97,12 +101,11 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code
     if (self.fruitImageView) {
-        self.fruitImageView.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2);
+        self.fruitImageView.center = CGPointMake(self.frame.size.width / 2, self.frame.size.width / 2);
     }
     
     if (self.lblFruitName) {
-        [self.lblFruitName setFrame:CGRectMake(0, self.fruitImageView.frame.origin.y + self.fruitImageView.frame.size.height, self.frame.size.width, LabelHeight)];
-        [self.lblFruitName sizeThatFits:CGSizeMake(self.frame.size.width, LabelHeight)];
+        self.lblFruitName.center = CGPointMake(self.frame.size.width / 2, self.frame.size.width / 2);
     }
     
     if (self.lblDuration) {
@@ -110,18 +113,18 @@
         [self.lblDuration sizeThatFits:CGSizeMake(self.frame.size.width, LabelHeight)];
     }
     
-    if (self.fruitImageView.center.y > (self.fruitImageView.frame.size.height / 2.0f  + 2 * LabelHeight)) {
-        [self.lblFruitName setAlpha:1.0f];
-        [self.lblDuration setAlpha:1.0f];
-    }else{
-        CGFloat tempMargin = (self.fruitImageView.frame.size.height / 2.0f  + 2 * LabelHeight) - self.fruitImageView.center.y;
-        if (tempMargin < 10.0f) {
-            [self.lblFruitName setAlpha:(10.0f - tempMargin) / 10.0f];
-            [self.lblDuration setAlpha:(10.0f - tempMargin) / 10.0f];
-        }else{
-            [self.lblFruitName setAlpha:0.0f];
-            [self.lblDuration setAlpha:0.0f];
-        }
-    }
+//    if (self.fruitImageView.center.y > (self.fruitImageView.frame.size.height / 2.0f  + 2 * LabelHeight)) {
+//        [self.lblFruitName setAlpha:1.0f];
+//        [self.lblDuration setAlpha:1.0f];
+//    }else{
+//        CGFloat tempMargin = (self.fruitImageView.frame.size.height / 2.0f  + 2 * LabelHeight) - self.fruitImageView.center.y;
+//        if (tempMargin < 10.0f) {
+//            [self.lblFruitName setAlpha:(10.0f - tempMargin) / 10.0f];
+//            [self.lblDuration setAlpha:(10.0f - tempMargin) / 10.0f];
+//        }else{
+//            [self.lblFruitName setAlpha:0.0f];
+//            [self.lblDuration setAlpha:0.0f];
+//        }
+//    }
 }
 @end
