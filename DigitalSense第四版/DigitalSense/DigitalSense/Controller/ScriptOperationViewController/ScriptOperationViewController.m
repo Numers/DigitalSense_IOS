@@ -53,6 +53,9 @@
     //popoverView显示的title
     popoverTitle = @[@"刷新蓝牙"];
     
+    //适配TitleLabel的字体大小
+    [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
+    
     [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, (screenSize.height - _playView.frame.size.height - 64) * 2 / 3.0f)];
@@ -212,6 +215,10 @@
         if (scriptSerialVC) {
             [scriptSerialVC setFruitList:fruitList];
         }
+        
+        if (scriptSelectVC) {
+            [scriptSelectVC clearAllData];
+        }
     }
 }
 
@@ -223,6 +230,11 @@
 
 -(IBAction)clickPlayBtn:(id)sender
 {
+    NSMutableArray *scriptCommandList = [scriptSelectVC returnAllScriptCommand];
+    if (scriptCommandList.count == 0) {
+        [AppUtils showInfo:@"请先自定义一个脚本"];
+        return;
+    }
     FullScreenPlayerViewController *fullScreenPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FullScreenPlayerViewIdentify"];
     RelativeTimeScript *script = [[RelativeTimeScript alloc] init];
     script.scriptId = @"10000";
@@ -231,7 +243,7 @@
     script.state =  ScriptIsNormal;
     script.type =  ScriptIsRelativeTime;
     script.isLoop = NO;
-    NSMutableArray *scriptCommandList = [scriptSelectVC returnAllScriptCommand];
+    
     script.scriptTime = [self doWithScriptCommandList:scriptCommandList];
     script.scriptCommandList = scriptCommandList;
     fullScreenPlayerVC.startView = _playView;
@@ -263,12 +275,15 @@
     CGPoint point = CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height);
     popoverView = [[PopoverView alloc] initWithPoint:point titles:popoverTitle images:nil];
     
+    __weak typeof(self) weakSelf = self;
     [popoverView setSelectRowAtIndex:^(NSInteger index) {
         switch (index) {
             case 0:
             {
                 if ([[BluetoothMacManager defaultManager] isConnected]) {
-                    [AppUtils showInfo:@"蓝牙已连接"];
+                    if ([weakSelf.delegate respondsToSelector:@selector(refreshBluetoothData)]) {
+                        [weakSelf.delegate refreshBluetoothData];
+                    }
                 }else{
                     [[BluetoothProcessManager defatultManager] startScanBluetooth];
                 }
@@ -324,6 +339,12 @@
 #pragma -mark ComboxViewProtocol
 -(void)selectPeripheral:(id)peripheral WithDeviceName:(NSString *)name
 {
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        id connectedPeripheral = [[BluetoothMacManager defaultManager] returnConnectedPeripheral];
+        if ([connectedPeripheral isEqual:peripheral]) {
+            return;
+        }
+    }
     [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
 }
 @end

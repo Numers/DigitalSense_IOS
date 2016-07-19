@@ -21,4 +21,6 @@
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)addFruit:(Fruit *)fruit;
 -(NSMutableArray *)returnAllScriptCommand;
+
+-(void)clearAllData;
 @end

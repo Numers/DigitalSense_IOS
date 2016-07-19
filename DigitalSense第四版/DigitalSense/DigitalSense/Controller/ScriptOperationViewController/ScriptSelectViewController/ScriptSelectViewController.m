@@ -119,6 +119,15 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     }
 }
 
+-(void)clearAllData
+{
+    [self inilizedData];
+    if ([self.delegate respondsToSelector:@selector(scriptCommandTimeDidChanged:)]) {
+        [self.delegate scriptCommandTimeDidChanged:allTime];
+    }
+    [_collectionView reloadData];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

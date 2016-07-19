@@ -18,6 +18,7 @@
     if (self) {
         self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(0, frame.size.height  / 2.0f, frame.size.width, frame.size.height  / 2.0f)];
         self.smellView.delegate = self;
+        [self.smellView setUserInteractionEnabled:YES];
         [self.contentView addSubview:self.smellView];
         tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
         [self.smellView addGestureRecognizer:tapGestureRecognizer];
@@ -64,6 +65,7 @@
         [self.smellView setFrame:CGRectMake(self.smellView.frame.origin.x, self.frame.size.height * (1 - scriptCommand.power), self.frame.size.width, self.frame.size.height * scriptCommand.power)];
     }else{
         self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(0, self.frame.size.height * (1 - scriptCommand.power), self.frame.size.width, self.frame.size.height * scriptCommand.power)];
+        [self.smellView setUserInteractionEnabled:YES];
         self.smellView.delegate = self;
         [self.smellView setFruit:fruit WithDuration:scriptCommand.duration];
         [self.smellView setMaxHeight:self.frame.size.height];

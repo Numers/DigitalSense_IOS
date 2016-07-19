@@ -40,7 +40,6 @@
         // Initialization code
         self.borderColor = RGB(200, 199, 204);
         self.backgroundColor = [UIColor clearColor];
-        
     }
     return self;
 }
@@ -52,7 +51,6 @@
         self.showPoint = point;
         self.titleArray = titles;
         self.imageArray = images;
-        
         self.frame = [self getViewFrame];
         
         [self addSubview:self.tableView];
@@ -85,9 +83,10 @@
     if (frame.origin.x < 5) {
         frame.origin.x = 5;
     }
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
     //右间隔最小5x
-    if ((frame.origin.x + frame.size.width) > 315) {
-        frame.origin.x = 315 - frame.size.width;
+    if ((frame.origin.x + frame.size.width) > (screenSize.width - 5)) {
+        frame.origin.x = (screenSize.width - 5) - frame.size.width;
     }
     
     return frame;

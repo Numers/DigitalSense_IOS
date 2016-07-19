@@ -39,7 +39,7 @@
 #define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
-@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxViewProtocol>
+@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxViewProtocol,ScriptOperationViewProtocol>
 {
     NSString *selectTag;
     NSTimer *smellEmitTimer;
@@ -276,7 +276,7 @@
                                 fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
-                            [[NSNotificationCenter defaultCenter] postNotificationName:BottleInfoCompeletelyNotify object:bottleInfoList];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:BottleInfoCompeletelyNotify object:_fruitsList];
                             [self saveOrderFile];
                             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
                         }
@@ -990,15 +990,31 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
     ScriptOperationViewController *scriptOperationVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptOperationViewIdentify"];
+    scriptOperationVC.delegate = self;
     if (_fruitsList && _fruitsList.count > 0) {
         [scriptOperationVC setFruitList:_fruitsList];
     }
-    [self.navigationController wxs_pushViewController:scriptOperationVC animationType:WXSTransitionAnimationTypePageTransition];
+    [self.navigationController wxs_pushViewController:scriptOperationVC makeTransition:^(WXSTransitionProperty *transition) {
+        transition.animationType = WXSTransitionAnimationTypeBrickOpenHorizontal;
+        transition.animationTime = 1.0f;
+        transition.backGestureEnable = NO;
+    }];
 }
 
 #pragma -mark ComboxViewProtocol
 -(void)selectPeripheral:(id)peripheral WithDeviceName:(NSString *)name
 {
     [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
+}
+
+#pragma -mark ScriptOperationViewProtocol
+-(void)refreshBluetoothData
+{
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        [self initlizedData];
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+    }else{
+        [[BluetoothProcessManager defatultManager] startScanBluetooth];
+    }
 }
 @end

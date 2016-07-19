@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #define BottleInfoCompeletelyNotify @"BottleInfoCompeletelyNotify"
+@protocol ScriptOperationViewProtocol <NSObject>
+-(void)refreshBluetoothData;
+@end
 @interface ScriptOperationViewController : UIViewController
+@property(nonatomic, assign) id<ScriptOperationViewProtocol> delegate;
 -(void)setFruitList:(NSArray *)list;
 @end

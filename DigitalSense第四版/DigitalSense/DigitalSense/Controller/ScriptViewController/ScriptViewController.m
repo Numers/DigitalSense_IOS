@@ -31,6 +31,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     RACDisposable *macAddressDisposable;
 }
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
+@property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @end
 
 @implementation ScriptViewController
@@ -38,50 +39,10 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    scriptList = [NSMutableArray array];
+    //适配TitleLabel的字体大小
+    [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
     
-//    /**************************假数据***************************/
-//    Script *script = [[Script alloc] init];
-//    script.scriptId = @"1";
-//    script.scriptName = @"魔兽1";
-//    script.scriptTime = 10;
-//    script.state = ScriptIsNormal;
-//    script.type = ScriptIsRelativeTime;
-//    [scriptList addObject:script];
-//    
-//    Script *script1 = [[Script alloc] init];
-//    script1.scriptId = @"1";
-//    script1.scriptName = @"魔兽2";
-//    script1.isLoop = YES;
-//    script1.scriptTime = 75;
-//    
-//    script1.state = ScriptIsNormal;
-//    script1.type = ScriptIsRelativeTime;
-//    [scriptList addObject:script1];
-//    Script *script2 = [[Script alloc] init];
-//    script2.scriptId = @"1";
-//    script2.scriptName = @"魔兽3";
-//    script2.scriptTime = 50;
-//    script2.state = ScriptIsNormal;
-//    script2.type = ScriptIsRelativeTime;
-//    [scriptList addObject:script2];
-//    
-//    Script *script3 = [[Script alloc] init];
-//    script3.scriptId = @"1";
-//    script3.scriptName = @"魔兽4";
-//    script3.scriptTime = 13;
-//    script3.state = ScriptIsNormal;
-//    script3.type = ScriptIsRelativeTime;
-//    [scriptList addObject:script3];
-//    
-//    Script *script4 = [[Script alloc] init];
-//    script4.scriptId = @"1";
-//    script4.scriptName = @"魔兽5";
-//    script4.scriptTime = 14;
-//    script4.state = ScriptIsNormal;
-//    script4.type = ScriptIsRelativeTime;
-//    [scriptList addObject:script4];
-//    /************************************************************/
+    scriptList = [NSMutableArray array];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ScriptTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentify];
     
