@@ -24,7 +24,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods.xcscheme</key>
+		<key>Pods-DigitalSense.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,11 +47,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>00997FEBDB2DED33F1D08B6B5D4FF2E0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>2602F3D0DAC534568B6AD7EEA0DD1959</key>
 		<dict>
 			<key>primary</key>
@@ -62,22 +57,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>53798718446E70F5EFD9F328B4C4C9EB</key>
+		<key>4442585D58CEFD7575E8ED8655EB8924</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7643863B602DA00636C8BA6F79A34479</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7A26B40D3F74FA66386D62948100B9D2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7FC02BD653F351A2147CA7209F1A7483</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>9F12FB4A63E20F601CFB2E64A65B57C1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A6254076F92C0EA123AB68FD88836827</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B43130297974D027A6B2DF176525A8D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

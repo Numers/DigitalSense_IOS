@@ -56,35 +56,35 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     // Do any additional setup after loading the view.
     [self inilizedData];
     
-    Fruit *fruit = [[Fruit alloc] init];
-    fruit.fruitName = @"苹果";
-    [fruitList addObject:fruit];
-    
-    Fruit *fruit1 = [[Fruit alloc] init];
-    fruit1.fruitName = @"香蕉";
-    [fruitList addObject:fruit1];
-    
-    Fruit *fruit2 = [[Fruit alloc] init];
-    fruit2.fruitName = @"菠萝";
-    [fruitList addObject:fruit2];
-    
-    Fruit *fruit3 = [[Fruit alloc] init];
-    fruit3.fruitName = @"橙子";
-    [fruitList addObject:fruit3];
-    
-    Fruit *fruit4 = [[Fruit alloc] init];
-    fruit4.fruitName = @"西瓜";
-    [fruitList addObject:fruit4];
-    
-    Fruit *fruit5 = [[Fruit alloc] init];
-    fruit5.fruitName = @"猕猴桃";
-    [fruitList addObject:fruit5];
-    
-    Fruit *fruit6 = [[Fruit alloc] init];
-    fruit6.fruitName = @"草莓";
-    [fruitList addObject:fruit6];
-    
-    [self.collectionView reloadData];
+//    Fruit *fruit = [[Fruit alloc] init];
+//    fruit.fruitName = @"苹果";
+//    [fruitList addObject:fruit];
+//    
+//    Fruit *fruit1 = [[Fruit alloc] init];
+//    fruit1.fruitName = @"香蕉";
+//    [fruitList addObject:fruit1];
+//    
+//    Fruit *fruit2 = [[Fruit alloc] init];
+//    fruit2.fruitName = @"菠萝";
+//    [fruitList addObject:fruit2];
+//    
+//    Fruit *fruit3 = [[Fruit alloc] init];
+//    fruit3.fruitName = @"橙子";
+//    [fruitList addObject:fruit3];
+//    
+//    Fruit *fruit4 = [[Fruit alloc] init];
+//    fruit4.fruitName = @"西瓜";
+//    [fruitList addObject:fruit4];
+//    
+//    Fruit *fruit5 = [[Fruit alloc] init];
+//    fruit5.fruitName = @"猕猴桃";
+//    [fruitList addObject:fruit5];
+//    
+//    Fruit *fruit6 = [[Fruit alloc] init];
+//    fruit6.fruitName = @"草莓";
+//    [fruitList addObject:fruit6];
+//    
+//    [self.collectionView reloadData];
 }
 
 -(void)inilizedData
@@ -93,6 +93,17 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
         [fruitList removeAllObjects];
     }else{
         fruitList = [NSMutableArray array];
+    }
+}
+
+-(void)setFruitList:(NSArray *)list
+{
+    if (list && list.count > 0) {
+        [self inilizedData];
+        [fruitList addObjectsFromArray:list];
+        if (_collectionView) {
+            [_collectionView reloadData];
+        }
     }
 }
 

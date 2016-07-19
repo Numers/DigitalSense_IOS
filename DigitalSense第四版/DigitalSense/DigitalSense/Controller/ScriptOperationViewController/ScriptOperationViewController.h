@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#define BottleInfoCompeletelyNotify @"BottleInfoCompeletelyNotify"
 @interface ScriptOperationViewController : UIViewController
-
+-(void)setFruitList:(NSArray *)list;
 @end

@@ -31,6 +31,7 @@ static BluetoothMacManager *bluetoothMacManager;
 @property (assign,nonatomic) id<BluetoothManagerProtocol> delegate;
 @property (strong,nonatomic) CBCentralManager *centralManager;//中心设备管理器
 @property (strong,nonatomic) NSMutableArray *peripherals;//搜索到的外围设备
+@property(strong, nonatomic) NSMutableArray *peripheralNameList;//搜索到的外围设备名字
 
 @property(strong,nonatomic) NSMutableArray *peripheralMacArray;
 
@@ -120,6 +121,12 @@ static BluetoothMacManager *bluetoothMacManager;
         [self.peripherals removeAllObjects];
     }else{
         self.peripherals = [NSMutableArray array];
+    }
+    
+    if(self.peripheralNameList){
+        [self.peripheralNameList removeAllObjects];
+    }else{
+        self.peripheralNameList = [NSMutableArray array];
     }
     
     if (self.peripheralMacArray) {
@@ -502,6 +509,30 @@ static BluetoothMacManager *bluetoothMacManager;
 }
 
 /**
+ *  @author RenRenFenQi, 16-06-24 15:06:46
+ *
+ *  获取搜索到的所有智能设备名字
+ *
+ *  @return 智能设备名字列表
+ */
+-(NSArray *)returnAllScanPeripheralNames
+{
+    return self.peripheralNameList;
+}
+
+/**
+ *  @author RenRenFenQi, 16-07-19 13:07:38
+ *
+ *  返回当前连接的设备
+ *
+ *  @return 当前连接的设备
+ */
+-(CBPeripheral *)returnConnectedPeripheral
+{
+    return self.peripheral;
+}
+
+/**
  *  @author RenRenFenQi, 16-06-24 18:06:11
  *
  *  判断名字与当前连接蓝牙是否匹配
@@ -556,16 +587,9 @@ static BluetoothMacManager *bluetoothMacManager;
             return;
         }else{
             //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
-//            NSLog(@"kCBAdvDataManufacturerData : %@ ,kCBAdvDataServiceUUIDs : %@ , kCBAdvDataLocalName : %@",[advertisementData objectForKey:@"kCBAdvDataManufacturerData"],[advertisementData objectForKey:@"kCBAdvDataServiceUUIDs"],[advertisementData objectForKey:@"kCBAdvDataLocalName"]);
-//            NSData *advData = [advertisementData objectForKey:@"kCBAdvDataManufacturerData"];
-//            if (advData) {
-//                Byte *byte = (Byte *)[advData bytes];
-//                NSData *macData = [NSData dataWithBytes:byte length:sizeof(byte)];
-//                NSLog(@"MacAddressData : %@",macData);
-//            }
-            
             if(![self.peripherals containsObject:peripheral]){
                 [self.peripherals addObject:peripheral];
+                [self.peripheralNameList addObject:peripheral.name];
             }else{
                 return;
             }

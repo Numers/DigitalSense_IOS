@@ -17,4 +17,5 @@
 }
 @property(nonatomic, assign) id<ScriptSerialViewProtocol> delegate;
 -(instancetype)initWithFrame:(CGRect)frame;
+-(void)setFruitList:(NSArray *)list;
 @end

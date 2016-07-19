@@ -163,6 +163,24 @@ typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, 
 -(NSArray *)returnAllScanPeripherals;
 
 /**
+ *  @author RenRenFenQi, 16-06-24 15:06:46
+ *
+ *  获取搜索到的所有智能设备名字
+ *
+ *  @return 智能设备名字列表
+ */
+-(NSArray *)returnAllScanPeripheralNames;
+
+/**
+ *  @author RenRenFenQi, 16-07-19 13:07:38
+ *
+ *  返回当前连接的设备
+ *
+ *  @return 当前连接的设备
+ */
+-(CBPeripheral *)returnConnectedPeripheral;
+
+/**
  *  @author RenRenFenQi, 16-06-24 18:06:11
  *
  *  判断名字与当前连接蓝牙是否匹配
