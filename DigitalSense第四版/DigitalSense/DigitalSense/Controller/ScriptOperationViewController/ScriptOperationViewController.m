@@ -21,6 +21,8 @@
 #import "PopoverView.h"
 #import "ComboxView.h"
 
+#import "UIDevice+IphoneModel.h"
+
 @interface ScriptOperationViewController ()<ScriptSerialViewProtocol,ScriptSelectViewProtocol,ComboxViewProtocol>
 {
     ScriptSelectViewController *scriptSelectVC;
@@ -73,13 +75,39 @@
     [self.view addSubview:scriptSelectVC.view];
     
 //    scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, self.view.frame.size.height - 30 - (screenSize.height - _playView.frame.size.height - 162) * 1 / 3.0f, self.view.frame.size.width - 34, (screenSize.height - _playView.frame.size.height - 162) * 1 / 3.0f)];
-    CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
-    scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 15.0f)];
-    scriptSerialVC.delegate = self;
-    if (fruitList && fruitList.count > 0) {
-        [scriptSerialVC setFruitList:fruitList];
+    switch ([UIDevice iPhonesModel]) {
+        case iPhone4: {
+            CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY)];
+            break;
+        }
+        case iPhone5: {
+            CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 5.0f)];
+            break;
+        }
+        case iPhone6: {
+            CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 10.0f)];
+            break;
+        }
+        case iPhone6Plus: {
+            CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY + 20, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 70.0f)];
+            break;
+        }
+        case UnKnown: {
+            break;
+        }
     }
-    [self.view addSubview:scriptSerialVC.view];
+    
+    if (scriptSerialVC) {
+        scriptSerialVC.delegate = self;
+        if (fruitList && fruitList.count > 0) {
+            [scriptSerialVC setFruitList:fruitList];
+        }
+        [self.view addSubview:scriptSerialVC.view];
+    }
     
     [self.view bringSubviewToFront:_playView];
     
@@ -89,7 +117,28 @@
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 23, _playView.frame.size.width, _playView.frame.size.height)];
+    switch ([UIDevice iPhonesModel]) {
+        case iPhone4: {
+            [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 10, _playView.frame.size.width, _playView.frame.size.height)];
+            break;
+        }
+        case iPhone5: {
+            [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 10, _playView.frame.size.width, _playView.frame.size.height)];
+            break;
+        }
+        case iPhone6: {
+            [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 20, _playView.frame.size.width, _playView.frame.size.height)];
+            break;
+        }
+        case iPhone6Plus: {
+            [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 30, _playView.frame.size.width, _playView.frame.size.height)];
+            break;
+        }
+        case UnKnown: {
+            [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 10, _playView.frame.size.width, _playView.frame.size.height)];
+            break;
+        }
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated

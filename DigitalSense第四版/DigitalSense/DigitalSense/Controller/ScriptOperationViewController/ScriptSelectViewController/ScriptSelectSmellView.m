@@ -30,14 +30,14 @@
         self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, LabelHeight)];
         [self.lblFruitName setCenter:CGPointMake(frame.size.width/ 2, frame.size.width/ 2)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];
-        [self.lblFruitName setFont:[UIFont systemFontOfSize:10.0f]];
+        [self.lblFruitName setFont:[UIFont boldSystemFontOfSize:10.0f]];
         [self.lblFruitName setNumberOfLines:0];
         [self.lblFruitName setTextColor:[UIColor whiteColor]];
         [self insertSubview:self.lblFruitName aboveSubview:self.fruitImageView];
         
         self.lblDuration = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height - LabelHeight - 10, frame.size.width, LabelHeight)];
         [self.lblDuration setTextAlignment:NSTextAlignmentCenter];
-        [self.lblDuration setFont:[UIFont systemFontOfSize:12.0f]];
+        [self.lblDuration setFont:[UIFont boldSystemFontOfSize:12.0f]];
         [self.lblDuration setNumberOfLines:0];
         [self.lblDuration setTextColor:[UIColor whiteColor]];
         [self addSubview:self.lblDuration];
