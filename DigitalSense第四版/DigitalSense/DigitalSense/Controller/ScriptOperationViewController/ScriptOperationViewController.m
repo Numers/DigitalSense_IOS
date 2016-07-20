@@ -38,6 +38,7 @@
     ComboxView *comboxView;
 }
 @property(nonatomic, strong) IBOutlet UIView *playView;
+@property(nonatomic, strong) IBOutlet UIView *playViewSubLayerBackgroundView;
 @property(nonatomic, strong) IBOutlet UILabel *lblAllTime;
 @property(nonatomic, strong) IBOutlet UIButton *btnLoop;
 
@@ -53,16 +54,27 @@
     //popoverView显示的title
     popoverTitle = @[@"刷新蓝牙"];
     
+    [_playView.layer setShadowColor:[UIColor colorWithWhite:0.0f alpha:0.2].CGColor];
+    [_playView.layer setShadowOffset:CGSizeMake(0, 5)];
+    [_playView.layer setShadowOpacity:1.0f];
     //适配TitleLabel的字体大小
     [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
     
-    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+    UIImage *backImage = [UIImage imageNamed:@"OperationBackgroundViewImage"];
+    self.view.layer.contents = (id)backImage.CGImage;
+    
+    UIImage *playViewBackgroundImage = [UIImage imageNamed:@"Player_BackgroundViewImage"];
+    _playViewSubLayerBackgroundView.layer.contents = (id)playViewBackgroundImage.CGImage;
+    
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, (screenSize.height - _playView.frame.size.height - 64) * 2 / 3.0f)];
+//    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(45, 97, self.view.frame.size.width - 90, (screenSize.height - _playView.frame.size.height - 162) * 2 / 3.0f)];
+    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(45, 97, self.view.frame.size.width - 90, 230.667)];
     scriptSelectVC.delegate = self;
     [self.view addSubview:scriptSelectVC.view];
     
-    scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - (screenSize.height - _playView.frame.size.height - 64) / 3.0f, self.view.frame.size.width, (screenSize.height - _playView.frame.size.height - 64) / 3.0f)];
+//    scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, self.view.frame.size.height - 30 - (screenSize.height - _playView.frame.size.height - 162) * 1 / 3.0f, self.view.frame.size.width - 34, (screenSize.height - _playView.frame.size.height - 162) * 1 / 3.0f)];
+    CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
+    scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 15.0f)];
     scriptSerialVC.delegate = self;
     if (fruitList && fruitList.count > 0) {
         [scriptSerialVC setFruitList:fruitList];
@@ -71,13 +83,13 @@
     
     [self.view bringSubviewToFront:_playView];
     
-    [self setIsLoop:YES];
+    [self setIsLoop:NO];
 }
 
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height, _playView.frame.size.width, _playView.frame.size.height)];
+    [_playView setFrame:CGRectMake(_playView.frame.origin.x, scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + 23, _playView.frame.size.width, _playView.frame.size.height)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -170,10 +182,13 @@
 -(NSString *)switchSecondsToTime:(NSInteger)seconds
 {
     NSInteger second = seconds % 60;
-    NSInteger tempMinite = (seconds - second) / 60;
-    NSInteger minite = tempMinite % 60;
-    NSInteger hour = tempMinite / 60;
-    NSString *result = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",hour,minite,second];
+    NSInteger minite = (seconds - second) / 60;
+    NSString *result;
+    if (minite < 10) {
+       result = [NSString stringWithFormat:@"%02ld:%02ld",minite,second];
+    }else{
+        result = [NSString stringWithFormat:@"%ld:%02ld",minite,second];
+    }
     return result;
 }
 
@@ -191,7 +206,11 @@
             command.startRelativeTime = previousCommand.startRelativeTime + previousCommand.duration;
         }
         //组成command命令
-        command.command = @"";
+        if (command.rfId) {
+            command.command = @"";
+        }else{
+            command.command = nil;
+        }
         previousCommand = command;
         allTime = allTime + command.duration;
     }
@@ -202,9 +221,9 @@
 {
     isLoop = loop;
     if (loop) {
-        [_btnLoop setImage:[UIImage imageNamed:@"Player_Repeat"] forState:UIControlStateNormal];
+        [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Repeat"] forState:UIControlStateNormal];
     }else{
-        [_btnLoop setImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
+        [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
     }
 }
 

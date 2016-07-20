@@ -9,6 +9,7 @@
 #import "ScriptSelectSmellView.h"
 #import "Fruit.h"
 #import "UIImageView+WebCache.h"
+#import "UIColor+HexString.h"
 
 #define DefaultMaxHeight 20.0f
 #define FruitImageMargin 2.0f
@@ -19,11 +20,10 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor blueColor]];
-        [self.layer setCornerRadius:20.0f];
+        [self.layer setCornerRadius:17.0f];
         [self.layer setMasksToBounds:YES];
         self.fruitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width - 2 * FruitImageMargin, frame.size.width - 2 * FruitImageMargin)];
-        [self.fruitImageView setImage:[UIImage imageNamed:@"CircleForCell"]];
+        [self.fruitImageView setImage:[UIImage imageNamed:@"SelectViewCircleForCell"]];
         self.fruitImageView.center = CGPointMake(frame.size.width/ 2, frame.size.width/ 2);
         [self addSubview:self.fruitImageView];
         
@@ -35,7 +35,7 @@
         [self.lblFruitName setTextColor:[UIColor whiteColor]];
         [self insertSubview:self.lblFruitName aboveSubview:self.fruitImageView];
         
-        self.lblDuration = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height - LabelHeight, frame.size.width, LabelHeight)];
+        self.lblDuration = [[UILabel alloc] initWithFrame:CGRectMake(0, frame.size.height - LabelHeight - 10, frame.size.width, LabelHeight)];
         [self.lblDuration setTextAlignment:NSTextAlignmentCenter];
         [self.lblDuration setFont:[UIFont systemFontOfSize:12.0f]];
         [self.lblDuration setNumberOfLines:0];
@@ -52,7 +52,7 @@
 //    if (self.fruitImageView) {
 //        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
 //    }
-    
+    [self setBackgroundColor:[UIColor colorFromHexString:fruit.fruitColor]];
     if (self.lblFruitName) {
         [self.lblFruitName setText:fruit.fruitName];
     }

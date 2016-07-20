@@ -103,6 +103,17 @@
     return NO;
 }
 
++ (BOOL)isNetworkURL:(NSString *)url
+{
+    BOOL result = NO;
+    if (url) {
+        if ([url hasPrefix:@"http://"]) {
+            result = YES;
+        }
+    }
+    return result;
+}
+
 + (void)showProgressBarForView:(UIView *)view
 {
     LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];

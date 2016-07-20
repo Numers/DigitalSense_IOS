@@ -7,6 +7,8 @@
 //
 
 #import "FullScreenSmellView.h"
+#import "ScriptCommand.h"
+#import "UIColor+HexString.h"
 #define LabelHeight 20.0f
 
 @implementation FullScreenSmellView
@@ -14,8 +16,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor blueColor]];
-        
+        [self.layer setCornerRadius:3.0f];
+        [self.layer setMasksToBounds:YES];
         self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, frame.size.height - LabelHeight)];
         [self.lblFruitName setCenter:CGPointMake(frame.size.width / 2, (frame.size.height - LabelHeight)/2)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];
@@ -34,14 +36,15 @@
     return self;
 }
 
--(void)setFruitName:(NSString *)name WithDuration:(NSInteger)duration
+-(void)setScriptCommand:(ScriptCommand *)command
 {
+    [self setBackgroundColor:[UIColor colorFromHexString:command.color]];
     if (self.lblFruitName) {
-        [self.lblFruitName setText:name];
+        [self.lblFruitName setText:command.desc];
     }
     
     if (self.lblDuration) {
-        NSString *durationStr = [NSString stringWithFormat:@"%lds",duration];
+        NSString *durationStr = [NSString stringWithFormat:@"%lds",command.duration];
         [self.lblDuration setText:durationStr];
     }
 }

@@ -8,6 +8,8 @@
 
 #import "ScriptSelectCollectionViewCell.h"
 #import "ScriptCommand.h"
+#define ShadowWidth 11.5f
+#define TopAndBottomFixValue 2.5f
 
 #define CloseBtnSize CGSizeMake(25, 25)
 
@@ -16,10 +18,14 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setBackgroundColor:[UIColor redColor]];
-        [self.layer setCornerRadius:20.0f];
+        
+        UIImage *backgroundImage = [UIImage imageNamed:@"SelectViewBackgroundForCell"];
+        self.layer.contents = (id)backgroundImage.CGImage;
+        
+        [self.layer setCornerRadius:17.0f];
         [self.layer setMasksToBounds:YES];
-        self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(0, frame.size.height  / 2.0f, frame.size.width, frame.size.height  / 2.0f)];
+        
+        self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(ShadowWidth, frame.size.height  / 2.0f, frame.size.width - ShadowWidth * 2, frame.size.height / 2.0f - ShadowWidth + TopAndBottomFixValue)];
         self.smellView.delegate = self;
         [self.smellView setUserInteractionEnabled:YES];
         [self.contentView addSubview:self.smellView];
@@ -64,20 +70,23 @@
     currentScriptCommand = scriptCommand;
     if (self.smellView) {
         [self.smellView setFruit:fruit WithDuration:scriptCommand.duration];
-        [self.smellView setMaxHeight:self.frame.size.height];
-        [self.smellView setFrame:CGRectMake(self.smellView.frame.origin.x, self.frame.size.height * (1 - scriptCommand.power), self.frame.size.width, self.frame.size.height * scriptCommand.power)];
+        [self.smellView setMaxHeight:self.frame.size.height - ShadowWidth * 2 + 2 * TopAndBottomFixValue];
+        [self.smellView setFrame:CGRectMake(self.smellView.frame.origin.x, (self.frame.size.height - 2 * ShadowWidth) * (1 - scriptCommand.power) + ShadowWidth - TopAndBottomFixValue, self.frame.size.width - ShadowWidth * 2, (self.frame.size.height - 2 * ShadowWidth) * scriptCommand.power + 2 * TopAndBottomFixValue)];
     }else{
-        self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(0, self.frame.size.height * (1 - scriptCommand.power), self.frame.size.width, self.frame.size.height * scriptCommand.power)];
+        self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(ShadowWidth, self.frame.size.height  / 2.0f, self.frame.size.width - ShadowWidth * 2, self.frame.size.height / 2.0f - ShadowWidth + TopAndBottomFixValue)];
         [self.smellView setUserInteractionEnabled:YES];
         self.smellView.delegate = self;
         [self.smellView setFruit:fruit WithDuration:scriptCommand.duration];
-        [self.smellView setMaxHeight:self.frame.size.height];
+        [self.smellView setMaxHeight:self.frame.size.height - ShadowWidth * 2 + 2 * TopAndBottomFixValue];
         [self.contentView addSubview:self.smellView];
         
         tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
         [self.smellView addGestureRecognizer:tapGestureRecognizer];
     }
     [self.smellView setNeedsDisplay];
+    
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
+    [self.smellView addGestureRecognizer:tapGestureRecognizer];
     
     if (self.btnClose == nil) {
         self.btnClose = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, CloseBtnSize.width, CloseBtnSize.height)];
@@ -100,7 +109,7 @@
 #pragma -mark ScriptSelectSmellViewProtocol
 -(void)powerValueChanged:(CGFloat)power
 {
-    if (power == 0.0f) {
+    if (power < 0.1f) {
         if([self.delegate respondsToSelector:@selector(deleteCellWithFruit:WithScriptCommand:)]){
             [self.delegate deleteCellWithFruit:currentFruit WithScriptCommand:currentScriptCommand];
         }

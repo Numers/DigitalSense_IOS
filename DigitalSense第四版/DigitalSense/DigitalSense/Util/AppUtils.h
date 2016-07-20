@@ -19,6 +19,7 @@
 
 +(void)showInfo:(NSString *)text;
 + (BOOL)isNullStr:(NSString *)str;
++ (BOOL)isNetworkURL:(NSString *)url;
 
 /**
  *  显示在指定VIEW中心

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class ScriptCommand;
 @interface FullScreenSmellView : UIView
 @property(nonatomic, strong) UILabel *lblFruitName;
 @property(nonatomic, strong) UILabel *lblDuration;
--(void)setFruitName:(NSString *)name WithDuration:(NSInteger)duration;
+-(void)setScriptCommand:(ScriptCommand *)command;
 @end

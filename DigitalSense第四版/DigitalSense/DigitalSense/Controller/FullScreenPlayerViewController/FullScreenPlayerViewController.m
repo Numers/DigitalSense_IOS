@@ -24,8 +24,8 @@
 
 @property(nonatomic, strong) IBOutlet UIButton *btnLoop;
 @property(nonatomic, strong) IBOutlet UILabel *lblPlayTime;
-@property(nonatomic, strong) IBOutlet UILabel *lblAllTime;
 @property(nonatomic, strong) IBOutlet UIProgressView *progressView;
+@property(nonatomic, strong) IBOutlet UIView *playView;
 
 @property(nonatomic, strong) IBOutlet UITextField *txtDescription;
 @end
@@ -35,7 +35,11 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+    UIImage *backgroundImage = [UIImage imageNamed:@"OperationBackgroundViewImage"];
+    self.view.layer.contents = (id)backgroundImage.CGImage;
+    
+    UIImage *playViewBackgroundImage = [UIImage imageNamed:@"Player_BackgroundViewImage"];
+    _playView.layer.contents = (id)playViewBackgroundImage.CGImage;
     // Do any additional setup after loading the view.
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight];
@@ -109,10 +113,13 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 -(NSString *)switchSecondsToTime:(NSInteger)seconds
 {
     NSInteger second = seconds % 60;
-    NSInteger tempMinite = (seconds - second) / 60;
-    NSInteger minite = tempMinite % 60;
-    NSInteger hour = tempMinite / 60;
-    NSString *result = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",hour,minite,second];
+    NSInteger minite = (seconds - second) / 60;
+    NSString *result;
+    if (minite < 10) {
+        result = [NSString stringWithFormat:@"%02ld:%02ld",minite,second];
+    }else{
+        result = [NSString stringWithFormat:@"%ld:%02ld",minite,second];
+    }
     return result;
 }
 
@@ -124,9 +131,12 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 
 -(void)inilizedUIView
 {
-    [_lblPlayTime setText:@"00:00:00"];
+    
     if (currentScript) {
-        [_lblAllTime setText:[self switchSecondsToTime:currentScript.scriptTime]];
+        NSString *desc = [NSString stringWithFormat:@"00:00 / %@",[self switchSecondsToTime:currentScript.scriptTime]];
+        [_lblPlayTime setText:desc];
+    }else{
+        [_lblPlayTime setText:@"00:00 / 00:00"];
     }
     [_progressView setProgress:0.0f];
     
@@ -140,9 +150,9 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
     isLoop = loop;
     if (_btnLoop) {
         if (loop) {
-            [_btnLoop setImage:[UIImage imageNamed:@"Player_Repeat"] forState:UIControlStateNormal];
+            [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Repeat"] forState:UIControlStateNormal];
         }else{
-            [_btnLoop setImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
+            [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
         }
     }
 }
@@ -195,7 +205,7 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 -(void)sendScriptCommandNotify:(NSNotification *)notify
 {
     ScriptCommand *scriptCommand = [notify object];
-    NSString *desc = [NSString stringWithFormat:@"当前正在播放%@,共播放%ld秒",scriptCommand.desc,scriptCommand.duration];
+    NSString *desc = [NSString stringWithFormat:@"正在播放%@",scriptCommand.desc];
     [_txtDescription setText:desc];
 }
 
@@ -206,7 +216,8 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
         CGFloat progress = 1.0f * [seconds integerValue] / currentScript.scriptTime;
         [_progressView setProgress:progress animated:NO];
         
-        [_lblPlayTime setText:[self switchSecondsToTime:[seconds integerValue]]];
+        NSString *desc = [NSString stringWithFormat:@"%@ / %@",[self switchSecondsToTime:[seconds integerValue]],[self switchSecondsToTime:currentScript.scriptTime]];
+        [_lblPlayTime setText:desc];
         
         CGFloat lineViewSpeed = _collectionView.frame.size.width / currentScript.scriptTime;
         CGFloat linewidth = [self calculateCellWithPersecond];

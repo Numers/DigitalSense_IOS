@@ -19,7 +19,13 @@
 
 -(void)setFruit:(Fruit *)fruit
 {
-    [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
+    [self setBackgroundColor:[UIColor clearColor]];
+    if ([AppUtils isNetworkURL:fruit.fruitImage]) {
+        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
+    }else{
+        [self.fruitImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
+    }
+    
     [self.lblFruitName setText:fruit.fruitName];
 }
 @end

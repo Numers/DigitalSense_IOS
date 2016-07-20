@@ -273,6 +273,7 @@
                                 fruit.fruitKeyWords = [dic objectForKey:@"cn_name"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
+                                fruit.fruitColor = @"0xFFC865";
                                 fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }

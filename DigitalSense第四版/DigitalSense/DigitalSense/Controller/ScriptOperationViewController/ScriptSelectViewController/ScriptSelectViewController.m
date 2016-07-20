@@ -42,7 +42,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor grayColor]];
+    [self.view setBackgroundColor:[UIColor clearColor]];
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     LewReorderableLayout *layout = [[LewReorderableLayout alloc] init];
@@ -50,6 +50,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     layout.dataSource = self;
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, controllerFrame.size.width, controllerFrame.size.height) collectionViewLayout:layout];
+    [self.collectionView setBackgroundColor:[UIColor clearColor]];
     [self.collectionView setScrollEnabled:YES];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     [self.collectionView setShowsHorizontalScrollIndicator:NO];
@@ -89,6 +90,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         addFruit.fruitImage = fruit.fruitImage;
         addFruit.fruitEnName = fruit.fruitEnName;
         addFruit.fruitKeyWords = fruit.fruitKeyWords;
+        addFruit.fruitColor = fruit.fruitColor;
         addFruit.tag = fruit.tag;
         [fruitList addObject:addFruit];
         
@@ -96,7 +98,8 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         command.rfId = fruit.fruitRFID;
         command.duration = 3;
         command.power = 0.5;
-        command.desc = addFruit.fruitName;
+        command.desc = fruit.fruitName;
+        command.color = fruit.fruitColor;
         [scriptCommandList addObject:command];
         
         [self.collectionView reloadData];
@@ -171,8 +174,8 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     
 //    ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
 //    CGFloat width = 15 * command.duration;
-    CGFloat width = 45.0f;
     CGFloat height = collectionView.frame.size.height;
+    CGFloat width = 180.0f * height / 692.0f;
     return CGSizeMake(width, height);
 }
 

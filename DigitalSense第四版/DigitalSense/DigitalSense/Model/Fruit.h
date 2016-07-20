@@ -14,6 +14,7 @@
 @property(nonatomic, copy) NSString *fruitEnName;
 @property(nonatomic, copy) NSString *fruitImage;
 @property(nonatomic, copy) NSString *fruitRFID;
+@property(nonatomic, copy) NSString *fruitColor;
 
 @property(nonatomic) NSInteger tag; //专用于排序
 

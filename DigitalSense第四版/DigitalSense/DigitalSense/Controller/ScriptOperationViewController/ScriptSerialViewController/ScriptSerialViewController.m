@@ -35,13 +35,15 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor grayColor]];
+    [self.view setBackgroundColor:[UIColor clearColor]];
     // Uncomment the following line to preserve selection between presentations
     LewReorderableLayout *layout = [[LewReorderableLayout alloc] init];
     layout.delegate = self;
     layout.dataSource = self;
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, controllerFrame.size.width, controllerFrame.size.height) collectionViewLayout:layout];
+    UIImage *collectionBackgroundImage = [UIImage imageNamed:@"SerialViewBackgroundViewImage"];
+    self.collectionView.layer.contents = (id)collectionBackgroundImage.CGImage;
     [self.collectionView setScrollEnabled:YES];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     [self.collectionView setShowsHorizontalScrollIndicator:NO];
@@ -58,30 +60,44 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     
 //    Fruit *fruit = [[Fruit alloc] init];
 //    fruit.fruitName = @"苹果";
+//    fruit.fruitColor = @"#FFC865";
+//    fruit.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit];
 //    
 //    Fruit *fruit1 = [[Fruit alloc] init];
 //    fruit1.fruitName = @"香蕉";
+//    fruit1.fruitColor = @"#FFC865";
+//    fruit1.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit1];
 //    
 //    Fruit *fruit2 = [[Fruit alloc] init];
 //    fruit2.fruitName = @"菠萝";
+//    fruit2.fruitColor = @"#FFC865";
+//    fruit2.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit2];
 //    
 //    Fruit *fruit3 = [[Fruit alloc] init];
 //    fruit3.fruitName = @"橙子";
+//    fruit3.fruitColor = @"#FFC865";
+//    fruit3.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit3];
 //    
 //    Fruit *fruit4 = [[Fruit alloc] init];
 //    fruit4.fruitName = @"西瓜";
+//    fruit4.fruitColor = @"#FFC865";
+//    fruit4.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit4];
 //    
 //    Fruit *fruit5 = [[Fruit alloc] init];
 //    fruit5.fruitName = @"猕猴桃";
+//    fruit5.fruitColor = @"#FFC865";
+//    fruit5.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit5];
 //    
 //    Fruit *fruit6 = [[Fruit alloc] init];
 //    fruit6.fruitName = @"草莓";
+//    fruit6.fruitColor = @"#FFC865";
+//    fruit6.fruitImage = @"SerialViewClockForCell";
 //    [fruitList addObject:fruit6];
 //    
 //    [self.collectionView reloadData];
@@ -100,6 +116,11 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 {
     if (list && list.count > 0) {
         [self inilizedData];
+        Fruit *fruit = [[Fruit alloc] init];
+        fruit.fruitName = @"间隔";
+        fruit.fruitImage = @"SerialViewClockForCell";
+        fruit.fruitColor = @"0x000000";
+        [fruitList addObject:fruit];
         [fruitList addObjectsFromArray:list];
         if (_collectionView) {
             [_collectionView reloadData];

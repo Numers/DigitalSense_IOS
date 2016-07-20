@@ -14,6 +14,7 @@
 @property(nonatomic) NSInteger duration;
 @property(nonatomic, copy) NSString *command;
 @property(nonatomic, copy) NSString *desc;
+@property(nonatomic, copy) NSString *color;
 
 @property(nonatomic) CGFloat power;
 @end

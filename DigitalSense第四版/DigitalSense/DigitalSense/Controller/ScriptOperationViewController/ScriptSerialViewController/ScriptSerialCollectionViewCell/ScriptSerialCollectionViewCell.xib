@@ -14,31 +14,32 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="100" height="93"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="苹果" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oy4-Yu-Avu">
-                        <rect key="frame" x="0.0" y="78" width="100" height="15"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="15" id="UB0-SS-tp1"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EDa-wD-qW2">
-                        <rect key="frame" x="22" y="18" width="57" height="57"/>
+                        <rect key="frame" x="18" y="10" width="65" height="65"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="EDa-wD-qW2" secondAttribute="height" multiplier="1:1" id="xXe-VG-Dbq"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="苹果" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oy4-Yu-Avu">
+                        <rect key="frame" x="0.0" y="78" width="100" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="15" id="wao-9X-FYM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
-            <color key="backgroundColor" red="0.1333333333" green="0.71764705880000002" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="EDa-wD-qW2" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="1cQ-aV-VDa"/>
                 <constraint firstAttribute="bottom" secondItem="Oy4-Yu-Avu" secondAttribute="bottom" id="HOL-GV-HV6"/>
                 <constraint firstAttribute="trailing" secondItem="Oy4-Yu-Avu" secondAttribute="trailing" id="NeA-77-1T1"/>
                 <constraint firstItem="Oy4-Yu-Avu" firstAttribute="top" secondItem="EDa-wD-qW2" secondAttribute="bottom" constant="3" id="TFP-1Q-fpt"/>
                 <constraint firstItem="Oy4-Yu-Avu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="c8h-bO-RzW"/>
-                <constraint firstItem="EDa-wD-qW2" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="seC-ho-Umm"/>
+                <constraint firstItem="EDa-wD-qW2" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="10" id="qSe-az-zOI"/>
             </constraints>
             <size key="customSize" width="100" height="93"/>
             <connections>
