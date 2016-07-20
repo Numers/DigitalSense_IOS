@@ -997,7 +997,7 @@
     }
     [self.navigationController wxs_pushViewController:scriptOperationVC makeTransition:^(WXSTransitionProperty *transition) {
         transition.animationType = WXSTransitionAnimationTypeBrickOpenHorizontal;
-        transition.animationTime = 1.0f;
+        transition.animationTime = 0.5f;
         transition.backGestureEnable = NO;
     }];
 }

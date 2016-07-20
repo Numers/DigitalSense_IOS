@@ -235,16 +235,22 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 #pragma -mark ScriptSelectCollectionViewCellProtocol
 -(void)deleteCellWithFruit:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)command
 {
-    if ([fruitList containsObject:fruit]) {
-        [fruitList removeObject:fruit];
+    @synchronized (self) {
+        if ([fruitList containsObject:fruit] && [scriptCommandList containsObject:command]) {
+            [fruitList removeObject:fruit];
+            [scriptCommandList removeObject:command];
+            [self.collectionView reloadData];
+            [self scriptTimeChanged:-command.duration];
+        }else{
+            if ([fruitList containsObject:fruit]) {
+                [fruitList removeObject:fruit];
+            }
+            
+            if ([scriptCommandList containsObject:command]) {
+                [scriptCommandList removeObject:command];
+            }
+        }
     }
-    
-    if ([scriptCommandList containsObject:command]) {
-        [scriptCommandList removeObject:command];
-    }
-    
-    [self.collectionView reloadData];
-    [self scriptTimeChanged:-command.duration];
 }
 
 -(void)showPickViewWithScriptCommand:(ScriptCommand *)command
