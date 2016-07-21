@@ -56,9 +56,9 @@
     //popoverView显示的title
     popoverTitle = @[@"刷新蓝牙"];
     
-    [_playView.layer setShadowColor:[UIColor colorWithWhite:0.0f alpha:0.2].CGColor];
+    [_playView.layer setShadowColor:[UIColor colorWithWhite:0.0f alpha:0.5].CGColor];
     [_playView.layer setShadowOffset:CGSizeMake(0, 5)];
-    [_playView.layer setShadowOpacity:1.0f];
+    [_playView.layer setShadowOpacity:0.8f];
     //适配TitleLabel的字体大小
     [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
     
@@ -70,7 +70,7 @@
     
     CGSize screenSize = [UIScreen mainScreen].bounds.size;
 //    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(45, 97, self.view.frame.size.width - 90, (screenSize.height - _playView.frame.size.height - 162) * 2 / 3.0f)];
-    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(45, 97, self.view.frame.size.width - 90, 230.667)];
+    scriptSelectVC = [[ScriptSelectViewController alloc] initWithFrame:CGRectMake(17, 97, self.view.frame.size.width - 34, 230.667)];
     scriptSelectVC.delegate = self;
     [self.view addSubview:scriptSelectVC.view];
     

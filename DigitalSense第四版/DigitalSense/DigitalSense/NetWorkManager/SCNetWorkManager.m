@@ -137,6 +137,8 @@ static SCNetWorkManager *scNetWorkManager;
                 NSInteger code = [[responseObject objectForKey:@"code"] integerValue];
                 if (code % 2 != 0) {
                     [AppUtils showInfo:[responseObject objectForKey:@"msg"]];
+                }else{
+                    [AppUtils showInfo:@"服务器接口崩溃"];
                 }
                 errors(operation, error);
             }

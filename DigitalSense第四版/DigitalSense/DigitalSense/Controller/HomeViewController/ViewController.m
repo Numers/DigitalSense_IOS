@@ -261,8 +261,14 @@
                 break;
             case BottleInfoCompletely:
             {
+                [AppUtils showProgressBarForView:self.view];
                 [[self.viewModel getBottleInfoCompletelyReturn:byte WithBottleInfoList:bottleInfoList] subscribeNext:^(id x) {
                     //处理http返回responseObject
+                    [AppUtils hideProgressBarForView:self.view];
+                    if (x == nil) {
+                        return ;
+                    }
+                    
                     NSDictionary *result = (NSDictionary *)x;
                     if (result) {
                         NSArray *dataArr = [result objectForKey:@"data"];

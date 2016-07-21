@@ -229,31 +229,42 @@
 {
     int value = byte[1];
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
-        while ((self.macAddress == nil || list.count == 0)) {
-            NSLog(@"mac地址为空或者水果列表个数为0");
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-        }
-        if (value == list.count)
-        {
-            if(self.macAddress == nil)
-            {
-                [subscriber sendCompleted];
-            }else{
-                NSDictionary *bottleInfoDic = [self dowithBottleInfoList:list];
-                [[SCDeviceInfoManager defaultManager] requestFruitInfo:self.macAddress WithRFIDSequence:[bottleInfoDic objectForKey:@"RFID"] WithUseTimeSequence:[bottleInfoDic objectForKey:@"useTime"] IsNew:@"1" Success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"网络请求瓶子信息成功%@",responseObject);
-                    [subscriber sendNext:responseObject];
-                    [subscriber sendCompleted];
-                } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"网络请求瓶子信息错误%@",responseObject);
-                    [subscriber sendCompleted];
-                } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [subscriber sendCompleted];
-                    NSLog(@"网络请求瓶子信息失败%@",error);
-                }];
-            }
-        }else{
+        if (value == 0) {
+            [subscriber sendNext:nil];
             [subscriber sendCompleted];
+        }else{
+            while ((self.macAddress == nil || list.count == 0)) {
+                NSLog(@"mac地址为空或者水果列表个数为0");
+                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+            }
+            if (value == list.count)
+            {
+                if(self.macAddress == nil)
+                {
+                    [subscriber sendNext:nil];
+                    [subscriber sendCompleted];
+                }else{
+                    NSDictionary *bottleInfoDic = [self dowithBottleInfoList:list];
+                    
+                    [[SCDeviceInfoManager defaultManager] requestFruitInfo:self.macAddress WithRFIDSequence:[bottleInfoDic objectForKey:@"RFID"] WithUseTimeSequence:[bottleInfoDic objectForKey:@"useTime"] IsNew:@"1" Success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSLog(@"网络请求瓶子信息成功%@",responseObject);
+                        [subscriber sendNext:responseObject];
+                        [subscriber sendCompleted];
+                    } Error:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        NSLog(@"网络请求瓶子信息错误%@",responseObject);
+                        [subscriber sendNext:nil];
+                        [subscriber sendCompleted];
+                    } Failed:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [subscriber sendNext:nil];
+                        [subscriber sendCompleted];
+                        NSLog(@"网络请求瓶子信息失败%@",error);
+                    }];
+                }
+            }else{
+                [AppUtils showInfo:@"返回条数信息不匹配"];
+                [subscriber sendCompleted];
+            }
+
         }
         return [RACDisposable disposableWithBlock:^{
             NSLog(@"获取瓶内气味信息信号销毁");

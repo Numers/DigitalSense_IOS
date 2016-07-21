@@ -18,6 +18,7 @@
     if (self) {
         [self.layer setCornerRadius:3.0f];
         [self.layer setMasksToBounds:YES];
+        
         self.lblFruitName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, frame.size.height - LabelHeight)];
         [self.lblFruitName setCenter:CGPointMake(frame.size.width / 2, (frame.size.height - LabelHeight)/2)];
         [self.lblFruitName setTextAlignment:NSTextAlignmentCenter];

@@ -72,26 +72,28 @@
 
 +(void)showInfo:(NSString *)text
 {
-    UIWindow *appRootView = [UIApplication sharedApplication].keyWindow;
-    MBProgressHUD *HUD = (MBProgressHUD *)[appRootView viewWithTag:MBTAG];
-    if (HUD == nil) {
-        HUD = [[MBProgressHUD alloc] initWithView:appRootView];
-        HUD.tag = MBTAG;
-        [appRootView addSubview:HUD];
-        [HUD show:YES];
-    }
-    
-    HUD.removeFromSuperViewOnHide = YES; // 设置YES ，MB 再消失的时候会从super 移除
-    
-    if ([self isNullStr:text]) {
-        //        HUD.animationType = MBProgressHUDAnimationZoom;
-        [HUD hide:YES];
-    }else{
-        HUD.mode = MBProgressHUDModeText;
-        HUD.labelText = text;
-        HUD.labelFont = [UIFont fontWithName:@"HelveticaNeue" size:15];
-        [HUD hide:YES afterDelay:1];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *appRootView = [UIApplication sharedApplication].keyWindow;
+        MBProgressHUD *HUD = (MBProgressHUD *)[appRootView viewWithTag:MBTAG];
+        if (HUD == nil) {
+            HUD = [[MBProgressHUD alloc] initWithView:appRootView];
+            HUD.tag = MBTAG;
+            [appRootView addSubview:HUD];
+            [HUD show:YES];
+        }
+        
+        HUD.removeFromSuperViewOnHide = YES; // 设置YES ，MB 再消失的时候会从super 移除
+        
+        if ([self isNullStr:text]) {
+            //        HUD.animationType = MBProgressHUDAnimationZoom;
+            [HUD hide:YES];
+        }else{
+            HUD.mode = MBProgressHUDModeText;
+            HUD.labelText = text;
+            HUD.labelFont = [UIFont fontWithName:@"HelveticaNeue" size:15];
+            [HUD hide:YES afterDelay:1];
+        }
+    });
 }
 
 + (BOOL)isNullStr:(NSString *)str
@@ -116,22 +118,26 @@
 
 + (void)showProgressBarForView:(UIView *)view
 {
-    LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
-    if (HUD == nil) {
-        CGRect frame = CGRectMake(0, 0, 26, 26);
-        HUD = [[LZProgressView alloc] initWithFrame:frame andLineWidth:3.0f andLineColor:@[[UIColor orangeColor],[UIColor grayColor]]];
-        HUD.tag = AMTAG;
-        HUD.center = CGPointMake(view.center.x, view.center.y);
-        [view addSubview:HUD];
-    }
-    [HUD startAnimation];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
+        if (HUD == nil) {
+            CGRect frame = CGRectMake(0, 0, 26, 26);
+            HUD = [[LZProgressView alloc] initWithFrame:frame andLineWidth:3.0f andLineColor:@[[UIColor orangeColor],[UIColor grayColor]]];
+            HUD.tag = AMTAG;
+            HUD.center = CGPointMake(view.center.x, view.center.y);
+            [view addSubview:HUD];
+        }
+        [HUD startAnimation];
+    });
 }
 
 + (void)hideProgressBarForView:(UIView *)view
 {
-    LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
-    if (HUD != nil) {
-        [HUD stopAnimation];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
+        if (HUD != nil) {
+            [HUD stopAnimation];
+        }
+    });
 }
 @end
