@@ -233,6 +233,7 @@
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
         }else{
+            [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
             while ((self.macAddress == nil || list.count == 0)) {
                 NSLog(@"mac地址为空或者水果列表个数为0");
                 [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];

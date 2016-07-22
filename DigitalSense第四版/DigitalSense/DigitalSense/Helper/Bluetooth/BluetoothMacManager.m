@@ -583,19 +583,24 @@ static BluetoothMacManager *bluetoothMacManager;
     //连接外围设备
     if (peripheral) {
         //找到口罩设备的蓝牙信号
-        if(![peripheral.name hasPrefix:@"renrenkeji"] && ![peripheral.name hasPrefix:@"HJ-580"]){
-            return;
-        }else{
-            //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
-            if(![self.peripherals containsObject:peripheral]){
-                [self.peripherals addObject:peripheral];
-                [self.peripheralNameList addObject:peripheral.name];
-            }else{
-                return;
+        if (advertisementData) {
+            NSString *peripheralName = [advertisementData objectForKey:@"kCBAdvDataLocalName"];
+            if (peripheralName == nil) {
+                peripheralName = peripheral.name;
             }
-            
-            if (connectType != ConnectForScan) {
-                [self connectToPeripheral:peripheral];
+            if([peripheralName hasSuffix:@"Smell"]){
+                //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
+                if(![self.peripherals containsObject:peripheral]){
+                    [self.peripherals addObject:peripheral];
+                    [self.peripheralNameList addObject:peripheralName];
+                }else{
+                    return;
+                }
+                
+                if (connectType != ConnectForScan) {
+                    [self connectToPeripheral:peripheral];
+                }
+                
             }
         }
     }

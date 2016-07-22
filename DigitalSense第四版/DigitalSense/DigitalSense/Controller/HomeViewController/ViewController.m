@@ -79,12 +79,20 @@
     //popoverView显示的title
     popoverTitle = @[@"刷新蓝牙",@"脚本"];
     //添加浮动的按钮
-    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 75, 75)];
+    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     floatView.delegate = self;
     [floatView.layer setCornerRadius:floatView.frame.size.width / 2.0f];
     [floatView setCenter:CGPointMake(self.view.frame.size.width - floatView.frame.size.width / 2.0f, self.view.frame.size.height / 2.0f)];
     [self.view addSubview:floatView];
     [self.view bringSubviewToFront:floatView];
+    
+    UILabel *floatLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
+    [floatLabel setText:@"点击"];
+    [floatLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
+    [floatLabel setTextColor:[UIColor whiteColor]];
+    [floatLabel setTextAlignment:NSTextAlignmentCenter];
+    [floatLabel setCenter:CGPointMake(floatView.frame.size.width / 2.0f, floatView.frame.size.height / 2.0f)];
+    [floatView addSubview:floatLabel];
     
     
     //获取本地缓存的皮肤
@@ -158,7 +166,7 @@
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"设备已断开"];
+    [self.lblTitle setText:@"设备未连接"];
     [self.btnSelectDevice setHidden:NO];
 }
 
@@ -862,6 +870,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     UIImageView *backImageView = [cell viewWithTag:1];
+    UILabel *lblName = [cell viewWithTag:2];
     UIView *frontView = [cell viewWithTag:3];
     
     UIView *firstLine = [cell viewWithTag:4];
@@ -873,8 +882,12 @@
     UIView *fourthLine = [cell viewWithTag:7];
     [fourthLine setHidden:YES];
     
+    UILabel *lblEnName = [cell viewWithTag:8];
+    
     Fruit *fruit = [_fruitsList objectAtIndex:indexPath.item];
     [backImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"] options:SDWebImageLowPriority|SDWebImageRetryFailed];
+    [lblName setText:fruit.fruitName];
+    [lblEnName setText:fruit.fruitEnName];
 //    [backImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
     if ([selectTag isEqualToString:fruit.fruitRFID]) {
         [frontView setHidden:NO];
@@ -979,7 +992,11 @@
 #pragma -mark ScanBluetoothDeviceViewProtocol
 -(void)connectToBluetoothWithPeripheral:(id)peripheral WithName:(NSString *)name;
 {
-    if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
+            [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
+        }
+    }else{
         [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
     }
 }
@@ -990,7 +1007,7 @@
 {
     if (![[BluetoothMacManager defaultManager] isConnected])
     {
-        [AppUtils showInfo:@"请等待蓝牙连接"];
+        [AppUtils showInfo:@"请先连接蓝牙"];
         return;
     }
     
@@ -1011,7 +1028,7 @@
 #pragma -mark ComboxViewProtocol
 -(void)selectPeripheral:(id)peripheral WithDeviceName:(NSString *)name
 {
-    [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
+    [self connectToBluetoothWithPeripheral:peripheral WithName:name];
 }
 
 #pragma -mark ScriptOperationViewProtocol

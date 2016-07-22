@@ -55,7 +55,7 @@ static  NSString * const cellIdentify = @"ComboxViewCellIdentify";
     [view addSubview:self];
     [view bringSubviewToFront:self];
 
-    CGFloat height = DefaultCellHeight * titleArray.count > self.frame.size.height / 2.0f ? self.frame.size.height / 2.0f : DefaultCellHeight * titleArray.count;
+    CGFloat height = (DefaultCellHeight * titleArray.count + 0.5) > self.frame.size.height / 2.0f ? self.frame.size.height / 2.0f : (DefaultCellHeight * titleArray.count + 0.5);
     [UIView animateWithDuration:Duration animations:^{
         [_tableView setFrame:CGRectMake(0, 0, _tableView.frame.size.width, height)];
     }];

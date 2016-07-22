@@ -196,7 +196,7 @@
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"设备已断开"];
+    [self.lblTitle setText:@"设备未连接"];
     [self.btnSelectDevice setHidden:NO];
 }
 
