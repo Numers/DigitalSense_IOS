@@ -8,15 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "ScriptSelectSmellView.h"
-@class ScriptSelectSmellView,Fruit,ScriptCommand;
+@class ScriptSelectSmellView,ScriptCommand;
 @protocol ScriptSelectCollectionViewCellProtocol <NSObject>
--(void)deleteCellWithFruit:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)command;
+-(void)deleteCellWithScriptCommand:(ScriptCommand *)command;
 -(void)showPickViewWithScriptCommand:(ScriptCommand *)command;
 @end
 @interface ScriptSelectCollectionViewCell : UICollectionViewCell<ScriptSelectSmellViewProtocol>
 {
     BOOL isShowCloseBtn;
-    Fruit *currentFruit;
     ScriptCommand *currentScriptCommand;
     
     UITapGestureRecognizer *tapGestureRecognizer;
@@ -25,6 +24,6 @@
 @property(nonatomic, strong) UIButton *btnClose;
 @property(nonatomic, strong) ScriptSelectSmellView *smellView;
 
--(void)setFruitSmell:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)scriptCommand;
+-(void)setScriptCommand:(ScriptCommand *)scriptCommand;
 -(void)setIsShowCloseBtn:(BOOL)isShow;
 @end

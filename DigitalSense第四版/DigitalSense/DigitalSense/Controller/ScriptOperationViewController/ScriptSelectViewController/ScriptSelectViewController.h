@@ -20,6 +20,7 @@
 @property(nonatomic, assign) id<ScriptSelectViewProtocol> delegate;
 -(instancetype)initWithFrame:(CGRect)frame;
 -(void)addFruit:(Fruit *)fruit;
+-(void)setScriptCommandList:(NSArray *)commandList WithScriptTime:(NSInteger)scriptTime;
 -(NSMutableArray *)returnAllScriptCommand;
 
 -(void)clearAllData;

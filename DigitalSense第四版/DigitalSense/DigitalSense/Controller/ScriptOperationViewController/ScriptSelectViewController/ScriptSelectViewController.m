@@ -16,7 +16,6 @@
 
 @interface ScriptSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSelectCollectionViewCellProtocol,DataPickViewProtocol>
 {
-    NSMutableArray *fruitList;
     NSMutableArray *scriptCommandList;
     
     DataPickViewController *dataPickVC;
@@ -61,17 +60,15 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     
     [self.collectionView registerClass:[ScriptSelectCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     // Do any additional setup after loading the view.
-    [self inilizedData];
+    if (scriptCommandList && scriptCommandList.count > 0) {
+        
+    }else{
+        [self inilizedData];
+    }
 }
 
 -(void)inilizedData
 {
-    if (fruitList) {
-        [fruitList removeAllObjects];
-    }else{
-        fruitList = [NSMutableArray array];
-    }
-    
     if (scriptCommandList) {
         [scriptCommandList removeAllObjects];
     }else{
@@ -84,18 +81,9 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 -(void)addFruit:(Fruit *)fruit
 {
     if (fruit) {
-        Fruit *addFruit = [[Fruit alloc] init];
-        addFruit.fruitRFID = fruit.fruitRFID;
-        addFruit.fruitName = fruit.fruitName;
-        addFruit.fruitImage = fruit.fruitImage;
-        addFruit.fruitEnName = fruit.fruitEnName;
-        addFruit.fruitKeyWords = fruit.fruitKeyWords;
-        addFruit.fruitColor = fruit.fruitColor;
-        addFruit.tag = fruit.tag;
-        [fruitList addObject:addFruit];
-        
         ScriptCommand *command = [[ScriptCommand alloc] init];
         command.rfId = fruit.fruitRFID;
+        command.smellName = fruit.fruitName;
         command.duration = 3;
         command.power = 0.5;
         command.desc = fruit.fruitName;
@@ -106,6 +94,24 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
         
         [self scriptTimeChanged:command.duration];
+    }
+}
+
+-(void)setScriptCommandList:(NSArray *)commandList WithScriptTime:(NSInteger)scriptTime
+{
+    if (commandList == nil || commandList.count == 0) {
+        return;
+    }
+    
+    if (scriptCommandList) {
+        [scriptCommandList removeAllObjects];
+    }else{
+        scriptCommandList = [NSMutableArray array];
+    }
+    [scriptCommandList addObjectsFromArray:commandList];
+    allTime = scriptTime;
+    if (_collectionView) {
+        [_collectionView reloadData];
     }
 }
 
@@ -151,10 +157,9 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     cell.delegate = self;
     [cell setIsShowCloseBtn:NO];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        Fruit *fruit = [fruitList objectAtIndex:indexPath.item];
         ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [cell setFruitSmell:fruit WithScriptCommand:command];
+            [cell setScriptCommand:command];
         });
     });
     // Configure the cell
@@ -163,7 +168,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return (fruitList.count == scriptCommandList.count) ? fruitList.count : 0;
+    return scriptCommandList.count;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -196,10 +201,6 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView itemAtIndexPath:(NSIndexPath *)fromIndexPath didMoveToIndexPath:(NSIndexPath *)toIndexPath{
-    Fruit *fruit = [fruitList objectAtIndex:fromIndexPath.item];
-    [fruitList removeObjectAtIndex:fromIndexPath.item];
-    [fruitList insertObject:fruit atIndex:toIndexPath.item];
-    
     ScriptCommand *command = [scriptCommandList objectAtIndex:fromIndexPath.item];
     [scriptCommandList removeObjectAtIndex:fromIndexPath.item];
     [scriptCommandList insertObject:command atIndex:toIndexPath.item];
@@ -220,8 +221,8 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    Fruit *selectFruit = [fruitList objectAtIndex:indexPath.item];
-    NSLog(@"select %ld, FruitName is %@",indexPath.item,selectFruit.fruitName);
+    ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
+    NSLog(@"select %ld, FruitName is %@",indexPath.item,command.smellName);
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -229,22 +230,13 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 }
 
 #pragma -mark ScriptSelectCollectionViewCellProtocol
--(void)deleteCellWithFruit:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)command
+-(void)deleteCellWithScriptCommand:(ScriptCommand *)command
 {
     @synchronized (self) {
-        if ([fruitList containsObject:fruit] && [scriptCommandList containsObject:command]) {
-            [fruitList removeObject:fruit];
+        if ([scriptCommandList containsObject:command]) {
             [scriptCommandList removeObject:command];
             [self.collectionView reloadData];
             [self scriptTimeChanged:-command.duration];
-        }else{
-            if ([fruitList containsObject:fruit]) {
-                [fruitList removeObject:fruit];
-            }
-            
-            if ([scriptCommandList containsObject:command]) {
-                [scriptCommandList removeObject:command];
-            }
         }
     }
 }

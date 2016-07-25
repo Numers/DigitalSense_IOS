@@ -109,6 +109,14 @@
         [self.view addSubview:scriptSerialVC.view];
     }
     
+    currentScript = [self dowithCacheDataFromLocal];
+    if (currentScript) {
+        if (scriptSelectVC) {
+            [scriptSelectVC setScriptCommandList:currentScript.scriptCommandList WithScriptTime:currentScript.scriptTime];
+            [self scriptCommandTimeDidChanged:currentScript.scriptTime];
+        }
+    }
+    
     [self.view bringSubviewToFront:_playView];
     
     [self setIsLoop:NO];
@@ -215,6 +223,26 @@
     [self.lblTitle setText:@"未发现有效设备"];
 }
 
+#pragma -mark public Functions
+-(void)setFruitList:(NSArray *)list
+{
+    if (list && list.count > 0) {
+        fruitList = [list copy];
+        if (scriptSerialVC) {
+            [scriptSerialVC setFruitList:fruitList];
+        }
+        
+        if (scriptSelectVC) {
+            currentScript = [self dowithCacheDataFromLocal];
+            if (currentScript) {
+                [scriptSelectVC setScriptCommandList:currentScript.scriptCommandList WithScriptTime:currentScript.scriptTime];
+                [self scriptCommandTimeDidChanged:currentScript.scriptTime];
+            }else{
+                [scriptSelectVC clearAllData];
+            }
+        }
+    }
+}
 #pragma -mark private Functions
 -(void)registerNotify
 {
@@ -255,10 +283,12 @@
             command.startRelativeTime = previousCommand.startRelativeTime + previousCommand.duration;
         }
         //组成command命令
-        if (command.rfId) {
-            command.command = @"";
+        if ([AppUtils isNullStr:command.rfId]) {
+            CGFloat power = 10 * command.power;
+            NSString *commandStr = [NSString stringWithFormat:@"F266%@%02lX%.0fX",command.rfId,command.duration,power];
+            command.command = commandStr;
         }else{
-            command.command = nil;
+            command.command = @"";
         }
         previousCommand = command;
         allTime = allTime + command.duration;
@@ -276,18 +306,110 @@
     }
 }
 
--(void)setFruitList:(NSArray *)list
+-(RelativeTimeScript *)dowithCacheDataFromLocal
 {
-    if (list && list.count > 0) {
-        fruitList = [list copy];
-        if (scriptSerialVC) {
-            [scriptSerialVC setFruitList:fruitList];
+    RelativeTimeScript *script = nil;
+    NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
+    if (macAddress) {
+        NSString *jsonStr = [[NSUserDefaults standardUserDefaults] objectForKey:macAddress];
+        if (jsonStr == nil) {
+            return nil;
+        }
+        NSData *jsonStrData = [jsonStr dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *error;
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonStrData options:kNilOptions error:&error];
+        if (error == nil) {
+            script = [[RelativeTimeScript alloc] init];
+            script.scriptId = [dic objectForKey:@"scriptId"];
+            script.scriptName = [dic objectForKey:@"scriptName"];
+            script.sceneName = [dic objectForKey:@"sceneName"];
+            script.scriptTime = [[dic objectForKey:@"scriptTime"] integerValue];
+            script.isLoop = [[dic objectForKey:@"isLoop"] boolValue];
+            script.state = (ScriptState)[[dic objectForKey:@"state"] integerValue];
+            script.type = (ScriptType)[[dic objectForKey:@"type"] integerValue];
+            NSString *scriptCommand = [dic objectForKey:@"scriptCommand"];
+            if (scriptCommand) {
+                NSError *error;
+                NSArray *commandArray = [NSJSONSerialization JSONObjectWithData:[scriptCommand dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
+                if (error == nil) {
+                    for (NSDictionary *commandDic in commandArray) {
+                        ScriptCommand *command = [[ScriptCommand alloc] init];
+                        command.startRelativeTime = [[commandDic objectForKey:@"startRelativeTime"] integerValue];
+                        command.rfId = [commandDic objectForKey:@"rfid"];
+                        command.smellName = [commandDic objectForKey:@"smellName"];
+                        command.duration = [[commandDic objectForKey:@"duration"] integerValue];
+                        command.command = [commandDic objectForKey:@"command"];
+                        command.desc = [commandDic objectForKey:@"description"];
+                        command.color = [commandDic objectForKey:@"color"];
+                        command.power = [[commandDic objectForKey:@"power"] floatValue];
+                        [script.scriptCommandList addObject:command];
+                    }
+                }
+            }
+        }
+
+    }
+    return script;
+}
+
+-(NSString *)commandStringWithCommandList:(NSArray *)commandList
+{
+    NSString *jsonStr = nil;
+    if (commandList && commandList.count > 0) {
+        NSMutableArray *commandDicArray = [[NSMutableArray alloc] init];
+        for (ScriptCommand *command in commandList) {
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            [dic setObject:@(command.startRelativeTime) forKey:@"startRelativeTime"];
+            [dic setObject:command.rfId forKey:@"rfid"];
+            [dic setObject:command.smellName forKey:@"smellName"];
+            [dic setObject:@(command.duration) forKey:@"duration"];
+            [dic setObject:command.command forKey:@"command"];
+            [dic setObject:command.desc forKey:@"description"];
+            [dic setObject:command.color forKey:@"color"];
+            [dic setObject:@(command.power) forKey:@"power"];
+            [commandDicArray addObject:dic];
+        }
+        NSError *error;
+        NSData *jsonStrData = [NSJSONSerialization dataWithJSONObject:commandDicArray options:NSJSONWritingPrettyPrinted error:&error];
+        if (error == nil) {
+            jsonStr = [[NSString alloc] initWithData:jsonStrData encoding:NSUTF8StringEncoding];
         }
         
-        if (scriptSelectVC) {
-            [scriptSelectVC clearAllData];
+    }
+    return jsonStr;
+}
+
+-(NSString *)jsonStrWithRelativeTimeScript:(RelativeTimeScript *)script
+{
+    if (script == nil) {
+        return nil;
+    }
+    NSString *jsonStr = nil;
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setObject:script.scriptId forKey:@"scriptId"];
+    [dic setObject:script.scriptName forKey:@"scriptName"];
+    [dic setObject:script.sceneName forKey:@"sceneName"];
+    [dic setObject:@(script.scriptTime) forKey:@"scriptTime"];
+    [dic setObject:@(script.isLoop) forKey:@"isLoop"];
+    [dic setObject:@(script.state) forKey:@"state"];
+    [dic setObject:@(script.type) forKey:@"type"];
+    NSString *commandJsonStr = [self commandStringWithCommandList:script.scriptCommandList];
+    if (commandJsonStr) {
+        [dic setObject:commandJsonStr forKey:@"scriptCommand"];
+    }
+    NSError *error;
+    NSData *jsonStrData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
+    if (error == nil) {
+        jsonStr = [[NSString alloc] initWithData:jsonStrData encoding:NSUTF8StringEncoding];
+        if (jsonStr) {
+            NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
+            if (macAddress) {
+                [[NSUserDefaults standardUserDefaults] setObject:jsonStr forKey:macAddress];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
         }
     }
+    return jsonStr;
 }
 
 #pragma -mark ButtonEvent
@@ -316,6 +438,7 @@
     script.scriptCommandList = scriptCommandList;
     fullScreenPlayerVC.startView = _playView;
     currentScript = script;
+    [self jsonStrWithRelativeTimeScript:script];
     [fullScreenPlayerVC setScript:script IsLoop:isLoop];
     [self.navigationController wxs_pushViewController:fullScreenPlayerVC makeTransition:^(WXSTransitionProperty *transition) {
         transition.animationType = WXSTransitionAnimationTypeFragmentShowFromRight;

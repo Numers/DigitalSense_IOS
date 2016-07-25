@@ -45,7 +45,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hE6-ct-cIg">
-                                        <rect key="frame" x="329" y="21" width="46" height="44"/>
+                                        <rect key="frame" x="357" y="32" width="18" height="22"/>
                                         <state key="normal" image="RefreshImage_Normal"/>
                                         <connections>
                                             <action selector="clickRefreshBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xVB-Yx-lXM"/>
@@ -282,7 +282,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ba-hO-gjQ">
-                                        <rect key="frame" x="329" y="20" width="46" height="44"/>
+                                        <rect key="frame" x="357" y="31" width="18" height="22"/>
                                         <state key="normal" image="RefreshImage_Normal"/>
                                         <connections>
                                             <action selector="clickRefreshBtn:" destination="SAr-rz-KS4" eventType="touchUpInside" id="qfG-zL-zZB"/>
@@ -566,7 +566,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R3F-Eu-SPT">
-                                        <rect key="frame" x="329" y="20" width="46" height="44"/>
+                                        <rect key="frame" x="357" y="31" width="18" height="22"/>
                                         <state key="normal" image="RefreshImage_Normal"/>
                                         <connections>
                                             <action selector="clickAddBtn:" destination="XqV-hl-z17" eventType="touchUpInside" id="IgY-a4-a12"/>
@@ -845,6 +845,6 @@
         <image name="Player_Repeat" width="50" height="50"/>
         <image name="PopbackImage" width="22" height="22"/>
         <image name="PressedImage" width="50" height="50"/>
-        <image name="RefreshImage_Normal" width="46" height="44"/>
+        <image name="RefreshImage_Normal" width="18" height="18"/>
     </resources>
 </document>

@@ -7,7 +7,7 @@
 //
 
 #import "ScriptSelectSmellView.h"
-#import "Fruit.h"
+#import "ScriptCommand.h"
 #import "UIImageView+WebCache.h"
 #import "UIColor+HexString.h"
 
@@ -47,18 +47,18 @@
     return self;
 }
 
--(void)setFruit:(Fruit *)fruit WithDuration:(NSInteger)duration
+-(void)setScriptCommand:(ScriptCommand *)scriptCommand
 {
 //    if (self.fruitImageView) {
 //        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
 //    }
-    [self setBackgroundColor:[UIColor colorFromHexString:fruit.fruitColor]];
+    [self setBackgroundColor:[UIColor colorFromHexString:scriptCommand.color]];
     if (self.lblFruitName) {
-        [self.lblFruitName setText:fruit.fruitName];
+        [self.lblFruitName setText:scriptCommand.smellName];
     }
     
     if (self.lblDuration) {
-        [self.lblDuration setText:[NSString stringWithFormat:@"%lds",duration]];
+        [self.lblDuration setText:[NSString stringWithFormat:@"%lds",scriptCommand.duration]];
     }
 }
 

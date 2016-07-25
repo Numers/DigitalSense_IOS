@@ -11,6 +11,7 @@
 @interface ScriptCommand : NSObject
 @property(nonatomic) NSInteger startRelativeTime;
 @property(nonatomic, copy) NSString *rfId;
+@property(nonatomic, copy) NSString *smellName;
 @property(nonatomic) NSInteger duration;
 @property(nonatomic, copy) NSString *command;
 @property(nonatomic, copy) NSString *desc;

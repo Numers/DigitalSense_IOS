@@ -205,7 +205,7 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 -(void)sendScriptCommandNotify:(NSNotification *)notify
 {
     ScriptCommand *scriptCommand = [notify object];
-    NSString *desc = [NSString stringWithFormat:@"正在播放%@",scriptCommand.desc];
+    NSString *desc = [NSString stringWithFormat:@"正在播放%@",scriptCommand.smellName];
     [_txtDescription setText:desc];
 }
 

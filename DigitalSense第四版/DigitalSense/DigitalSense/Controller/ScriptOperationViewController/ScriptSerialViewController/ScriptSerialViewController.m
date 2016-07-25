@@ -118,8 +118,9 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
         [self inilizedData];
         Fruit *fruit = [[Fruit alloc] init];
         fruit.fruitName = @"间隔";
+        fruit.fruitRFID = @"";
         fruit.fruitImage = @"SerialViewClockForCell";
-        fruit.fruitColor = @"0x000000";
+        fruit.fruitColor = @"#000000";
         [fruitList addObject:fruit];
         [fruitList addObjectsFromArray:list];
         if (_collectionView) {

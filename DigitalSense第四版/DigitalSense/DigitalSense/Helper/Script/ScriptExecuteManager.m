@@ -155,7 +155,7 @@ static NSInteger currentSecond = -1;
         
         //往蓝牙发送command
         if ([[BluetoothMacManager defaultManager] isConnected]) {
-            if (command.command) {
+            if ([AppUtils isNullStr:command.command]) {
                 [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
             }
             //往UI通知当前执行的命令

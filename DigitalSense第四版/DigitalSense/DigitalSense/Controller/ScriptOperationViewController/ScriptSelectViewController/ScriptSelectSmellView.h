@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class Fruit;
+@class ScriptCommand;
 @protocol ScriptSelectSmellViewProtocol <NSObject>
 -(void)powerValueChanged:(CGFloat)power;
 @end
@@ -20,6 +20,6 @@
 @property(nonatomic, strong) UIImageView *fruitImageView;
 @property(nonatomic, strong) UILabel *lblFruitName;
 @property(nonatomic, strong) UILabel *lblDuration;
--(void)setFruit:(Fruit *)fruit WithDuration:(NSInteger)duration;
+-(void)setScriptCommand:(ScriptCommand *)scriptCommand;
 -(void)setMaxHeight:(CGFloat)height;
 @end

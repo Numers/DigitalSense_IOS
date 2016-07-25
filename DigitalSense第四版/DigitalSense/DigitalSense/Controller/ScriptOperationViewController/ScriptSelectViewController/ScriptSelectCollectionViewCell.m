@@ -52,8 +52,8 @@
 
 -(void)clickCloseBtn
 {
-    if([self.delegate respondsToSelector:@selector(deleteCellWithFruit:WithScriptCommand:)]){
-        [self.delegate deleteCellWithFruit:currentFruit WithScriptCommand:currentScriptCommand];
+    if([self.delegate respondsToSelector:@selector(deleteCellWithScriptCommand:)]){
+        [self.delegate deleteCellWithScriptCommand:currentScriptCommand];
     }
 }
 
@@ -64,19 +64,18 @@
     }
 }
 
--(void)setFruitSmell:(Fruit *)fruit WithScriptCommand:(ScriptCommand *)scriptCommand;
+-(void)setScriptCommand:(ScriptCommand *)scriptCommand;
 {
-    currentFruit = fruit;
     currentScriptCommand = scriptCommand;
     if (self.smellView) {
-        [self.smellView setFruit:fruit WithDuration:scriptCommand.duration];
+        [self.smellView setScriptCommand:scriptCommand];
         [self.smellView setMaxHeight:self.frame.size.height - ShadowWidth * 2 + 2 * TopAndBottomFixValue];
         [self.smellView setFrame:CGRectMake(self.smellView.frame.origin.x, (self.frame.size.height - 2 * ShadowWidth) * (1 - scriptCommand.power) + ShadowWidth - TopAndBottomFixValue, self.frame.size.width - ShadowWidth * 2, (self.frame.size.height - 2 * ShadowWidth) * scriptCommand.power + 2 * TopAndBottomFixValue)];
     }else{
         self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(ShadowWidth, self.frame.size.height  / 2.0f, self.frame.size.width - ShadowWidth * 2, self.frame.size.height / 2.0f - ShadowWidth + TopAndBottomFixValue)];
         [self.smellView setUserInteractionEnabled:YES];
         self.smellView.delegate = self;
-        [self.smellView setFruit:fruit WithDuration:scriptCommand.duration];
+        [self.smellView setScriptCommand:scriptCommand];
         [self.smellView setMaxHeight:self.frame.size.height - ShadowWidth * 2 + 2 * TopAndBottomFixValue];
         [self.contentView addSubview:self.smellView];
         
@@ -110,8 +109,8 @@
 -(void)powerValueChanged:(CGFloat)power
 {
     if (power < 0.1f) {
-        if([self.delegate respondsToSelector:@selector(deleteCellWithFruit:WithScriptCommand:)]){
-            [self.delegate deleteCellWithFruit:currentFruit WithScriptCommand:currentScriptCommand];
+        if([self.delegate respondsToSelector:@selector(deleteCellWithScriptCommand:)]){
+            [self.delegate deleteCellWithScriptCommand:currentScriptCommand];
         }
         return;
     }
