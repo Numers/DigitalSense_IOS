@@ -54,6 +54,19 @@
     }];
 }
 
+-(void)reconnectBluetooth
+{
+    CBPeripheral *peripheral = [[BluetoothMacManager defaultManager] returnConnectedPeripheral];
+    if (peripheral) {
+        [self connectToBluetooth:nil WithPeripheral:peripheral];
+    }else{
+        NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
+        if (lastConnectDeviceName) {
+            [self connectToBluetooth:lastConnectDeviceName  WithPeripheral:nil];
+        }
+    }
+}
+
 -(void)connectToBluetooth:(NSString *)deviceName WithPeripheral:(id)peripheral
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:OnStartConnectToBluetooth object:nil];

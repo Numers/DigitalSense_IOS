@@ -104,7 +104,11 @@
     query = [query stringByAppendingFormat:@"%@ WHERE rfid = '%@'",[temp stringByReplacingOccurrencesOfString:@",)" withString:@""],fruit.fruitRFID];
     
     BOOL flag = [_db executeUpdate:query];
-    flag?NSLog(@"修改%@成功",fruit.fruitName): NSLog(@"修改%@失败",fruit.fruitName);
+    if(flag){
+        NSLog(@"修改%@成功",fruit.fruitName);
+    }else{
+        NSLog(@"修改%@失败",fruit.fruitName);
+    }
     return flag;
 }
 
@@ -121,7 +125,11 @@
 {
     NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,fruit.fruitRFID];
     BOOL flag = [_db executeUpdate:query];
-    flag?NSLog(@"删除 一条数据 成功"): NSLog(@"删除 一条数据  失败");
+    if (flag) {
+        NSLog(@"删除 一条数据 成功");
+    }else{
+        NSLog(@"删除 一条数据  失败");
+    }
     return flag;
 }
 
@@ -173,7 +181,11 @@
     NSLog(@"%@",query);
     
     BOOL flag = [_db executeUpdate:query withArgumentsInArray:arguments];
-    flag?NSLog(@"%@ 插入一条数据 成功",kFruitInfoTableName):NSLog(@"%@ 插入一条数据 失败",kFruitInfoTableName);
+    if (flag) {
+        NSLog(@"%@ 插入一条数据 成功",kFruitInfoTableName);
+    }else{
+        NSLog(@"%@ 插入一条数据 失败",kFruitInfoTableName);
+    }
     return flag;
 }
 @end

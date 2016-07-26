@@ -56,6 +56,8 @@
     NSArray *popoverTitle;
     
     ComboxView *comboxView;
+    
+    NSTimer *testTimer;
 }
 @property (nonatomic, weak)IBOutlet UICollectionView *collectionView;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
@@ -119,6 +121,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackConnectToBluetoothTimeout:) name:OnCallbackConnectToBluetoothTimeout object:nil];
     
     [[BluetoothProcessManager defatultManager] registerNotify];
+    
+    //心跳包
+    testTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(test) userInfo:nil repeats:YES];
+    [testTimer fire];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -168,10 +174,15 @@
 {
     [self.lblTitle setText:@"设备未连接"];
     [self.btnSelectDevice setHidden:NO];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[BluetoothProcessManager defatultManager] reconnectBluetooth];
+    });
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
+    NSLog(@"%@",[NSThread currentThread]);
     [self.lblTitle setText:@"连接中..."];
 }
 
@@ -179,6 +190,7 @@
 {
     [self.lblTitle setText:@"设备已连接"];
     [self initlizedData];
+    
 }
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
@@ -306,6 +318,17 @@
 }
 
 #pragma -mark private function
+/**
+ *  @author RenRenFenQi, 16-07-26 10:07:04
+ *
+ *  心跳包
+ */
+-(void)test
+{
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:@""];
+    }
+}
 /**
  *  @author RenRenFenQi, 16-06-14 20:06:07
  *

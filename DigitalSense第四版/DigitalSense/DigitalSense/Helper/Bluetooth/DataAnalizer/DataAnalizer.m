@@ -72,9 +72,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -98,9 +96,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -124,9 +120,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -150,9 +144,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -176,9 +168,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -202,9 +192,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -228,9 +216,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }
@@ -254,9 +240,7 @@
                                 [self.delegate outputData:sendData];
                             }
                             [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
-                            });
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                         }
                     }
                 }

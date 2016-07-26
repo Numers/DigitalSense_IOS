@@ -22,5 +22,7 @@
 
 -(void)startScanBluetooth;
 
+-(void)reconnectBluetooth;
+
 -(void)connectToBluetooth:(NSString *)deviceName WithPeripheral:(id)peripheral;
 @end

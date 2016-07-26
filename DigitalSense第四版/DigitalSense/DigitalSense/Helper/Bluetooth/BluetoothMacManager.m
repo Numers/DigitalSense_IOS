@@ -481,9 +481,10 @@ static BluetoothMacManager *bluetoothMacManager;
 {
     CBPeripheral *peripheral = nil;
     if (name) {
-        for (CBPeripheral *p in self.peripherals) {
-            if ([p.name isEqualToString:name]) {
-                peripheral = p;
+        for (NSString *temp in self.peripheralNameList) {
+            if ([temp isEqualToString:name]) {
+                NSInteger index = [self.peripheralNameList indexOfObject:temp];
+                peripheral = [self.peripherals objectAtIndex:index];
                 break;
             }
         }
