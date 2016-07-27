@@ -14,12 +14,6 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="100" height="93"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EDa-wD-qW2">
-                        <rect key="frame" x="18" y="5" width="65" height="65"/>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="EDa-wD-qW2" secondAttribute="height" multiplier="1:1" id="xXe-VG-Dbq"/>
-                        </constraints>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="苹果" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oy4-Yu-Avu">
                         <rect key="frame" x="0.0" y="73" width="100" height="15"/>
                         <constraints>
@@ -29,6 +23,12 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EDa-wD-qW2">
+                        <rect key="frame" x="18" y="5" width="65" height="65"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="EDa-wD-qW2" secondAttribute="height" multiplier="1:1" id="xXe-VG-Dbq"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>

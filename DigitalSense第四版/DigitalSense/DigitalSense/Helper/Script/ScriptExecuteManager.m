@@ -65,6 +65,19 @@ static NSInteger currentSecond = -1;
 }
 
 /**
+ *  @author RenRenFenQi, 16-07-27 11:07:53
+ *
+ *  取消播放所有相对时间脚本
+ */
+-(void)cancelAllScripts
+{
+    if (scriptQueue && scriptQueue.count > 0) {
+        [scriptQueue removeAllObjects];
+    }
+    
+    [self playOverRelativeTimeScript];
+}
+/**
  *  @author RenRenFenQi, 16-06-16 16:06:00
  *
  *  解析一个相对时间脚本
@@ -176,11 +189,14 @@ static NSInteger currentSecond = -1;
             timer = nil;
         }
     }
-    currentPlayingScript.state = ScriptIsNormal;
-    Script *script = currentPlayingScript;
-    currentPlayingScript = nil;
-    [[NSNotificationCenter defaultCenter] postNotificationName:PlayOverScriptNotification object:script];
-    [self playRelativeTimeScript];
+    
+    if (currentPlayingScript) {
+        currentPlayingScript.state = ScriptIsNormal;
+        Script *script = currentPlayingScript;
+        currentPlayingScript = nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:PlayOverScriptNotification object:script];
+        [self playRelativeTimeScript];
+    }
 }
 
 /**

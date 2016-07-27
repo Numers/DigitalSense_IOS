@@ -160,6 +160,7 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
 -(void)playScript
 {
     if (currentScript) {
+        [[ScriptExecuteManager defaultManager] cancelAllScripts];
         [[ScriptExecuteManager defaultManager] executeRelativeTimeScript:currentScript];
     }
 }

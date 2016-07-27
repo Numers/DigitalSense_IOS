@@ -20,6 +20,7 @@
 #import "BluetoothProcessManager.h"
 #import "IflyRecognizerManager.h"
 #import "IFlySpeechSynthesizerManager.h"
+#import "ScriptExecuteManager.h"
 
 #import "ViewModel.h"
 
@@ -121,10 +122,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackConnectToBluetoothTimeout:) name:OnCallbackConnectToBluetoothTimeout object:nil];
     
     [[BluetoothProcessManager defatultManager] registerNotify];
-    
-    //心跳包
-    testTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(test) userInfo:nil repeats:YES];
-    [testTimer fire];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -145,15 +142,15 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-}
-
 #pragma -mark Notification
 -(void)onStartScanBluetooth:(NSNotification *)notify
 {
+    if (testTimer) {
+        if ([testTimer isValid]) {
+            [testTimer invalidate];
+            testTimer = nil;
+        }
+    }
     [self.lblTitle setText:@"正在搜索智能设备..."];
     [self.btnSelectDevice setHidden:YES];
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -161,6 +158,12 @@
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
+    if (testTimer) {
+        if ([testTimer isValid]) {
+            [testTimer invalidate];
+            testTimer = nil;
+        }
+    }
     [self.lblTitle setText:@"设备未开启蓝牙"];
 }
 
@@ -174,15 +177,16 @@
 {
     [self.lblTitle setText:@"设备未连接"];
     [self.btnSelectDevice setHidden:NO];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[BluetoothProcessManager defatultManager] reconnectBluetooth];
-    });
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
-    NSLog(@"%@",[NSThread currentThread]);
+    if (testTimer) {
+        if ([testTimer isValid]) {
+            [testTimer invalidate];
+            testTimer = nil;
+        }
+    }
     [self.lblTitle setText:@"连接中..."];
 }
 
@@ -191,6 +195,9 @@
     [self.lblTitle setText:@"设备已连接"];
     [self initlizedData];
     
+    //心跳包
+    testTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(test) userInfo:nil repeats:YES];
+    [testTimer fire];
 }
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
@@ -327,6 +334,8 @@
 {
     if ([[BluetoothMacManager defaultManager] isConnected]) {
         [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:@""];
+    }else{
+        [[BluetoothProcessManager defatultManager] reconnectBluetooth];
     }
 }
 /**
@@ -1017,6 +1026,7 @@
 {
     if ([[BluetoothMacManager defaultManager] isConnected]) {
         if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
+            [[ScriptExecuteManager defaultManager] cancelAllScripts];
             [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
         }
     }else{

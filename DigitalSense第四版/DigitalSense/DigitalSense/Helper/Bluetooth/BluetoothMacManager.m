@@ -159,7 +159,7 @@ static BluetoothMacManager *bluetoothMacManager;
         [self.centralManager stopScan];
         if (self.peripheral) {
             [self.centralManager cancelPeripheralConnection:self.peripheral];
-            self.peripheral = nil;
+//            self.peripheral = nil;
             isConnected = NO;
         }
     }
@@ -589,7 +589,8 @@ static BluetoothMacManager *bluetoothMacManager;
             if (peripheralName == nil) {
                 peripheralName = peripheral.name;
             }
-            if([peripheralName hasSuffix:@"Smell"]){
+            if([peripheralName hasSuffix:@"Smell"] || [peripheralName isEqualToString:@"HJ-580"]){
+//            if([peripheralName hasSuffix:@"Smell"]){
                 //添加保存外围设备，注意如果这里不保存外围设备（或者说peripheral没有一个强引用，无法到达连接成功（或失败）的代理方法，因为在此方法调用完就会被销毁
                 if(![self.peripherals containsObject:peripheral]){
                     [self.peripherals addObject:peripheral];

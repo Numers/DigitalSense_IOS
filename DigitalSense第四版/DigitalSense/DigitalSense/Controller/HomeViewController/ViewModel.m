@@ -263,6 +263,7 @@
                 }
             }else{
                 [AppUtils showInfo:@"返回条数信息不匹配"];
+                [subscriber sendNext:nil];
                 [subscriber sendCompleted];
             }
 

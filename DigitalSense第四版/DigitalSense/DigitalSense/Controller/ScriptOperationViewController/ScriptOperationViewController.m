@@ -12,6 +12,7 @@
 
 #import "BluetoothProcessManager.h"
 #import "BluetoothMacManager.h"
+#import "ScriptExecuteManager.h"
 
 #import "UINavigationController+WXSTransition.h"
 #import "FullScreenPlayerViewController.h"
@@ -93,7 +94,7 @@
         }
         case iPhone6Plus: {
             CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
-            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY + 20, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 70.0f)];
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY + 20, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 120.0f)];
             break;
         }
         case UnKnown: {
@@ -536,6 +537,7 @@
             return;
         }
     }
+    [[ScriptExecuteManager defaultManager] cancelAllScripts];
     [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
 }
 @end

@@ -39,6 +39,13 @@
  *  @param script 脚本
  */
 -(void)cancelExecuteRelativeTimeScript:(Script *)script;
+
+/**
+ *  @author RenRenFenQi, 16-07-27 11:07:53
+ *
+ *  取消播放所有相对时间脚本
+ */
+-(void)cancelAllScripts;
 /**
  *  @author RenRenFenQi, 16-06-16 16:06:52
  *
