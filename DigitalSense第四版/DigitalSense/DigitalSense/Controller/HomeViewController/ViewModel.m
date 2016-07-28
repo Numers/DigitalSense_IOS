@@ -233,11 +233,11 @@
             [subscriber sendNext:nil];
             [subscriber sendCompleted];
         }else{
-            [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
-            while ((self.macAddress == nil || list.count == 0)) {
-                NSLog(@"mac地址为空或者水果列表个数为0");
-                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-            }
+//            [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+//            while ((self.macAddress == nil || list.count == 0)) {
+//                NSLog(@"mac地址为空或者水果列表个数为0");
+//                [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+//            }
             if (value == list.count)
             {
                 if(self.macAddress == nil)
@@ -393,5 +393,18 @@
         }
     }
     return fruit;
+}
+
+/**
+ *  @author RenRenFenQi, 16-07-28 14:07:31
+ *
+ *  清除数据
+ */
+-(void)clearData
+{
+    _macAddress = nil;
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:KMY_BlutoothMacAddress_Key];
+    _openDeviceTime = nil;
+    _closeDeviceTime = nil;
 }
 @end

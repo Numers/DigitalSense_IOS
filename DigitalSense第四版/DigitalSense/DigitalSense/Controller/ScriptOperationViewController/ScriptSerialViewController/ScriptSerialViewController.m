@@ -211,13 +211,13 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     Fruit *selectFruit = [fruitList objectAtIndex:indexPath.item];
-    NSLog(@"select %ld, FruitName is %@",indexPath.item,selectFruit.fruitName);
+    NSLog(@"select %ld, FruitName is %@",(long)indexPath.item,selectFruit.fruitName);
     if ([self.delegate respondsToSelector:@selector(selectFruit:)]) {
         [self.delegate selectFruit:selectFruit];
     }
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"deselect %ld",indexPath.item);
+    NSLog(@"deselect %ld",(long)indexPath.item);
 }
 @end

@@ -8,6 +8,7 @@
 
 #import "ScriptViewController.h"
 #import "ScriptTableViewCell.h"
+#import "XTLoveHeartView.h"
 #import "RelativeTimeScript.h"
 #import "AbsoluteTimeScript.h"
 #import "ScriptViewModel.h"
@@ -29,7 +30,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     RACDisposable *playOverAllScriptDisposable;
     RACDisposable *playProgressSecondDisposable;
     RACDisposable *macAddressDisposable;
+    RACDisposable *sendScriptCommandDisposable;
+    
+    NSTimer *heartTimer;
 }
+@property(nonatomic, strong) IBOutlet UIView *bottomView;
+@property(nonatomic, strong) IBOutlet UILabel *lblSmellName;
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @end
@@ -147,6 +153,15 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     return script;
 }
 
+-(void)generateHeartView
+{
+    XTLoveHeartView *heart = [[XTLoveHeartView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    [self.view addSubview:heart];
+    [self.view bringSubviewToFront:heart];
+    CGPoint fountainSource = CGPointMake(self.view.frame.size.width / 2, self.view.bounds.size.height - self.bottomView.frame.size.height);
+    heart.center = fountainSource;
+    [heart animateInView:self.view];
+}
 #pragma -mark Notificaiton
 -(void)scriptStateComfirmed:(NSNotification *)notify
 {
@@ -198,7 +213,25 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     macAddressDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:BluetoothMacAddressNotify object:nil] subscribeNext:^(id x) {
         [self requestScriptInfoWithMacAddress:x];
     }];
-
+    
+    sendScriptCommandDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SendScriptCommandNotification object:nil] subscribeNext:^(id x) {
+        id obj = [x object];
+        if([obj isKindOfClass:[ScriptCommand class]]){
+            ScriptCommand *command = (ScriptCommand *)obj;
+            [_lblSmellName setText:command.smellName];
+            
+            heartTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(generateHeartView) userInfo:nil repeats:YES];
+            [heartTimer fire];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(command.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if (heartTimer) {
+                    if ([heartTimer isValid]) {
+                        [heartTimer invalidate];
+                    }
+                }
+            });
+        }
+    }];
 }
 
 -(void)disposeAllSignal
@@ -228,6 +261,13 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         if (![macAddressDisposable isDisposed]) {
             [macAddressDisposable dispose];
             macAddressDisposable = nil;
+        }
+    }
+    
+    if (sendScriptCommandDisposable) {
+        if (![sendScriptCommandDisposable isDisposed]) {
+            [sendScriptCommandDisposable dispose];
+            sendScriptCommandDisposable = nil;
         }
     }
 }

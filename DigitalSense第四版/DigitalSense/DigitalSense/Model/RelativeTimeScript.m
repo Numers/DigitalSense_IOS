@@ -22,8 +22,9 @@
                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
                 command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
+                command.smellName = [tempDic objectForKey:@"input"];
                 command.desc = [tempDic objectForKey:@"input"];
-                command.command = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,command.duration];
+                command.command = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,(long)command.duration];
                 [self.scriptCommandList addObject:command];
             }
         }

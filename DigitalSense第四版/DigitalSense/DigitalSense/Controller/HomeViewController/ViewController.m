@@ -193,6 +193,7 @@
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
 {
     [self.lblTitle setText:@"设备已连接"];
+    [self.viewModel clearData];
     [self initlizedData];
     
     //心跳包

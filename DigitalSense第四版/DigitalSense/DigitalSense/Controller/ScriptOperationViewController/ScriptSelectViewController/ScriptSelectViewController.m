@@ -89,11 +89,12 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         command.desc = fruit.fruitName;
         command.color = fruit.fruitColor;
         [scriptCommandList addObject:command];
-        
-        [self.collectionView reloadData];
-        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
-        
         [self scriptTimeChanged:command.duration];
+        
+//        [self.collectionView reloadData];
+//        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+        [_collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0]]];
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:scriptCommandList.count - 1 inSection:0] atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
     }
 }
 
@@ -208,7 +209,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout willBeginDraggingItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Will begin Dragging %ld",indexPath.item);
+    NSLog(@"Will begin Dragging %ld",(long)indexPath.item);
     ScriptSelectCollectionViewCell *cell = (ScriptSelectCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     [cell setIsShowCloseBtn:YES];
 }
@@ -222,11 +223,11 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
-    NSLog(@"select %ld, FruitName is %@",indexPath.item,command.smellName);
+    NSLog(@"select %ld, FruitName is %@",(long)indexPath.item,command.smellName);
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"deselect %ld",indexPath.item);
+    NSLog(@"deselect %ld",(long)indexPath.item);
 }
 
 #pragma -mark ScriptSelectCollectionViewCellProtocol
@@ -234,9 +235,16 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 {
     @synchronized (self) {
         if ([scriptCommandList containsObject:command]) {
+//            [scriptCommandList removeObject:command];
+//            [self.collectionView reloadData];
+//            [self scriptTimeChanged:-command.duration];
+            
+            //add by blc
+            NSInteger index = [scriptCommandList indexOfObject:command];
             [scriptCommandList removeObject:command];
-            [self.collectionView reloadData];
             [self scriptTimeChanged:-command.duration];
+            
+            [_collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]]];
         }
     }
 }
@@ -261,8 +269,16 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         NSInteger added = [duration integerValue] - command.duration;
         command.duration = [duration integerValue];
         
-        [self.collectionView reloadData];
+//        [self.collectionView reloadData];
         [self scriptTimeChanged:added];
+        
+        //add by blc
+        if ([scriptCommandList containsObject:command]) {
+            NSInteger index = [scriptCommandList indexOfObject:command];
+            ScriptSelectCollectionViewCell *pickCell = (ScriptSelectCollectionViewCell *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+            [pickCell setScriptCommand:command];
+        }
+        
     }
 }
 @end

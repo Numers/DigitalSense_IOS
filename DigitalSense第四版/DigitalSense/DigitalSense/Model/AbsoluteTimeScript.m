@@ -54,9 +54,10 @@
                                                     command.duration = endTime - tempStartTime - command.startRelativeTime;
                                                 }
                                                 command.desc = [tempDic objectForKey:@"input"];
+                                                command.smellName = [tempDic objectForKey:@"input"];
                                                 
                                                 NSTimeInterval scheduleStartTime = tempStartTime + [[NSNumber numberWithInteger:command.startRelativeTime] doubleValue];
-                                                command.command = [NSString stringWithFormat:@"F600%@%@%04lX%02lX55",[self timeStrFromTimeInterval:scheduleStartTime],command.rfId,command.duration,index];
+                                                command.command = [NSString stringWithFormat:@"F600%@%@%04lX%02lX55",[self timeStrFromTimeInterval:scheduleStartTime],command.rfId,(long)command.duration,(long)index];
                                                 [self.scriptCommandList addObject:command];
                                                 index++;
                                             }

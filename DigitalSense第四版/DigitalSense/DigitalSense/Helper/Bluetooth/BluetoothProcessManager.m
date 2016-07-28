@@ -9,8 +9,6 @@
 #import "BluetoothProcessManager.h"
 #import "BluetoothMacManager.h"
 
-#define LastConnectDeviceNameKey @"LastConnectDeviceNameKey"
-
 @implementation BluetoothProcessManager
 +(instancetype)defatultManager
 {
@@ -74,7 +72,7 @@
         [[BluetoothMacManager defaultManager] connectToPeripheral:peripheral callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
             if (completely) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:OnCallbackConnectToBluetoothSuccessfully object:nil];
-                [self executeBluetoothCommand:deviceName];
+                [self executeBluetoothCommand];
             }else{
                 if(backType == CallbackBluetoothPowerOff)
                 {
@@ -91,7 +89,7 @@
         [[BluetoothMacManager defaultManager] connectToPeripheralWithName:deviceName callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
             if (completely) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:OnCallbackConnectToBluetoothSuccessfully object:nil];
-                [self executeBluetoothCommand:deviceName];
+                [self executeBluetoothCommand];
             }else{
                 if(backType == CallbackBluetoothPowerOff)
                 {
@@ -106,10 +104,8 @@
     }
 }
 
--(void)executeBluetoothCommand:(NSString *)deviceName
+-(void)executeBluetoothCommand
 {
-    [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
     
     [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandOpenDeviceTime];

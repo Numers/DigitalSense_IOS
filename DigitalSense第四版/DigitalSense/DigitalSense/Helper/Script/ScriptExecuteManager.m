@@ -212,14 +212,14 @@ static NSInteger currentSecond = -1;
 -(NSString *)executeRelativeTimeCommand:(NSString *)rfId WithDuration:(NSInteger)duration
 {
     NSMutableString *result = [[NSMutableString alloc] initWithString:@"F501"];
-    [result appendFormat:@"%@%04lX55",rfId,duration];
+    [result appendFormat:@"%@%04lX55",rfId,(long)duration];
     return [NSString stringWithString:result];
 }
 
 -(NSString *)loopExecuteRelativeTimeCommand:(NSString *)rfId WithDuration:(NSInteger)duration WithInterval:(NSInteger)interval WithTimes:(NSInteger)times
 {
     NSMutableString *result = [[NSMutableString alloc] initWithString:@"F401"];
-    [result appendFormat:@"%@%04lX%04lX%02lX55",rfId,duration,interval,times];
+    [result appendFormat:@"%@%04lX%04lX%02lX55",rfId,(long)duration,(long)interval,(long)times];
     return [NSString stringWithString:result];
 }
 

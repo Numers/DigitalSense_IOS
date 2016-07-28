@@ -122,4 +122,11 @@
  *  @return 返回匹配对象
  */
 -(Fruit *)matchFruitName:(NSString *)fruitName InList:(NSArray *)list;
+
+/**
+ *  @author RenRenFenQi, 16-07-28 14:07:31
+ *
+ *  清除数据
+ */
+-(void)clearData;
 @end

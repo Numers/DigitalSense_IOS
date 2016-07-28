@@ -44,6 +44,7 @@
 		8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F24D1D334DD10029A409 /* ScriptSelectViewController.m */; };
 		8471F2511D3351000029A409 /* ScriptSelectCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F2501D3351000029A409 /* ScriptSelectCollectionViewCell.m */; };
 		8471F2541D33519E0029A409 /* ScriptSelectSmellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F2531D33519E0029A409 /* ScriptSelectSmellView.m */; };
+		847789741D49A4C200976B31 /* XTLoveHeartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847789731D49A4C200976B31 /* XTLoveHeartView.m */; };
 		84796FF31D3C7F6100465074 /* FloatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84796FF21D3C7F6100465074 /* FloatView.m */; };
 		84796FF61D3CB53E00465074 /* BluetoothProcessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84796FF51D3CB53E00465074 /* BluetoothProcessManager.m */; };
 		8479700D1D3CE40100465074 /* PopoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479700C1D3CE40100465074 /* PopoverView.m */; };
@@ -158,6 +159,8 @@
 		8471F2501D3351000029A409 /* ScriptSelectCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSelectCollectionViewCell.m; sourceTree = "<group>"; };
 		8471F2521D33519E0029A409 /* ScriptSelectSmellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSelectSmellView.h; sourceTree = "<group>"; };
 		8471F2531D33519E0029A409 /* ScriptSelectSmellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSelectSmellView.m; sourceTree = "<group>"; };
+		847789721D49A4C200976B31 /* XTLoveHeartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTLoveHeartView.h; sourceTree = "<group>"; };
+		847789731D49A4C200976B31 /* XTLoveHeartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTLoveHeartView.m; sourceTree = "<group>"; };
 		84796FF11D3C7F6100465074 /* FloatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatView.h; sourceTree = "<group>"; };
 		84796FF21D3C7F6100465074 /* FloatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatView.m; sourceTree = "<group>"; };
 		84796FF41D3CB53E00465074 /* BluetoothProcessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothProcessManager.h; sourceTree = "<group>"; };
@@ -497,6 +500,15 @@
 			path = ScriptSerialViewController;
 			sourceTree = "<group>";
 		};
+		847789711D49A4C200976B31 /* HeartView */ = {
+			isa = PBXGroup;
+			children = (
+				847789721D49A4C200976B31 /* XTLoveHeartView.h */,
+				847789731D49A4C200976B31 /* XTLoveHeartView.m */,
+			);
+			path = HeartView;
+			sourceTree = "<group>";
+		};
 		84796FF01D3C7F3900465074 /* FloatView */ = {
 			isa = PBXGroup;
 			children = (
@@ -636,6 +648,7 @@
 		847EEFAB1D17D597009765E6 /* ThirdPartPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				847789711D49A4C200976B31 /* HeartView */,
 				8479700E1D3CF48300465074 /* ComboxView */,
 				8479700A1D3CE40100465074 /* PopMenuView */,
 				846A61861D375C3100250838 /* WXSTransition */,
@@ -895,6 +908,7 @@
 				8466677C1CF82AD400EFBE66 /* main.m in Sources */,
 				8463DC681D3F25FE00731DB5 /* UIDevice+IphoneModel.m in Sources */,
 				8482CF591D1258960020CEEA /* ScriptExecuteManager.m in Sources */,
+				847789741D49A4C200976B31 /* XTLoveHeartView.m in Sources */,
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
 				847EEFAA1D17CAC3009765E6 /* ScriptTaskTime.m in Sources */,
 				846A61961D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m in Sources */,
