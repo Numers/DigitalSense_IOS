@@ -161,6 +161,10 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if ([self isMovingFromParentViewController]) {
+        [self saveLocalRelativeTimeScript];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -175,7 +179,6 @@
 - (BOOL)shouldAutorotate{
     return NO;
 }
-
 #pragma -mark Notification
 -(void)onBottleInfoCompeletely:(NSNotification *)notify
 {
@@ -224,6 +227,10 @@
     [self.lblTitle setText:@"未发现有效设备"];
 }
 
+- (void)applicationWillResignActive:(UIApplication *)application {
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [self saveLocalRelativeTimeScript];
+}
 #pragma -mark public Functions
 -(void)setFruitList:(NSArray *)list
 {
@@ -255,6 +262,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStartConnectToBluetooth:) name:OnStartConnectToBluetooth object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackConnectToBluetoothSuccessfully:) name:OnCallbackConnectToBluetoothSuccessfully object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackConnectToBluetoothTimeout:) name:OnCallbackConnectToBluetoothTimeout object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:)
+                                                 name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 -(NSString *)switchSecondsToTime:(NSInteger)seconds
@@ -263,9 +273,9 @@
     NSInteger minite = (seconds - second) / 60;
     NSString *result;
     if (minite < 10) {
-       result = [NSString stringWithFormat:@"%02ld:%02ld",minite,second];
+       result = [NSString stringWithFormat:@"%02ld:%02ld",(long)minite,second];
     }else{
-        result = [NSString stringWithFormat:@"%ld:%02ld",minite,second];
+        result = [NSString stringWithFormat:@"%ld:%02ld",(long)minite,second];
     }
     return result;
 }
@@ -286,7 +296,8 @@
         //组成command命令
         if ([AppUtils isNullStr:command.rfId]) {
             CGFloat power = 10 * command.power;
-            NSString *commandStr = [NSString stringWithFormat:@"F266%@%02lX%.0fX",command.rfId,command.duration,power];
+            NSInteger iPower = [[NSNumber numberWithFloat:power] integerValue];
+            NSString *commandStr = [NSString stringWithFormat:@"F266%@%02lX%02lX",command.rfId,(long)command.duration,iPower];
             command.command = commandStr;
         }else{
             command.command = @"";
@@ -413,6 +424,23 @@
     return jsonStr;
 }
 
+-(RelativeTimeScript *)saveLocalRelativeTimeScript
+{
+    RelativeTimeScript *script = [[RelativeTimeScript alloc] init];
+    script.scriptId = @"10000";
+    script.scriptName = @"自定义脚本";
+    script.sceneName = @"气味王国";
+    script.state =  ScriptIsNormal;
+    script.type =  ScriptIsRelativeTime;
+    script.isLoop = NO;
+    
+    NSMutableArray *scriptCommandList = [scriptSelectVC returnAllScriptCommand];
+    script.scriptTime = [self doWithScriptCommandList:scriptCommandList];
+    script.scriptCommandList = scriptCommandList;
+    [self jsonStrWithRelativeTimeScript:script];
+    return script;
+}
+
 #pragma -mark ButtonEvent
 -(IBAction)clickBackBtn:(id)sender
 {
@@ -426,21 +454,12 @@
         [AppUtils showInfo:@"请先自定义一个脚本"];
         return;
     }
-    FullScreenPlayerViewController *fullScreenPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FullScreenPlayerViewIdentify"];
-    RelativeTimeScript *script = [[RelativeTimeScript alloc] init];
-    script.scriptId = @"10000";
-    script.scriptName = @"自定义脚本";
-    script.sceneName = @"气味王国";
-    script.state =  ScriptIsNormal;
-    script.type =  ScriptIsRelativeTime;
-    script.isLoop = NO;
     
-    script.scriptTime = [self doWithScriptCommandList:scriptCommandList];
-    script.scriptCommandList = scriptCommandList;
+    currentScript = [self saveLocalRelativeTimeScript];
+    
+    FullScreenPlayerViewController *fullScreenPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FullScreenPlayerViewIdentify"];
     fullScreenPlayerVC.startView = _playView;
-    currentScript = script;
-    [self jsonStrWithRelativeTimeScript:script];
-    [fullScreenPlayerVC setScript:script IsLoop:isLoop];
+    [fullScreenPlayerVC setScript:currentScript IsLoop:isLoop];
     [self.navigationController wxs_pushViewController:fullScreenPlayerVC makeTransition:^(WXSTransitionProperty *transition) {
         transition.animationType = WXSTransitionAnimationTypeFragmentShowFromRight;
         transition.animationTime = 1.0f;
