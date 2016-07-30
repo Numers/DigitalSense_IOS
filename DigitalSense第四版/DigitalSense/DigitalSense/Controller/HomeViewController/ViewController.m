@@ -59,7 +59,6 @@
     NSTimer *testTimer;
 }
 @property (nonatomic, weak)IBOutlet UICollectionView *collectionView;
-@property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @property(nonatomic, strong) IBOutlet UIView *tabBarView;
 @property(nonatomic, strong) IBOutlet UIButton *btnVoice;
 @property(nonatomic, strong) IBOutlet UIButton *btnSelectDevice;
@@ -74,8 +73,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib
     [self.navigationController setNavigationBarHidden:YES];
-    //适配TitleLabel的字体大小
-    [UIDevice adaptUILabelTextFont:self.lblTitle WithIphone5FontSize:17.0f IsBold:YES];
+    //适配SelectDeviceButton的字体大小
+    [UIDevice adaptUIButtonTitleFont:_btnSelectDevice WithIphone5FontSize:17.0f IsBold:YES];
     
     //popoverView显示的title
     popoverTitle = @[@"刷新蓝牙",@"脚本"];
@@ -149,8 +148,7 @@
             testTimer = nil;
         }
     }
-    [self.lblTitle setText:@"正在搜索智能设备..."];
-    [self.btnSelectDevice setHidden:YES];
+    [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
@@ -162,19 +160,17 @@
             testTimer = nil;
         }
     }
-    [self.lblTitle setText:@"设备未开启蓝牙"];
+    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"请选择您需要连接的设备"];
-    [self.btnSelectDevice setHidden:NO];
+    [self setSelectDeviceBtn:@"请选择您需要连接的设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"设备未连接"];
-    [self.btnSelectDevice setHidden:NO];
+    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
@@ -185,12 +181,12 @@
             testTimer = nil;
         }
     }
-    [self.lblTitle setText:@"连接中..."];
+    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"设备已连接"];
+    [self setSelectDeviceBtn:@"设备已连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
     [self.viewModel clearData];
     [self initlizedData];
     
@@ -201,7 +197,7 @@
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
-    [self.lblTitle setText:@"未发现有效设备"];
+    [self setSelectDeviceBtn:@"未发现有效设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)deliveryData:(NSNotification *)notify
@@ -324,6 +320,36 @@
 }
 
 #pragma -mark private function
+/**
+ *  @author RenRenFenQi, 16-07-30 12:07:31
+ *
+ *  设置下拉设备按钮的标题和图片
+ *
+ *  @param title 标题
+ *  @param image 图片
+ */
+-(void)setSelectDeviceBtn:(NSString *)title WithImage:(UIImage *)image IsEnable:(BOOL)isEnable
+{
+    //让按钮左标题，右图片
+    if (title) {
+        CGFloat fontSize = [UIDevice adaptTextFontSizeWithIphone5FontSize:17.0f IsBold:YES];
+        CGRect rect = [title boundingRectWithSize:CGSizeMake(300, 21) options:0 attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:fontSize]} context:nil];
+        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, rect.size.width, 0, -rect.size.width)];
+    }else{
+        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    if (image) {
+        [_btnSelectDevice setTitleEdgeInsets:UIEdgeInsetsMake(0, -image.size.width, 0, image.size.width)];
+    }else{
+        [_btnSelectDevice setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    }
+    
+    
+    [_btnSelectDevice setTitle:title forState:UIControlStateNormal];
+    [_btnSelectDevice setImage:image forState:UIControlStateNormal];
+    [_btnSelectDevice setEnabled:isEnable];
+}
 /**
  *  @author RenRenFenQi, 16-07-26 10:07:04
  *
@@ -697,6 +723,12 @@
         [popoverView removeFromSuperview];
         popoverView = nil;
     }
+    
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        popoverTitle = @[@"刷新蓝牙",@"脚本"];
+    }else{
+        popoverTitle = @[@"重新搜索",@"脚本"];
+    }
     CGPoint point = CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height);
     popoverView = [[PopoverView alloc] initWithPoint:point titles:popoverTitle images:nil];
     
@@ -766,7 +798,13 @@
     }
     comboxView = [[ComboxView alloc] initWithStartPoint:CGPointMake(0, 64)  WithTitleArray:peripheralNameArray WithDataSourceArray:peripheralArray WithDefaultSelectedIndex:defaultSelectedIndex];
     comboxView.delegate = self;
+    __weak __typeof(self) weakSelf = self;
+    [comboxView setHiddenCallBack:^(BOOL completion) {
+        [weakSelf setSelectDeviceBtn:weakSelf.btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    }];
     [comboxView showInView:self.view];
+    
+    [self setSelectDeviceBtn:_btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:YES];
 }
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{

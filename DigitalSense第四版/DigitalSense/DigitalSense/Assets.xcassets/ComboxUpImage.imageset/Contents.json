@@ -6,22 +6,11 @@
     },
     {
       "idiom" : "universal",
+      "filename" : "btn_back1(1).png",
       "scale" : "2x"
     },
     {
-      "resizing" : {
-        "mode" : "3-part-vertical",
-        "center" : {
-          "mode" : "tile",
-          "height" : 89
-        },
-        "cap-insets" : {
-          "top" : 13,
-          "bottom" : 10
-        }
-      },
       "idiom" : "universal",
-      "filename" : "shuaxin.png",
       "scale" : "3x"
     }
   ],

@@ -57,50 +57,6 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     
     // Do any additional setup after loading the view.
     [self inilizedData];
-    
-//    Fruit *fruit = [[Fruit alloc] init];
-//    fruit.fruitName = @"苹果";
-//    fruit.fruitColor = @"#FF465F";
-//    fruit.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit];
-//    
-//    Fruit *fruit1 = [[Fruit alloc] init];
-//    fruit1.fruitName = @"香蕉";
-//    fruit1.fruitColor = @"#FFEB5F";
-//    fruit1.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit1];
-//    
-//    Fruit *fruit2 = [[Fruit alloc] init];
-//    fruit2.fruitName = @"菠萝";
-//    fruit2.fruitColor = @"#FFBB39";
-//    fruit2.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit2];
-//    
-//    Fruit *fruit3 = [[Fruit alloc] init];
-//    fruit3.fruitName = @"橙子";
-//    fruit3.fruitColor = @"#FFFF0E";
-//    fruit3.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit3];
-//    
-//    Fruit *fruit4 = [[Fruit alloc] init];
-//    fruit4.fruitName = @"西瓜";
-//    fruit4.fruitColor = @"#FF5B0E";
-//    fruit4.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit4];
-//    
-//    Fruit *fruit5 = [[Fruit alloc] init];
-//    fruit5.fruitName = @"猕猴桃";
-//    fruit5.fruitColor = @"#47ED0E";
-//    fruit5.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit5];
-//    
-//    Fruit *fruit6 = [[Fruit alloc] init];
-//    fruit6.fruitName = @"草莓";
-//    fruit6.fruitColor = @"#FF7F5F";
-//    fruit6.fruitImage = @"SerialViewClockForCell";
-//    [fruitList addObject:fruit6];
-//    
-//    [self.collectionView reloadData];
 }
 
 -(void)inilizedData

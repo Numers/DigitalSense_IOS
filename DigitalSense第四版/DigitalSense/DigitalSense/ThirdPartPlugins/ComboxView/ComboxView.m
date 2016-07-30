@@ -17,6 +17,8 @@
     
     UIView *parentView;
     BOOL isShow;
+    
+    HiddenCallback hiddenCallback;
 }
 @property(nonatomic, strong) UITableView *tableView;
 @end
@@ -69,10 +71,18 @@ static  NSString * const cellIdentify = @"ComboxViewCellIdentify";
     [UIView animateWithDuration:Duration animations:^{
         self.tableView.frame = CGRectMake(0,  0, _tableView.frame.size.width, 0);
     } completion:^(BOOL finished) {
+        if (hiddenCallback) {
+            hiddenCallback(finished);
+        }
         isShow = NO;
         [parentView setUserInteractionEnabled:YES];
         [self performSelector:@selector(removeView) withObject:nil];
     }];
+}
+
+-(void)setHiddenCallBack:(HiddenCallback)callback
+{
+    hiddenCallback = callback;
 }
 
 -(void)removeView

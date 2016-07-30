@@ -142,6 +142,58 @@
     }
 }
 
++(void)adaptUIButtonTitleFont:(UIButton *)button WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
+{
+    iPhoneModel model = [self iPhonesModel];
+    switch (model) {
+        case iPhone4:
+        {
+            if (bold) {
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }
+        }
+            break;
+        case iPhone5:
+        {
+            if (bold) {
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }
+        }
+            break;
+        case iPhone6:
+        {
+            if (bold) {
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }else{
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size]];
+            }
+        }
+            break;
+        case iPhone6Plus:
+        {
+            if (bold) {
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size * 1.5]];
+            }else{
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size * 1.5]];
+            }
+        }
+            break;
+        default:
+        {
+            if (bold) {
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size * 1.5]];
+            }else{
+                [button.titleLabel setFont:[UIFont boldSystemFontOfSize:size * 1.5]];
+            }
+        }
+            break;
+    }
+}
+
 +(void)adaptUITextFieldTextFont:(UITextField *)textField WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold
 {
     iPhoneModel model = [self iPhonesModel];

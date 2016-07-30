@@ -19,5 +19,6 @@ typedef NS_ENUM(char, iPhoneModel){//0~3
 +(CGFloat)adaptTextFontSizeWithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
 +(void)adaptUILabelTextFont:(UILabel *)label WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
 +(void)adaptUITextFieldTextFont:(UITextField *)label WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
++(void)adaptUIButtonTitleFont:(UIButton *)button WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
 +(void)adaptUIBarButtonItemTextFont:(UIBarButtonItem *)item WithIphone5FontSize:(CGFloat)size IsBold:(BOOL)bold;
 @end
