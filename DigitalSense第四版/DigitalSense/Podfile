@@ -1,6 +1,7 @@
 #source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '7.0'
 target "DigitalSense" do
+#pod 'SCCatWaitingHUD'
 pod 'SDWebImage', '~>3.6'
 pod 'MBProgressHUD', '~> 0.8'
 pod 'LewReorderableLayout', :git => 'https://github.com/pljhonglu/LewReorderableLayout.git', :tag => 'v0.1.0'

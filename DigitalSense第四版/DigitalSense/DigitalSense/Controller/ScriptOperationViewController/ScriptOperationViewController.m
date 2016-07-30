@@ -211,7 +211,7 @@
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
-    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
@@ -291,9 +291,9 @@
             command.startRelativeTime = previousCommand.startRelativeTime + previousCommand.duration;
         }
         //组成command命令
-        if ([AppUtils isNullStr:command.rfId]) {
+        if (![AppUtils isNullStr:command.rfId]) {
             CGFloat power = 10 * command.power;
-            NSInteger iPower = [[NSNumber numberWithFloat:power] integerValue];
+            NSInteger iPower = [AppUtils floatToInt:power WithMaxValue:10];
             NSString *commandStr = [NSString stringWithFormat:@"F266%@%02lX%02lX",command.rfId,(long)command.duration,iPower];
             command.command = commandStr;
         }else{
@@ -452,7 +452,7 @@
     if (title) {
         CGFloat fontSize = [UIDevice adaptTextFontSizeWithIphone5FontSize:17.0f IsBold:YES];
         CGRect rect = [title boundingRectWithSize:CGSizeMake(300, 21) options:0 attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:fontSize]} context:nil];
-        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, rect.size.width, 0, -rect.size.width)];
+        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, rect.size.width + 5, 0, -rect.size.width - 5)];
     }else{
         [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
@@ -480,6 +480,11 @@
     NSMutableArray *scriptCommandList = [scriptSelectVC returnAllScriptCommand];
     if (scriptCommandList.count == 0) {
         [AppUtils showInfo:@"请先自定义一个脚本"];
+        return;
+    }
+    
+    if (![[BluetoothMacManager defaultManager] isConnected]) {
+        [AppUtils showInfo:@"蓝牙已断开"];
         return;
     }
     

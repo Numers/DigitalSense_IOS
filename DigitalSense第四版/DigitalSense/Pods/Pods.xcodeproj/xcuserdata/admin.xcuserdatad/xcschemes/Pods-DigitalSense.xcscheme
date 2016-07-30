@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D84FE90C1A4D259AC23004DB'
+               BlueprintIdentifier = '996036E621A50EF4BFFE562D'
                BlueprintName = 'Pods-DigitalSense'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-DigitalSense.a'>

@@ -11,6 +11,7 @@
 #import "LZProgressView.h"
 #import "URLManager.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <math.h>
 #define MBTAG  1001
 #define AMTAG  1111
 @implementation AppUtils
@@ -95,6 +96,48 @@
         }
     });
 }
+
+/**
+ *  @author RenRenFenQi, 16-07-30 14:07:14
+ *
+ *  对float型数字四舍五入
+ *
+ *  @param value float型数字
+ *
+ *  @return 四舍五入后的整型
+ */
++(NSInteger)floatToInt:(CGFloat)value
+{
+    CGFloat temp = roundf(value);
+    return [[NSNumber numberWithFloat:temp] integerValue];
+}
+
+/**
+ *  @author RenRenFenQi, 16-07-30 15:07:34
+ *
+ *  根据业务需求，将float型数字转为整型
+ *
+ *  @param value    float型数字 介于0~maxValue之间
+ *  @param maxValue 最大值
+ *
+ *  @return 整型数字
+ */
++(NSInteger)floatToInt:(CGFloat)value WithMaxValue:(NSInteger)maxValue
+{
+    CGFloat tempResult = roundf(value);
+    CGFloat temp = value / maxValue;
+    
+    if (temp > (1.0f / 3.0f) && tempResult < (maxValue * 1.0f / 3.0f)) {
+        tempResult += 1.0f;
+    }
+    
+    if (temp < (2.0f / 3.0f) && tempResult > (maxValue * 2.0f / 3.0f)){
+        tempResult -= 1.0f;
+    }
+    
+    return [[NSNumber numberWithFloat:tempResult] integerValue];
+}
+
 
 + (BOOL)isNullStr:(NSString *)str
 {

@@ -45,7 +45,7 @@
     }
     
     if (self.lblDuration) {
-        NSString *durationStr = [NSString stringWithFormat:@"%lds",command.duration];
+        NSString *durationStr = [NSString stringWithFormat:@"%lds",(long)command.duration];
         [self.lblDuration setText:durationStr];
     }
 }
@@ -73,10 +73,12 @@
     CGContextStrokePath(context);
     
     if (self.lblFruitName) {
+//        [self.lblFruitName setFrame:CGRectMake(0, 0, 20, self.frame.size.height - LabelHeight)];
         [self.lblFruitName setCenter:CGPointMake(self.frame.size.width / 2, (self.frame.size.height - LabelHeight)/2)];
     }
     
     if (self.lblDuration) {
+//        [self.lblDuration setFrame:CGRectMake(0, self.frame.size.height -  LabelHeight, self.frame.size.width, LabelHeight)];
         [self.lblDuration setFrame:CGRectMake(0, self.frame.size.height - LabelHeight, self.frame.size.width, LabelHeight)];
     }
 }

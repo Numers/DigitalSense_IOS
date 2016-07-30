@@ -71,7 +71,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib
+    // Do any additional setup after loading the view, typically from a nil
     [self.navigationController setNavigationBarHidden:YES];
     //适配SelectDeviceButton的字体大小
     [UIDevice adaptUIButtonTitleFont:_btnSelectDevice WithIphone5FontSize:17.0f IsBold:YES];
@@ -87,7 +87,7 @@
     [self.view bringSubviewToFront:floatView];
     
     UILabel *floatLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
-    [floatLabel setText:@"点击"];
+    [floatLabel setText:@"场景"];
     [floatLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
     [floatLabel setTextColor:[UIColor whiteColor]];
     [floatLabel setTextAlignment:NSTextAlignmentCenter];
@@ -181,7 +181,7 @@
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
@@ -334,7 +334,7 @@
     if (title) {
         CGFloat fontSize = [UIDevice adaptTextFontSizeWithIphone5FontSize:17.0f IsBold:YES];
         CGRect rect = [title boundingRectWithSize:CGSizeMake(300, 21) options:0 attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:fontSize]} context:nil];
-        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, rect.size.width, 0, -rect.size.width)];
+        [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, rect.size.width + 5, 0, -rect.size.width - 5)];
     }else{
         [_btnSelectDevice setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
@@ -344,8 +344,7 @@
     }else{
         [_btnSelectDevice setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     }
-    
-    
+
     [_btnSelectDevice setTitle:title forState:UIControlStateNormal];
     [_btnSelectDevice setImage:image forState:UIControlStateNormal];
     [_btnSelectDevice setEnabled:isEnable];

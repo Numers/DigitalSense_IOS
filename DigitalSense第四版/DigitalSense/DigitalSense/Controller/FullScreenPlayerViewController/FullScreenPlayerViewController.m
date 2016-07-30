@@ -192,6 +192,7 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
     RelativeTimeScript *script = [notify object];
     if (currentScript) {
         if ([currentScript isEqual:script]) {
+            [_txtDescription setText:nil];
             if (isLoop) {
                 if (needLoop) {
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
