@@ -39,6 +39,8 @@
 		846A76F41D016DD00055E54E /* RFGeneralManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76ED1D016DD00055E54E /* RFGeneralManager.m */; };
 		846A76F51D016DD00055E54E /* SCNetWorkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F01D016DD00055E54E /* SCNetWorkManager.m */; };
 		846A76F61D016DD00055E54E /* URLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 846A76F21D016DD00055E54E /* URLManager.m */; };
+		847044611D4F217C00789349 /* ComboxHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847044601D4F217C00789349 /* ComboxHeadView.m */; };
+		847044651D4F448900789349 /* ComboxMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847044641D4F448900789349 /* ComboxMenuView.m */; };
 		8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471AB0E1CFC321F00CB5DB6 /* Fruit.m */; };
 		8471F24B1D334DBC0029A409 /* ScriptSerialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F24A1D334DBC0029A409 /* ScriptSerialViewController.m */; };
 		8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8471F24D1D334DD10029A409 /* ScriptSelectViewController.m */; };
@@ -149,6 +151,10 @@
 		846A76F01D016DD00055E54E /* SCNetWorkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNetWorkManager.m; sourceTree = "<group>"; };
 		846A76F11D016DD00055E54E /* URLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLManager.h; sourceTree = "<group>"; };
 		846A76F21D016DD00055E54E /* URLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLManager.m; sourceTree = "<group>"; };
+		8470445F1D4F217C00789349 /* ComboxHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboxHeadView.h; sourceTree = "<group>"; };
+		847044601D4F217C00789349 /* ComboxHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComboxHeadView.m; sourceTree = "<group>"; };
+		847044631D4F448900789349 /* ComboxMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComboxMenuView.h; sourceTree = "<group>"; };
+		847044641D4F448900789349 /* ComboxMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComboxMenuView.m; sourceTree = "<group>"; };
 		8471AB0D1CFC321F00CB5DB6 /* Fruit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fruit.h; sourceTree = "<group>"; };
 		8471AB0E1CFC321F00CB5DB6 /* Fruit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Fruit.m; sourceTree = "<group>"; };
 		8471F2491D334DBC0029A409 /* ScriptSerialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSerialViewController.h; sourceTree = "<group>"; };
@@ -456,6 +462,15 @@
 			path = NetWorkAPIManager;
 			sourceTree = "<group>";
 		};
+		847044621D4F447400789349 /* ComboxMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				847044631D4F448900789349 /* ComboxMenuView.h */,
+				847044641D4F448900789349 /* ComboxMenuView.m */,
+			);
+			path = ComboxMenuView;
+			sourceTree = "<group>";
+		};
 		8471AB0C1CFC320D00CB5DB6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,6 +547,8 @@
 			children = (
 				8479700F1D3CF49E00465074 /* ComboxView.h */,
 				847970101D3CF49E00465074 /* ComboxView.m */,
+				8470445F1D4F217C00789349 /* ComboxHeadView.h */,
+				847044601D4F217C00789349 /* ComboxHeadView.m */,
 			);
 			path = ComboxView;
 			sourceTree = "<group>";
@@ -648,6 +665,7 @@
 		847EEFAB1D17D597009765E6 /* ThirdPartPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				847044621D4F447400789349 /* ComboxMenuView */,
 				847789711D49A4C200976B31 /* HeartView */,
 				8479700E1D3CF48300465074 /* ComboxView */,
 				8479700A1D3CE40100465074 /* PopMenuView */,
@@ -900,6 +918,7 @@
 				847EC4DE1CFD6654000D77AE /* AppUtils.m in Sources */,
 				8471F2511D3351000029A409 /* ScriptSelectCollectionViewCell.m in Sources */,
 				847970111D3CF49E00465074 /* ComboxView.m in Sources */,
+				847044651D4F448900789349 /* ComboxMenuView.m in Sources */,
 				846A76F61D016DD00055E54E /* URLManager.m in Sources */,
 				846735CC1D003A800073ED9D /* SFruitInfoDB.m in Sources */,
 				846A61951D375C3100250838 /* UIViewController+WXSTransition.m in Sources */,
@@ -912,6 +931,7 @@
 				847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */,
 				847EEFAA1D17CAC3009765E6 /* ScriptTaskTime.m in Sources */,
 				846A61961D375C3100250838 /* WXSPercentDrivenInteractiveTransition.m in Sources */,
+				847044611D4F217C00789349 /* ComboxHeadView.m in Sources */,
 				8482CF651D125A570020CEEA /* ScriptViewController.m in Sources */,
 				8463B9DC1D13FC2300EACECD /* AbsoluteTimeScript.m in Sources */,
 				8452134D1D388893009D91E0 /* FullScreenSmellView.m in Sources */,

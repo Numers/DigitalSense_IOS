@@ -40,6 +40,8 @@
         // Initialization code
         self.borderColor = RGB(200, 199, 204);
         self.backgroundColor = [UIColor clearColor];
+        [self.layer setCornerRadius:3.0f];
+        [self.layer setMasksToBounds:YES];
     }
     return self;
 }

@@ -14,6 +14,7 @@
 #import "ScriptViewModel.h"
 
 #import "ScriptExecuteManager.h"
+#import "BluetoothProcessManager.h"
 #import "ScriptPlayDetailsViewController.h"
 
 static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
@@ -73,6 +74,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scriptStateComfirmed:) name:ScriptStateComfirmed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackBluetoothPowerOff:) name:OnCallbackBluetoothPowerOff object:nil];
     [self registeNotifications];
     [self.tableView reloadData];
 }
@@ -170,6 +172,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     });
 }
 
+-(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
+{
+    [AppUtils showInfo:@"蓝牙未开启"];
+    [[ScriptExecuteManager defaultManager] cancelAllScripts];
+}
+
 -(void)registeNotifications
 {
     playScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayScriptNotification object:nil] subscribeNext:^(id x) {
@@ -182,6 +190,9 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     playOverAllScriptDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayOverAllScriptsNotification object:nil] subscribeNext:^(id x) {
         [self setCurrentScript:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tableView reloadData];
+        });
     }];
     
     playProgressSecondDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:PlayProgressSecondNotification object:nil] subscribeNext:^(id x) {
@@ -211,7 +222,10 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     }];
     
     macAddressDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:BluetoothMacAddressNotify object:nil] subscribeNext:^(id x) {
-        [self requestScriptInfoWithMacAddress:x];
+        id obj = [x object];
+        if (obj) {
+            [self requestScriptInfoWithMacAddress:obj];
+        }
     }];
     
     sendScriptCommandDisposable = [[[NSNotificationCenter defaultCenter] rac_addObserverForName:SendScriptCommandNotification object:nil] subscribeNext:^(id x) {

@@ -40,9 +40,12 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:OnCallbackBluetoothPowerOff object:nil];
             }else if(backType == CallbackTimeout){
                 [[NSNotificationCenter defaultCenter] postNotificationName:OnCallbackScanBluetoothTimeout object:nil];
-                NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
-                if (lastConnectDeviceName) {
-                    [self connectToBluetooth:lastConnectDeviceName WithPeripheral:nil];
+                
+                if (![[BluetoothMacManager defaultManager] isConnected]) {
+                    NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
+                    if (lastConnectDeviceName) {
+                        [self connectToBluetooth:lastConnectDeviceName WithPeripheral:nil];
+                    }
                 }
 
             }else{

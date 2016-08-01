@@ -26,11 +26,11 @@
 
 #import "FloatView/FloatView.h"
 #import "PopoverView.h"
-#import "ComboxView.h"
+#import "ComboxMenuView.h"
 #import "UINavigationController+WXSTransition.h"
 
 #define SpeakDelay 0.5f
-#define SmellEmitDuration 15
+#define SmellEmitDuration 8
 #define CellMargin 0.5f
 #define CellItemCount 3
 #define CloseTag @"0"
@@ -38,7 +38,7 @@
 #define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
-@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxViewProtocol,ScriptOperationViewProtocol>
+@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxMenuViewProtocol,ScriptOperationViewProtocol>
 {
     NSString *selectTag;
     NSTimer *smellEmitTimer;
@@ -54,7 +54,8 @@
     PopoverView *popoverView;
     NSArray *popoverTitle;
     
-    ComboxView *comboxView;
+    ComboxMenuView *comboxView;
+    BOOL isScanning;
     
     NSTimer *testTimer;
 }
@@ -77,7 +78,7 @@
     [UIDevice adaptUIButtonTitleFont:_btnSelectDevice WithIphone5FontSize:17.0f IsBold:YES];
     
     //popoverView显示的title
-    popoverTitle = @[@"刷新蓝牙",@"脚本"];
+    popoverTitle = @[@"脚本列表"];
     //添加浮动的按钮
     floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     floatView.delegate = self;
@@ -142,6 +143,7 @@
 #pragma -mark Notification
 -(void)onStartScanBluetooth:(NSNotification *)notify
 {
+    [self setIsScanning:YES];
     if (testTimer) {
         if ([testTimer isValid]) {
             [testTimer invalidate];
@@ -154,6 +156,7 @@
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
     if (testTimer) {
         if ([testTimer isValid]) {
             [testTimer invalidate];
@@ -165,16 +168,19 @@
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
     [self setSelectDeviceBtn:@"请选择您需要连接的设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
     [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
     if (testTimer) {
         if ([testTimer isValid]) {
             [testTimer invalidate];
@@ -186,6 +192,8 @@
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
+    [self reloadComboxMenu];
     [self setSelectDeviceBtn:@"设备已连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
     [self.viewModel clearData];
     [self initlizedData];
@@ -197,6 +205,7 @@
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
+    [self setIsScanning:NO];
     [self setSelectDeviceBtn:@"未发现有效设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
@@ -320,6 +329,42 @@
 }
 
 #pragma -mark private function
+-(void)reloadComboxMenu
+{
+    if (comboxView) {
+        if ([comboxView isShow]) {
+            NSArray *peripheralArray = [[BluetoothMacManager defaultManager] returnAllScanPeripherals];
+            
+            NSArray *peripheralNameArray = [[BluetoothMacManager defaultManager] returnAllScanPeripheralNames];
+            NSUInteger defaultSelectedIndex = -1;
+            if ([[BluetoothMacManager defaultManager] isConnected]) {
+                id connectedPeripheral = [[BluetoothMacManager defaultManager] returnConnectedPeripheral];
+                if ([peripheralArray containsObject:connectedPeripheral]) {
+                    defaultSelectedIndex = [peripheralArray indexOfObject:connectedPeripheral];
+                }
+            }
+            
+            [comboxView setTitleArray:peripheralNameArray WithDataSourceArray:peripheralArray WithDefaultSelectedIndex:defaultSelectedIndex];
+        }
+    }
+}
+
+/**
+ *  @author RenRenFenQi, 16-08-01 20:08:02
+ *
+ *  设置是否浏览状态
+ *
+ *  @param state 蓝牙状态
+ */
+-(void)setIsScanning:(BOOL)state
+{
+    isScanning = state;
+    if (comboxView) {
+        if ([comboxView isShow]) {
+            [comboxView setIsScanning:state];
+        }
+    }
+}
 /**
  *  @author RenRenFenQi, 16-07-30 12:07:31
  *
@@ -636,6 +681,21 @@
 
     }
 }
+
+/**
+ *  @author RenRenFenQi, 16-08-01 11:08:03
+ *
+ *  刷新蓝牙设备数据
+ */
+-(void)refreshBluetoothData
+{
+    if ([[BluetoothMacManager defaultManager] isConnected]) {
+        [self initlizedData];
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
+    }else{
+        [[BluetoothProcessManager defatultManager] startScanBluetooth];
+    }
+}
 #pragma -mark ButtonClickEvent
 -(IBAction)TouchDownVoiceBtn:(id)sender
 {
@@ -723,11 +783,6 @@
         popoverView = nil;
     }
     
-    if ([[BluetoothMacManager defaultManager] isConnected]) {
-        popoverTitle = @[@"刷新蓝牙",@"脚本"];
-    }else{
-        popoverTitle = @[@"重新搜索",@"脚本"];
-    }
     CGPoint point = CGPointMake(sender.frame.origin.x + sender.frame.size.width/2, sender.frame.origin.y + sender.frame.size.height);
     popoverView = [[PopoverView alloc] initWithPoint:point titles:popoverTitle images:nil];
     
@@ -736,17 +791,12 @@
         switch (index) {
             case 0:
             {
-                if ([[BluetoothMacManager defaultManager] isConnected]) {
-                    [weakSelf initlizedData];
-                    [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
-                }else{
-                    [[BluetoothProcessManager defatultManager] startScanBluetooth];
-                }
+                [weakSelf clickScriptBtn];
             }
                 break;
             case 1:
             {
-                [weakSelf clickScriptBtn];
+                
             }
                 break;
                 
@@ -772,7 +822,9 @@
     }
     NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
     [scriptVC setMacAddress:macAddress];
-    [self.navigationController pushViewController:scriptVC animated:YES];
+    [self.navigationController wxs_pushViewController:scriptVC makeTransition:^(WXSTransitionProperty *transition) {
+        transition.animationType = WXSTransitionAnimationTypeSpreadFromRight;
+    }];
 }
 
 -(IBAction)clickSelectDeviceBtn:(id)sender
@@ -783,10 +835,7 @@
         }
     }
     NSArray *peripheralArray = [[BluetoothMacManager defaultManager] returnAllScanPeripherals];
-    if (peripheralArray.count == 0) {
-        [AppUtils showInfo:@"未搜索到匹配设备"];
-        return;
-    }
+    
     NSArray *peripheralNameArray = [[BluetoothMacManager defaultManager] returnAllScanPeripheralNames];
     NSUInteger defaultSelectedIndex = -1;
     if ([[BluetoothMacManager defaultManager] isConnected]) {
@@ -795,14 +844,14 @@
             defaultSelectedIndex = [peripheralArray indexOfObject:connectedPeripheral];
         }
     }
-    comboxView = [[ComboxView alloc] initWithStartPoint:CGPointMake(0, 64)  WithTitleArray:peripheralNameArray WithDataSourceArray:peripheralArray WithDefaultSelectedIndex:defaultSelectedIndex];
+    comboxView = [[ComboxMenuView alloc] initWithStartPoint:CGPointMake(0, 64)  WithTitleArray:peripheralNameArray WithDataSourceArray:peripheralArray WithDefaultSelectedIndex:defaultSelectedIndex];
     comboxView.delegate = self;
     __weak __typeof(self) weakSelf = self;
     [comboxView setHiddenCallBack:^(BOOL completion) {
         [weakSelf setSelectDeviceBtn:weakSelf.btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
     }];
     [comboxView showInView:self.view];
-    
+    [comboxView setIsScanning:isScanning];
     [self setSelectDeviceBtn:_btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:YES];
 }
 #pragma mark - LewReorderableLayoutDataSource
@@ -933,6 +982,8 @@
         if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
             [[ScriptExecuteManager defaultManager] cancelAllScripts];
             [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
+        }else{
+            [self refreshBluetoothData];
         }
     }else{
         [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
@@ -963,20 +1014,37 @@
     }];
 }
 
-#pragma -mark ComboxViewProtocol
+#pragma -mark ComboxMenuViewProtocol
 -(void)selectPeripheral:(id)peripheral WithDeviceName:(NSString *)name
 {
     [self connectToBluetoothWithPeripheral:peripheral WithName:name];
 }
 
-#pragma -mark ScriptOperationViewProtocol
--(void)refreshBluetoothData
+-(void)rescanBluetooth
 {
-    if ([[BluetoothMacManager defaultManager] isConnected]) {
-        [self initlizedData];
-        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
-    }else{
-        [[BluetoothProcessManager defatultManager] startScanBluetooth];
+    [[BluetoothProcessManager defatultManager] startScanBluetooth];
+    if (comboxView) {
+        [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+        while ([comboxView isShow] && isScanning) {
+            
+            [self reloadComboxMenu];
+            
+            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
+        }
+        
+        if ([comboxView isShow]) {
+            [comboxView setIsScanning:isScanning];
+        }
     }
+}
+#pragma -mark ScriptOperationViewProtocol
+-(void)selectPeripheralFromOperationView:(id)peripheral WithDeviceName:(NSString *)name;
+{
+    [self selectPeripheral:peripheral WithDeviceName:name];
+}
+
+-(void)pushToScriptView
+{
+    [self clickScriptBtn];
 }
 @end

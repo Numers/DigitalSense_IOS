@@ -10,14 +10,15 @@
 #import <CoreBluetooth/CoreBluetooth.h>
 #import "DataAnalizer.h"
 
-#define ConnectTimeOut 15
+#define ConnectTimeOut 8
+#define ScanTimeOut 8
 #define kServiceUUID @"FFF0" //服务的UUID
 #define kMacServiceUUID @"180A"//获取Mac地址的UUID
 #define kCharacteristicNotifyUUID @"FFF1" //通知特征的UUID
 #define kCharacteristicWriteUUID @"FFF2" //写入数据特征的UUID
 #define kCharacteristicMacReadUUID @"2A23" //读取Mac地址的特征UUID
 
-static NSInteger connectTime = 0;
+static NSInteger connectTime = 0,scanTime = 0;
 static BluetoothMacManager *bluetoothMacManager;
 @interface BluetoothMacManager()<CBCentralManagerDelegate,CBPeripheralDelegate,DataAnalizerProtocol>
 {
@@ -25,7 +26,8 @@ static BluetoothMacManager *bluetoothMacManager;
     BluetoothCallBak deviceCallBack;
     BluetoothCallBak connectCallBack;
     ConnectType connectType;
-    NSTimer *timer;
+    NSTimer *scanTimer;
+    NSTimer *connectTimer;
     BOOL isConnected;
 }
 @property (assign,nonatomic) id<BluetoothManagerProtocol> delegate;
@@ -56,12 +58,20 @@ static BluetoothMacManager *bluetoothMacManager;
     isConnected = connectCompelete;
     BluetoothCallBak tempConnectCallBack = connectCallBack;
     BluetoothCallBak tempDeviceCallBack = deviceCallBack;
-    if (timer) {
-        if ([timer isValid]) {
-            [timer invalidate];
-            timer = nil;
+    if (scanTimer) {
+        if ([scanTimer isValid]) {
+            [scanTimer invalidate];
+            scanTimer = nil;
         }
     }
+    
+    if (connectTimer) {
+        if ([connectTimer isValid]) {
+            [connectTimer invalidate];
+            connectTimer = nil;
+        }
+    }
+    
     if (!connectCompelete) {
         [self stopBluetoothDevice];
     }
@@ -104,6 +114,9 @@ static BluetoothMacManager *bluetoothMacManager;
     deviceCallBack = callBack;
     connectCallBack = nil;
     connectType = type;
+    if (self.peripheral) {
+        [self.centralManager cancelPeripheralConnection:self.peripheral];
+    }
     [self.centralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
 
@@ -111,10 +124,11 @@ static BluetoothMacManager *bluetoothMacManager;
 {
     isConnected = NO;
     connectTime = 0;
-    if (timer) {
-        if ([timer isValid]) {
-            [timer invalidate];
-            timer = nil;
+    scanTime = 0;
+    if (scanTimer) {
+        if ([scanTimer isValid]) {
+            [scanTimer invalidate];
+            scanTimer = nil;
         }
     }
     if(self.peripherals){
@@ -135,7 +149,7 @@ static BluetoothMacManager *bluetoothMacManager;
         self.peripheralMacArray = [NSMutableArray array];
     }
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
+    scanTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countScanTime) userInfo:nil repeats:YES];
 }
 
 -(void)countConnectTime
@@ -146,12 +160,27 @@ static BluetoothMacManager *bluetoothMacManager;
     }
 }
 
+-(void)countScanTime
+{
+    scanTime ++;
+    if (scanTime > ScanTimeOut) {
+        [self callBackDevice:NO WithCallbackType:CallbackTimeout];
+    }
+}
+
 -(void)stopBluetoothDevice
 {
-    if (timer) {
-        if ([timer isValid]) {
-            [timer invalidate];
-            timer = nil;
+    if (scanTimer) {
+        if ([scanTimer isValid]) {
+            [scanTimer invalidate];
+            scanTimer = nil;
+        }
+    }
+    
+    if (connectTimer) {
+        if ([connectTimer isValid]) {
+            [connectTimer invalidate];
+            connectTimer = nil;
         }
     }
     
@@ -405,10 +434,25 @@ static BluetoothMacManager *bluetoothMacManager;
         if (connectType == ConnectToDevice) {
             //停止扫描
             [self.centralManager stopScan];
+            if (scanTimer) {
+                if ([scanTimer isValid]) {
+                    [scanTimer invalidate];
+                    scanTimer = nil;
+                }
+            }
         }
         self.peripheral = peripheral;
         NSLog(@"开始连接外围设备...");
         [self.centralManager connectPeripheral:peripheral options:nil];
+        connectTime = 0;
+        if (connectTimer) {
+            if ([connectTimer isValid]) {
+                [connectTimer invalidate];
+                connectTimer = nil;
+            }
+        }
+        
+        connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
     }
 }
 
@@ -428,11 +472,26 @@ static BluetoothMacManager *bluetoothMacManager;
         if (connectType == ConnectToDevice) {
             //停止扫描
             [self.centralManager stopScan];
+            if (scanTimer) {
+                if ([scanTimer isValid]) {
+                    [scanTimer invalidate];
+                    scanTimer = nil;
+                }
+            }
         }
         self.peripheral = peripheral;
         NSLog(@"开始连接外围设备...");
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.centralManager connectPeripheral:peripheral options:nil];
+            connectTime = 0;
+            if (connectTimer) {
+                if ([connectTimer isValid]) {
+                    [connectTimer invalidate];
+                    connectTimer = nil;
+                }
+            }
+            
+            connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
         });
         
     }
@@ -467,11 +526,26 @@ static BluetoothMacManager *bluetoothMacManager;
         if (connectType == ConnectToDevice) {
             //停止扫描
             [self.centralManager stopScan];
+            if (scanTimer) {
+                if ([scanTimer isValid]) {
+                    [scanTimer invalidate];
+                    scanTimer = nil;
+                }
+            }
         }
         self.peripheral = peripheral;
         NSLog(@"开始连接外围设备...");
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.centralManager connectPeripheral:peripheral options:nil];
+            connectTime = 0;
+            if (connectTimer) {
+                if ([connectTimer isValid]) {
+                    [connectTimer invalidate];
+                    connectTimer = nil;
+                }
+            }
+            
+            connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
         });
     }
 
