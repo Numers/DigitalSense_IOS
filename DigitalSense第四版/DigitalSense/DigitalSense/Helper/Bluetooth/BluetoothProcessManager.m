@@ -8,6 +8,7 @@
 
 #import "BluetoothProcessManager.h"
 #import "BluetoothMacManager.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @implementation BluetoothProcessManager
 +(instancetype)defatultManager
@@ -57,13 +58,17 @@
 
 -(void)reconnectBluetooth
 {
-    CBPeripheral *peripheral = [[BluetoothMacManager defaultManager] returnConnectedPeripheral];
-    if (peripheral) {
-        [self connectToBluetooth:nil WithPeripheral:peripheral];
-    }else{
-        NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
-        if (lastConnectDeviceName) {
-            [self connectToBluetooth:lastConnectDeviceName  WithPeripheral:nil];
+    @synchronized (self) {
+        CBPeripheral *peripheral = [[BluetoothMacManager defaultManager] returnConnectedPeripheral];
+        if (peripheral) {
+            if (peripheral.state == CBPeripheralStateDisconnected) {
+                [self connectToBluetooth:nil WithPeripheral:peripheral];
+            }
+        }else{
+            NSString *lastConnectDeviceName = [[NSUserDefaults standardUserDefaults] objectForKey:LastConnectDeviceNameKey];
+            if (lastConnectDeviceName) {
+                [self connectToBluetooth:lastConnectDeviceName  WithPeripheral:nil];
+            }
         }
     }
 }

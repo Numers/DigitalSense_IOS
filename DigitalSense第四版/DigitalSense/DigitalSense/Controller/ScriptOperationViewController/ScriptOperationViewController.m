@@ -62,7 +62,7 @@
     [_playView.layer setShadowOpacity:0.8f];
     //适配SelectDeviceButton的字体大小
     [UIDevice adaptUIButtonTitleFont:_btnSelectDevice WithIphone5FontSize:17.0f IsBold:YES];
-    [self setSelectDeviceBtn:@"设备已连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备已连接" IsEnable:YES];
     
     UIImage *backImage = [UIImage imageNamed:@"OperationBackgroundViewImage"];
     self.view.layer.contents = (id)backImage.CGImage;
@@ -194,46 +194,46 @@
 {
     [self setIsScanning:YES];
     [self performSelectorInBackground:@selector(syncComboxMenuData) withObject:nil];
-     [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"正在搜索智能设备" IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未开启蓝牙" IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"请选择您需要连接的设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"请选择您需要连接的设备" IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未连接" IsEnable:YES];
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"连接中..." IsEnable:YES];
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtn:@"设备已连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备已连接" IsEnable:YES];
 }
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未连接" IsEnable:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -356,7 +356,7 @@
         if (![AppUtils isNullStr:command.rfId]) {
             CGFloat power = 10 * command.power;
             NSInteger iPower = [AppUtils floatToInt:power WithMaxValue:10];
-            NSString *commandStr = [NSString stringWithFormat:@"F266%@%02lX%02lX",command.rfId,(long)command.duration,iPower];
+            NSString *commandStr = [NSString stringWithFormat:@"F266%@%04lX%02lX55",command.rfId,(long)command.duration,(long)iPower];
             command.command = commandStr;
         }else{
             command.command = @"";
@@ -531,6 +531,24 @@
     [_btnSelectDevice setEnabled:isEnable];
 }
 
+/**
+ *  @author RenRenFenQi, 16-08-02 17:08:07
+ *
+ *  设置下拉设备按钮的标题图片和是否可用
+ *
+ *  @param title    标题
+ *  @param isEnable 是否可用
+ */
+-(void)setSelectDeviceBtnTitle:(NSString *)title IsEnable:(BOOL)isEnable
+{
+    if (comboxView) {
+        if ([comboxView isShow]) {
+            [self setSelectDeviceBtn:title WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:isEnable];
+            return;
+        }
+    }
+    [self setSelectDeviceBtn:title WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+}
 #pragma -mark ButtonEvent
 -(IBAction)clickBackBtn:(id)sender
 {
@@ -546,7 +564,7 @@
     }
     
     if (![[BluetoothMacManager defaultManager] isConnected]) {
-        [AppUtils showInfo:@"蓝牙已断开"];
+        [AppUtils showInfo:@"设备未连接"];
         return;
     }
     
@@ -622,11 +640,11 @@
     comboxView.delegate = self;
     __weak __typeof(self) weakSelf = self;
     [comboxView setHiddenCallBack:^(BOOL completion) {
-        [weakSelf setSelectDeviceBtn:weakSelf.btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+        [weakSelf setSelectDeviceBtnTitle:weakSelf.btnSelectDevice.currentTitle IsEnable:YES];
     }];
     [comboxView showInView:self.view];
     [comboxView setIsScanning:isScanning];
-    [self setSelectDeviceBtn:_btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:YES];
+    [weakSelf setSelectDeviceBtnTitle:weakSelf.btnSelectDevice.currentTitle IsEnable:YES];
 }
 #pragma -mark ScriptSerialViewProtocol
 -(void)selectFruit:(Fruit *)fruit

@@ -151,7 +151,7 @@
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"正在搜索智能设备" IsEnable:YES];
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
@@ -165,51 +165,45 @@
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未开启蓝牙" IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"请选择您需要连接的设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"请选择您需要连接的设备" IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未连接" IsEnable:YES];
 }
 
 -(void)onStartConnectToBluetooth:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    if (testTimer) {
-        if ([testTimer isValid]) {
-            [testTimer invalidate];
-            testTimer = nil;
-        }
-    }
-    [self setSelectDeviceBtn:@"连接中..." WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"连接中..." IsEnable:YES];
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtn:@"设备已连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备已连接" IsEnable:YES];
     [self.viewModel clearData];
     [self initlizedData];
     
     //心跳包
-    testTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(test) userInfo:nil repeats:YES];
+    testTimer = [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(test) userInfo:nil repeats:YES];
     [testTimer fire];
 }
 
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"设备未连接" IsEnable:YES];
 }
 
 -(void)deliveryData:(NSNotification *)notify
@@ -413,6 +407,25 @@
     [_btnSelectDevice setImage:image forState:UIControlStateNormal];
     [_btnSelectDevice setEnabled:isEnable];
 }
+
+/**
+ *  @author RenRenFenQi, 16-08-02 17:08:07
+ *
+ *  设置下拉设备按钮的标题图片和是否可用
+ *
+ *  @param title    标题
+ *  @param isEnable 是否可用
+ */
+-(void)setSelectDeviceBtnTitle:(NSString *)title IsEnable:(BOOL)isEnable
+{
+    if (comboxView) {
+        if ([comboxView isShow]) {
+            [self setSelectDeviceBtn:title WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:isEnable];
+            return;
+        }
+    }
+    [self setSelectDeviceBtn:title WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+}
 /**
  *  @author RenRenFenQi, 16-07-26 10:07:04
  *
@@ -537,7 +550,7 @@
 {
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         //提示打开蓝牙或下拉重连
-        [AppUtils showInfo:@"请先打开蓝牙或者刷新重连"];
+        [AppUtils showInfo:@"设备未连接"];
         return;
     }
 
@@ -728,7 +741,7 @@
     NSLog(@"按钮松开了...");
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         //提示打开蓝牙或下拉重连
-        [AppUtils showInfo:@"请先打开蓝牙或者刷新重连"];
+        [AppUtils showInfo:@"设备未连接"];
         return;
     }
     
@@ -832,7 +845,7 @@
 {
     if (![[BluetoothMacManager defaultManager] isConnected])
     {
-        [AppUtils showInfo:@"请等待蓝牙连接"];
+        [AppUtils showInfo:@"设备未连接"];
         return;
     }
     
@@ -870,11 +883,11 @@
     comboxView.delegate = self;
     __weak __typeof(self) weakSelf = self;
     [comboxView setHiddenCallBack:^(BOOL completion) {
-        [weakSelf setSelectDeviceBtn:weakSelf.btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+        [weakSelf setSelectDeviceBtnTitle:weakSelf.btnSelectDevice.currentTitle IsEnable:YES];
     }];
     [comboxView showInView:self.view];
     [comboxView setIsScanning:isScanning];
-    [self setSelectDeviceBtn:_btnSelectDevice.currentTitle WithImage:[UIImage imageNamed:@"ComboxUpImage"] IsEnable:YES];
+    [weakSelf setSelectDeviceBtnTitle:weakSelf.btnSelectDevice.currentTitle IsEnable:YES];
 }
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -1018,7 +1031,7 @@
 {
     if (![[BluetoothMacManager defaultManager] isConnected])
     {
-        [AppUtils showInfo:@"请先连接蓝牙"];
+        [AppUtils showInfo:@"设备未连接"];
         return;
     }
     

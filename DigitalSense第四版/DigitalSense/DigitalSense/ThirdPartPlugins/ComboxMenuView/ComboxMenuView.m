@@ -147,6 +147,8 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
 
 -(void)showInView:(UIView *)view
 {
+    isShow = YES;
+    
     [view addSubview:self];
     [view bringSubviewToFront:self];
     
@@ -166,7 +168,6 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
             self.transform = CGAffineTransformIdentity;
         } completion:nil];
         parentView = view;
-        isShow = YES;
     }];
 }
 
@@ -176,10 +177,10 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
         self.transform = CGAffineTransformMakeScale(1.0f, 0.1f);
         self.alpha = 0.f;
     } completion:^(BOOL finished) {
+        isShow = NO;
         if (hiddenCallback) {
             hiddenCallback(finished);
         }
-        isShow = NO;
         [parentView setUserInteractionEnabled:YES];
         [self performSelector:@selector(removeView) withObject:nil];
     }];

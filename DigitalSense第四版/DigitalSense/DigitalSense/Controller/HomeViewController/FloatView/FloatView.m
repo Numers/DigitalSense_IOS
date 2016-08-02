@@ -33,13 +33,13 @@ static void *AdsorbEnableKey = &AdsorbEnableKey;
 
 -(void)fullScreenViewMargin
 {
-    TopAndBottomPADDING = 0.0f;
+    TopAndBottomPADDING = 20.0f;
     LeftAndRightPADDING = 0.0f;
 }
 
 -(void)smallScreenViewMargin
 {
-    TopAndBottomPADDING = 40.0f;
+    TopAndBottomPADDING = 20.0f;
     LeftAndRightPADDING = 0.0f;
 }
 
