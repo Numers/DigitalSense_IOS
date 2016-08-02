@@ -49,4 +49,8 @@
  */
 + (void)showProgressBarForView:(UIView *)view;
 + (void)hideProgressBarForView:(UIView *)view;
+
++(void)showHudProgress:(NSString *)title ForView:(UIView *)view;
+
++(void)hidenHudProgressForView:(UIView *)view;
 @end

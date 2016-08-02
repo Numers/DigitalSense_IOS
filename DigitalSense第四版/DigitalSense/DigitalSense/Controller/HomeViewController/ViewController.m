@@ -144,26 +144,28 @@
 -(void)onStartScanBluetooth:(NSNotification *)notify
 {
     [self setIsScanning:YES];
+    [self performSelectorInBackground:@selector(syncComboxMenuData) withObject:nil];
     if (testTimer) {
         if ([testTimer isValid]) {
             [testTimer invalidate];
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
     [self setIsScanning:NO];
+    [self reloadComboxMenu];
     if (testTimer) {
         if ([testTimer isValid]) {
             [testTimer invalidate];
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
@@ -175,6 +177,7 @@
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
     [self setIsScanning:NO];
+    [self reloadComboxMenu];
     [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
@@ -206,7 +209,7 @@
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"未发现有效设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)deliveryData:(NSNotification *)notify
@@ -292,10 +295,10 @@
                 break;
             case BottleInfoCompletely:
             {
-                [AppUtils showProgressBarForView:self.view];
+                [AppUtils showHudProgress:@"加载气味中..." ForView:self.view];
                 [[self.viewModel getBottleInfoCompletelyReturn:byte WithBottleInfoList:bottleInfoList] subscribeNext:^(id x) {
                     //处理http返回responseObject
-                    [AppUtils hideProgressBarForView:self.view];
+                    [AppUtils hidenHudProgressForView:self.view];
                     if (x == nil) {
                         return ;
                     }
@@ -329,6 +332,22 @@
 }
 
 #pragma -mark private function
+//同步ComboxMenu的数据
+-(void)syncComboxMenuData
+{
+    [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+    while (isScanning) {
+        
+        [self reloadComboxMenu];
+        
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+    }
+    
+    //runloop结束后，为了防止延迟造成的数据不统一，最后进行一次刷新数据
+    [self reloadComboxMenu];
+}
+
+//刷新ComboxMenu的蓝牙数据列表
 -(void)reloadComboxMenu
 {
     if (comboxView) {
@@ -691,6 +710,7 @@
 {
     if ([[BluetoothMacManager defaultManager] isConnected]) {
         [self initlizedData];
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandMacAddress];
         [[BluetoothMacManager defaultManager] writeCharacteristicWithCommand:CommandBottleInfo];
     }else{
         [[BluetoothProcessManager defatultManager] startScanBluetooth];
@@ -831,6 +851,8 @@
 {
     if (comboxView) {
         if ([comboxView isShow]) {
+            [comboxView hidden];
+            comboxView = nil;
             return;
         }
     }
@@ -1023,19 +1045,6 @@
 -(void)rescanBluetooth
 {
     [[BluetoothProcessManager defatultManager] startScanBluetooth];
-    if (comboxView) {
-        [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
-        while ([comboxView isShow] && isScanning) {
-            
-            [self reloadComboxMenu];
-            
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
-        }
-        
-        if ([comboxView isShow]) {
-            [comboxView setIsScanning:isScanning];
-        }
-    }
 }
 #pragma -mark ScriptOperationViewProtocol
 -(void)selectPeripheralFromOperationView:(id)peripheral WithDeviceName:(NSString *)name;
@@ -1046,5 +1055,10 @@
 -(void)pushToScriptView
 {
     [self clickScriptBtn];
+}
+
+-(void)startScanningFromOperationView
+{
+    [self rescanBluetooth];
 }
 @end

@@ -193,13 +193,15 @@
 -(void)onStartScanBluetooth:(NSNotification *)notify
 {
     [self setIsScanning:YES];
-     [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self performSelectorInBackground:@selector(syncComboxMenuData) withObject:nil];
+     [self setSelectDeviceBtn:@"正在搜索智能设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:NO];
+    [self reloadComboxMenu];
+    [self setSelectDeviceBtn:@"设备未开启蓝牙" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
@@ -211,6 +213,7 @@
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
 {
     [self setIsScanning:NO];
+    [self reloadComboxMenu];
     [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
@@ -230,7 +233,7 @@
 -(void)onCallbackConnectToBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtn:@"未发现有效设备" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
+    [self setSelectDeviceBtn:@"设备未连接" WithImage:[UIImage imageNamed:@"ComboxDownImage"] IsEnable:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -258,6 +261,19 @@
     }
 }
 #pragma -mark private Functions
+-(void)syncComboxMenuData
+{
+    [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+    while (isScanning) {
+        
+        [self reloadComboxMenu];
+        
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+    }
+    
+    [self reloadComboxMenu];
+}
+
 -(void)reloadComboxMenu
 {
     if (comboxView) {
@@ -316,9 +332,9 @@
     NSInteger minite = (seconds - second) / 60;
     NSString *result;
     if (minite < 10) {
-       result = [NSString stringWithFormat:@"%02ld:%02ld",(long)minite,second];
+       result = [NSString stringWithFormat:@"%02ld:%02ld",(long)minite,(long)second];
     }else{
-        result = [NSString stringWithFormat:@"%ld:%02ld",(long)minite,second];
+        result = [NSString stringWithFormat:@"%ld:%02ld",(long)minite,(long)second];
     }
     return result;
 }
@@ -588,6 +604,8 @@
 {
     if (comboxView) {
         if ([comboxView isShow]) {
+            [comboxView hidden];
+            comboxView = nil;
             return;
         }
     }
@@ -636,19 +654,10 @@
 
 -(void)rescanBluetooth
 {
-    [[BluetoothProcessManager defatultManager] startScanBluetooth];
-    if (comboxView) {
-        [[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
-        while ([comboxView isShow] && isScanning) {
-            
-            [self reloadComboxMenu];
-            
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];
-        }
-        
-        if ([comboxView isShow]) {
-            [comboxView setIsScanning:isScanning];
-        }
+    if ([self.delegate respondsToSelector:@selector(startScanningFromOperationView)]) {
+        [self.delegate startScanningFromOperationView];
+    }else{
+        [[BluetoothProcessManager defatultManager] startScanBluetooth];
     }
 }
 @end

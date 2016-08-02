@@ -53,6 +53,8 @@
 		847970111D3CF49E00465074 /* ComboxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847970101D3CF49E00465074 /* ComboxView.m */; };
 		847C58661D34E7D2002159AC /* ScriptSerialCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 847C58641D34E7D2002159AC /* ScriptSerialCollectionViewCell.m */; };
 		847C58671D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 847C58651D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib */; };
+		847D3CFE1D50645000030E6D /* MBProgressCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 847D3CFD1D50645000030E6D /* MBProgressCustomView.m */; };
+		847D3D001D5064E700030E6D /* load_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 847D3CFF1D5064E700030E6D /* load_circle.png */; };
 		847EC4D41CFD65E5000D77AE /* BluetoothMacManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */; };
 		847EC4D51CFD65E5000D77AE /* DataAnalizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 847EC4C71CFD65E5000D77AE /* DataAnalizer.m */; };
 		847EC4D61CFD65E5000D77AE /* grammar_sample.abnf in Resources */ = {isa = PBXBuildFile; fileRef = 847EC4CA1CFD65E5000D77AE /* grammar_sample.abnf */; };
@@ -178,6 +180,9 @@
 		847C58631D34E7D2002159AC /* ScriptSerialCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptSerialCollectionViewCell.h; sourceTree = "<group>"; };
 		847C58641D34E7D2002159AC /* ScriptSerialCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptSerialCollectionViewCell.m; sourceTree = "<group>"; };
 		847C58651D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScriptSerialCollectionViewCell.xib; sourceTree = "<group>"; };
+		847D3CFC1D50645000030E6D /* MBProgressCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressCustomView.h; sourceTree = "<group>"; };
+		847D3CFD1D50645000030E6D /* MBProgressCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressCustomView.m; sourceTree = "<group>"; };
+		847D3CFF1D5064E700030E6D /* load_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = load_circle.png; sourceTree = "<group>"; };
 		847EC4C31CFD65E5000D77AE /* BluetoothMacManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothMacManager.h; sourceTree = "<group>"; };
 		847EC4C41CFD65E5000D77AE /* BluetoothMacManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothMacManager.m; sourceTree = "<group>"; };
 		847EC4C61CFD65E5000D77AE /* DataAnalizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataAnalizer.h; sourceTree = "<group>"; };
@@ -563,6 +568,16 @@
 			path = ScriptSerialCollectionViewCell;
 			sourceTree = "<group>";
 		};
+		847D3CFB1D50643500030E6D /* MBProgressCustomView */ = {
+			isa = PBXGroup;
+			children = (
+				847D3CFF1D5064E700030E6D /* load_circle.png */,
+				847D3CFC1D50645000030E6D /* MBProgressCustomView.h */,
+				847D3CFD1D50645000030E6D /* MBProgressCustomView.m */,
+			);
+			path = MBProgressCustomView;
+			sourceTree = "<group>";
+		};
 		847EC4C11CFD65E5000D77AE /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -665,6 +680,7 @@
 		847EEFAB1D17D597009765E6 /* ThirdPartPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				847D3CFB1D50643500030E6D /* MBProgressCustomView */,
 				847044621D4F447400789349 /* ComboxMenuView */,
 				847789711D49A4C200976B31 /* HeartView */,
 				8479700E1D3CF48300465074 /* ComboxView */,
@@ -821,6 +837,7 @@
 			files = (
 				847EC4D61CFD65E5000D77AE /* grammar_sample.abnf in Resources */,
 				8466678A1CF82AD500EFBE66 /* LaunchScreen.storyboard in Resources */,
+				847D3D001D5064E700030E6D /* load_circle.png in Resources */,
 				846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */,
 				8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */,
 				846667851CF82AD400EFBE66 /* Main.storyboard in Resources */,
@@ -895,6 +912,7 @@
 				847EC4D71CFD65E5000D77AE /* IflyRecognizerManager.m in Sources */,
 				8463B9E21D13FF7D00EACECD /* SCScriptManager.m in Sources */,
 				8471AB0F1CFC321F00CB5DB6 /* Fruit.m in Sources */,
+				847D3CFE1D50645000030E6D /* MBProgressCustomView.m in Sources */,
 				84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */,
 				8471F24E1D334DD10029A409 /* ScriptSelectViewController.m in Sources */,
 				8452134A1D38886A009D91E0 /* FullScreenPlayerCollectionCell.m in Sources */,
@@ -1059,7 +1077,7 @@
 				);
 				GCC_PREFIX_HEADER = "DigitalSense/DigitalSense-Prefix.pch";
 				INFOPLIST_FILE = DigitalSense/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1079,7 +1097,7 @@
 				);
 				GCC_PREFIX_HEADER = "DigitalSense/DigitalSense-Prefix.pch";
 				INFOPLIST_FILE = DigitalSense/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
 				PRODUCT_NAME = "$(TARGET_NAME)";

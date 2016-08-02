@@ -11,6 +11,7 @@
 @protocol ScriptOperationViewProtocol <NSObject>
 -(void)pushToScriptView;
 -(void)selectPeripheralFromOperationView:(id)peripheral WithDeviceName:(NSString *)name;
+-(void)startScanningFromOperationView;
 @end
 @interface ScriptOperationViewController : UIViewController
 @property(nonatomic, assign) id<ScriptOperationViewProtocol> delegate;

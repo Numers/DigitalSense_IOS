@@ -104,7 +104,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 -(void)requestScriptInfoWithMacAddress:(NSString *)macAddress
 {
     if (macAddress) {
-        [AppUtils showProgressBarForView:self.view];
+        [AppUtils showHudProgress:@"加载中..." ForView:self.view];
         [[scriptViewModel requestScriptInfoWithMacAddress:macAddress] subscribeNext:^(id x) {
             NSDictionary *resultDic = (NSDictionary *)x;
             if (resultDic) {
@@ -134,7 +134,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         } error:^(NSError *error) {
             
         } completed:^{
-            [AppUtils hideProgressBarForView:self.view];
+            [AppUtils hidenHudProgressForView:self.view];
         }];
     }
 }

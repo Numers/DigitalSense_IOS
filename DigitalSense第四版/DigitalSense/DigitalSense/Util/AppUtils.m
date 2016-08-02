@@ -8,12 +8,14 @@
 
 #import "AppUtils.h"
 #import "MBProgressHUD.h"
+#import "MBProgressCustomView.h"
 #import "LZProgressView.h"
 #import "URLManager.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <math.h>
 #define MBTAG  1001
 #define AMTAG  1111
+#define MBProgressTAG 1002
 @implementation AppUtils
 +(void)setUrlWithState:(BOOL)state
 {
@@ -180,6 +182,36 @@
         LZProgressView *HUD = (LZProgressView *)[view viewWithTag:AMTAG];
         if (HUD != nil) {
             [HUD stopAnimation];
+        }
+    });
+}
+
++(void)showHudProgress:(NSString *)title ForView:(UIView *)view;
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *appRootView = [UIApplication sharedApplication].keyWindow;
+        MBProgressHUD *HUD = (MBProgressHUD *)[appRootView viewWithTag:MBProgressTAG];
+        if (HUD == nil) {
+            HUD = [[MBProgressHUD alloc] initWithView:appRootView];
+            HUD.mode = MBProgressHUDModeCustomView;
+            HUD.customView = [[MBProgressCustomView alloc] init];
+            HUD.square = YES;
+            HUD.tag = MBProgressTAG;
+            [appRootView addSubview:HUD];
+        }
+        [HUD setLabelText:title];
+        [HUD show:YES];
+        HUD.removeFromSuperViewOnHide = YES; // 设置YES ，MB 再消失的时候会从super 移除
+    });
+}
+
++(void)hidenHudProgressForView:(UIView *)view
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIWindow *appRootView = [UIApplication sharedApplication].keyWindow;
+        MBProgressHUD *HUD = (MBProgressHUD *)[appRootView viewWithTag:MBProgressTAG];
+        if (HUD != nil) {
+            [HUD hide:YES];
         }
     });
 }

@@ -131,6 +131,14 @@ static BluetoothMacManager *bluetoothMacManager;
             scanTimer = nil;
         }
     }
+    
+    if (connectTimer) {
+        if ([connectTimer isValid]) {
+            [connectTimer invalidate];
+            connectTimer = nil;
+        }
+    }
+    
     if(self.peripherals){
         [self.peripherals removeAllObjects];
     }else{

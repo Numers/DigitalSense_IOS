@@ -8,8 +8,9 @@
 
 #import "ComboxMenuView.h"
 #define Duration 0.3f
-#define DefaultCellHeight 30.0f
-#define DefaultTableViewMarginToBottom 40.0f
+#define DefaultCellHeight 44.0f
+#define DefaultScanBtnSize CGSizeMake(110,40)
+#define DefaultTableViewMarginToBottom (DefaultScanBtnSize.height + 20.0f)
 #define ViewMarginLeftAndRight 15.0f
 @interface ComboxMenuView()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -81,7 +82,7 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
         
         //重新搜索按钮位置
         _btnRescan = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_btnRescan setFrame:CGRectMake(backView.frame.size.width - 17 - 67, backView.frame.size.height - DefaultTableViewMarginToBottom + 10.0f, 67, DefaultTableViewMarginToBottom - 2 * 10.0f)];
+        [_btnRescan setFrame:CGRectMake(backView.frame.size.width - 17 - DefaultScanBtnSize.width, backView.frame.size.height - DefaultTableViewMarginToBottom + 10.0f, DefaultScanBtnSize.width, DefaultTableViewMarginToBottom - 2 * 10.0f)];
         [_btnRescan addTarget:self action:@selector(clickRescanBtn) forControlEvents:UIControlEventTouchUpInside];
         [self setRescanBtnState:BeginScanningState];
         [backView addSubview:_btnRescan];
@@ -130,7 +131,7 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
                 CGFloat height = (DefaultCellHeight * titleArray.count + 0.5 + DefaultTableViewMarginToBottom + pointImageView.frame.size.height) > self.frame.size.height / 2.0f ? self.frame.size.height / 2.0f : (DefaultCellHeight * titleArray.count + 0.5 + DefaultTableViewMarginToBottom + pointImageView.frame.size.height);
                 [backView setFrame:CGRectMake(0, pointImageView.frame.size.height, self.frame.size.width, height - pointImageView.frame.size.height)];
                 [_tableView setFrame:CGRectMake(17, 0, backView.frame.size.width - 34, backView.frame.size.height - DefaultTableViewMarginToBottom)];
-                [_btnRescan setFrame:CGRectMake(backView.frame.size.width - 17 - 67, backView.frame.size.height - DefaultTableViewMarginToBottom + 10.0f, 67, DefaultTableViewMarginToBottom - 2 * 10.0f)];
+                [_btnRescan setFrame:CGRectMake(backView.frame.size.width - 17 - DefaultScanBtnSize.width, backView.frame.size.height - DefaultTableViewMarginToBottom + 10.0f, DefaultScanBtnSize.width, DefaultTableViewMarginToBottom - 2 * 10.0f)];
                 [_tableView reloadData];
             });
         }
@@ -146,7 +147,6 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
 
 -(void)showInView:(UIView *)view
 {
-    NSLog(@"%lf,%lf",view.frame.size.width,view.frame.size.height);
     [view addSubview:self];
     [view bringSubviewToFront:self];
     
@@ -250,7 +250,7 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
     NSString *title = [titleArray objectAtIndex:indexPath.row];
     [cell.textLabel setText:title];
     [cell.textLabel setTextColor:[UIColor whiteColor]];
-    [cell.textLabel setFont:[UIFont boldSystemFontOfSize:12.0f]];
+    [cell.textLabel setFont:[UIFont boldSystemFontOfSize:13.0f]];
     
     [cell.imageView setImage:[UIImage imageNamed:@"Combox_Bluetooth"]];
     if (indexPath.row == selectedIndex) {
