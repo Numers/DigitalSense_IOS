@@ -55,7 +55,12 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(void)callBackDevice:(BOOL)connectCompelete WithCallbackType:(CallbackType)type
 {
-    isConnected = connectCompelete;
+    //new change
+    [self isConnected];
+    //
+    //new change
+//    isConnected = connectCompelete;
+    //
     BluetoothCallBak tempConnectCallBack = connectCallBack;
     BluetoothCallBak tempDeviceCallBack = deviceCallBack;
     if (scanTimer) {
@@ -96,11 +101,19 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(BOOL)isConnected
 {
+    if (self.peripheral && self.peripheral.state == CBPeripheralStateConnected) {
+        isConnected = YES;
+    }else{
+        isConnected = NO;
+    }
     return isConnected;
 }
 
 -(void)startBluetoothDevice
 {
+    //new change
+    [self isConnected];
+    //
     if (self.centralManager) {
         self.centralManager = nil;
     }
@@ -110,19 +123,44 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(void)startScanBluetoothDevice:(ConnectType)type callBack:(BluetoothCallBak)callBack
 {
+    //new change
+    NSString *connectedDeviceName = nil;
+    if(isConnected)
+    {
+        if (self.peripheral) {
+            if (self.peripheral.state == CBPeripheralStateConnected) {
+                NSInteger index = [self.peripherals indexOfObject:self.peripheral];
+                connectedDeviceName = [self.peripheralNameList objectAtIndex:index];
+            }else{
+                isConnected = NO;
+            }
+        }
+    }
+    //
     [self inilizedDataBeforeBluetoothScan];
+    
+    //new change
+    if (connectedDeviceName) {
+        [self.peripherals addObject:self.peripheral];
+        [self.peripheralNameList addObject:connectedDeviceName];
+    }
+    //
     deviceCallBack = callBack;
     connectCallBack = nil;
     connectType = type;
-    if (self.peripheral) {
-        [self.centralManager cancelPeripheralConnection:self.peripheral];
-    }
+    //new change
+//    if (self.peripheral) {
+//        [self.centralManager cancelPeripheralConnection:self.peripheral];
+//    }
+    //
     [self.centralManager scanForPeripheralsWithServices:nil options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
 }
 
 -(void)inilizedDataBeforeBluetoothScan
 {
-    isConnected = NO;
+    //new change
+//    isConnected = NO;
+    //
     connectTime = 0;
     scanTime = 0;
     if (scanTimer) {
@@ -194,11 +232,13 @@ static BluetoothMacManager *bluetoothMacManager;
     
     if (self.centralManager) {
         [self.centralManager stopScan];
-        if (self.peripheral) {
+        //new change
+        if (self.peripheral && self.peripheral.state == CBPeripheralStateConnecting) {
             [self.centralManager cancelPeripheralConnection:self.peripheral];
 //            self.peripheral = nil;
             isConnected = NO;
         }
+        //
     }
     
     if(deviceCallBack){
@@ -438,58 +478,41 @@ static BluetoothMacManager *bluetoothMacManager;
 
 -(void)connectToPeripheral:(CBPeripheral *)peripheral
 {
-    if (peripheral && self.centralManager) {
-        if (connectType == ConnectToDevice) {
-            //停止扫描
-            [self.centralManager stopScan];
-            if (scanTimer) {
-                if ([scanTimer isValid]) {
-                    [scanTimer invalidate];
-                    scanTimer = nil;
+    @synchronized (self) {
+        if (self.peripheral && self.peripheral.state == CBPeripheralStateConnecting) {
+            return;
+        }
+        //new change
+        if (isConnected) {
+            if (self.peripheral) {
+                if (self.peripheral.state == CBPeripheralStateConnected)
+                {
+                    if ([self.peripheral isEqual:peripheral]) {
+                        [self callBackDevice:YES WithCallbackType:CallbackSuccess];
+                        return;
+                    }
+                }else if(self.peripheral.state == CBPeripheralStateConnecting){
+                    isConnected = NO;
+                    return;
+                }else{
+                    isConnected = NO;
                 }
             }
         }
-        self.peripheral = peripheral;
-        NSLog(@"开始连接外围设备...");
-        [self.centralManager connectPeripheral:peripheral options:nil];
-        connectTime = 0;
-        if (connectTimer) {
-            if ([connectTimer isValid]) {
-                [connectTimer invalidate];
-                connectTimer = nil;
-            }
-        }
-        
-        connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
-    }
-}
-
--(void)connectToPeripheral:(CBPeripheral *)peripheral callBack:(BluetoothCallBak)callBack
-{
-    if (self.peripheral) {
-        [self.centralManager cancelPeripheralConnection:self.peripheral];
-        self.peripheral = nil;
-        isConnected = NO;
-    }
-    
-
-    connectCallBack = callBack;
-    deviceCallBack = nil;
-    connectType = ConnectToDevice;
-    if (peripheral && self.centralManager) {
-        if (connectType == ConnectToDevice) {
-            //停止扫描
-            [self.centralManager stopScan];
-            if (scanTimer) {
-                if ([scanTimer isValid]) {
-                    [scanTimer invalidate];
-                    scanTimer = nil;
+        //
+        if (peripheral && self.centralManager) {
+            if (connectType == ConnectToDevice) {
+                //停止扫描
+                [self.centralManager stopScan];
+                if (scanTimer) {
+                    if ([scanTimer isValid]) {
+                        [scanTimer invalidate];
+                        scanTimer = nil;
+                    }
                 }
             }
-        }
-        self.peripheral = peripheral;
-        NSLog(@"开始连接外围设备...");
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.peripheral = peripheral;
+            NSLog(@"开始连接外围设备...");
             [self.centralManager connectPeripheral:peripheral options:nil];
             connectTime = 0;
             if (connectTimer) {
@@ -500,8 +523,71 @@ static BluetoothMacManager *bluetoothMacManager;
             }
             
             connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
-        });
+        }
+    }
+}
+
+-(void)connectToPeripheral:(CBPeripheral *)peripheral callBack:(BluetoothCallBak)callBack
+{
+    @synchronized (self) {
+        if (self.peripheral && self.peripheral.state == CBPeripheralStateConnecting) {
+            return;
+        }
         
+        connectCallBack = callBack;
+        deviceCallBack = nil;
+        connectType = ConnectToDevice;
+        
+        //new change
+        if (isConnected) {
+            if (self.peripheral) {
+                if (self.peripheral.state == CBPeripheralStateConnected){
+                    if ([self.peripheral isEqual:peripheral]) {
+                        [self callBackDevice:YES WithCallbackType:CallbackSuccess];
+                        return;
+                    }
+                }else if(self.peripheral.state == CBPeripheralStateConnecting){
+                    isConnected = NO;
+                    return;
+                }else{
+                    isConnected = NO;
+                }
+            }
+        }
+        //
+        if (self.peripheral) {
+            [self.centralManager cancelPeripheralConnection:self.peripheral];
+            self.peripheral = nil;
+            isConnected = NO;
+        }
+        
+        if (peripheral && self.centralManager) {
+            if (connectType == ConnectToDevice) {
+                //停止扫描
+                [self.centralManager stopScan];
+                if (scanTimer) {
+                    if ([scanTimer isValid]) {
+                        [scanTimer invalidate];
+                        scanTimer = nil;
+                    }
+                }
+            }
+            self.peripheral = peripheral;
+            NSLog(@"开始连接外围设备...");
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.centralManager connectPeripheral:peripheral options:nil];
+                connectTime = 0;
+                if (connectTimer) {
+                    if ([connectTimer isValid]) {
+                        [connectTimer invalidate];
+                        connectTimer = nil;
+                    }
+                }
+                
+                connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
+            });
+            
+        }
     }
 }
 
@@ -515,48 +601,75 @@ static BluetoothMacManager *bluetoothMacManager;
  */
 -(void)connectToPeripheralWithName:(NSString *)peripheralName callBack:(BluetoothCallBak)callBack
 {
-    if (self.peripheral) {
-        [self.centralManager cancelPeripheralConnection:self.peripheral];
-        self.peripheral = nil;
-        isConnected = NO;
-    }
-
-    connectCallBack = callBack;
-    deviceCallBack = nil;
-    connectType = ConnectToDevice;
-    CBPeripheral *peripheral = [self searchPeripheralWithName:peripheralName];
-    if (peripheral == nil) {
-        [self callBackDevice:NO WithCallbackType:CallbackDidFailToConnectPeriphera];
-        return;
-    }
-    
-    if (peripheral && self.centralManager) {
-        if (connectType == ConnectToDevice) {
-            //停止扫描
-            [self.centralManager stopScan];
-            if (scanTimer) {
-                if ([scanTimer isValid]) {
-                    [scanTimer invalidate];
-                    scanTimer = nil;
+    @synchronized (self) {
+        if (self.peripheral && self.peripheral.state == CBPeripheralStateConnecting) {
+            return;
+        }
+        
+        connectCallBack = callBack;
+        deviceCallBack = nil;
+        connectType = ConnectToDevice;
+        
+        //new change
+        if (isConnected) {
+            if (self.peripheral) {
+                if (self.peripheral.state == CBPeripheralStateConnected){
+                    NSInteger index = [self.peripherals indexOfObject:self.peripheral];
+                    NSString *deviceName = [self.peripheralNameList objectAtIndex:index];
+                    if ([peripheralName isEqualToString:deviceName]) {
+                        [self callBackDevice:YES WithCallbackType:CallbackSuccess];
+                        return;
+                    }
+                }else if(self.peripheral.state == CBPeripheralStateConnecting){
+                    isConnected = NO;
+                    return;
+                }else{
+                    isConnected = NO;
                 }
             }
         }
-        self.peripheral = peripheral;
-        NSLog(@"开始连接外围设备...");
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.centralManager connectPeripheral:peripheral options:nil];
-            connectTime = 0;
-            if (connectTimer) {
-                if ([connectTimer isValid]) {
-                    [connectTimer invalidate];
-                    connectTimer = nil;
+        //
+        
+        if (self.peripheral) {
+            [self.centralManager cancelPeripheralConnection:self.peripheral];
+            self.peripheral = nil;
+            isConnected = NO;
+        }
+        
+        
+        CBPeripheral *peripheral = [self searchPeripheralWithName:peripheralName];
+        if (peripheral == nil) {
+            [self callBackDevice:NO WithCallbackType:CallbackDidFailToConnectPeriphera];
+            return;
+        }
+        
+        if (peripheral && self.centralManager) {
+            if (connectType == ConnectToDevice) {
+                //停止扫描
+                [self.centralManager stopScan];
+                if (scanTimer) {
+                    if ([scanTimer isValid]) {
+                        [scanTimer invalidate];
+                        scanTimer = nil;
+                    }
                 }
             }
-            
-            connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
-        });
+            self.peripheral = peripheral;
+            NSLog(@"开始连接外围设备...");
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.centralManager connectPeripheral:peripheral options:nil];
+                connectTime = 0;
+                if (connectTimer) {
+                    if ([connectTimer isValid]) {
+                        [connectTimer invalidate];
+                        connectTimer = nil;
+                    }
+                }
+                
+                connectTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(countConnectTime) userInfo:nil repeats:YES];
+            });
+        }
     }
-
 }
 
 -(CBPeripheral *)searchPeripheralWithName:(NSString *)name
@@ -612,7 +725,10 @@ static BluetoothMacManager *bluetoothMacManager;
  */
 -(CBPeripheral *)returnConnectedPeripheral
 {
-    return self.peripheral;
+    if ([self isConnected]) {
+        return self.peripheral;
+    }
+    return nil;
 }
 
 /**
@@ -626,7 +742,7 @@ static BluetoothMacManager *bluetoothMacManager;
  */
 -(BOOL)isMatchConnectedPeripheral:(CBPeripheral *)peripheral;
 {
-    if (isConnected) {
+    if ([self isConnected]) {
         if (self.peripheral) {
             if ([self.peripheral isEqual:peripheral]) {
                 return YES;
@@ -643,10 +759,12 @@ static BluetoothMacManager *bluetoothMacManager;
             NSLog(@"BLE已打开.");
             //扫描外围设备
             //            [central scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:kServiceUUID]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
+            isConnected = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:kBluetoothPowerOnNotify object:nil];
             break;
             
         default:
+            isConnected = NO;
             [self stopBluetoothDevice];
             [[NSNotificationCenter defaultCenter] postNotificationName:kBluetoothPowerOffNotify object:nil];
             NSLog(@"此设备不支持BLE或未打开蓝牙功能，无法作为外围设备.");
@@ -817,10 +935,8 @@ static BluetoothMacManager *bluetoothMacManager;
 -(void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error
 {
     if (!error) {
-        isConnected = YES;
         NSLog(@"发送成功");
     }else{
-        isConnected = NO;
         [self callBackDevice:NO WithCallbackType:CallbackDidWriteValueError];
     }
 }

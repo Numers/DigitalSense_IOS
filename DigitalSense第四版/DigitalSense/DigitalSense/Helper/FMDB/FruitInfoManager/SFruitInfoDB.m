@@ -9,6 +9,16 @@
 #import "SFruitInfoDB.h"
 #define kFruitInfoTableName @"SFruitInfo"
 @implementation SFruitInfoDB
++(instancetype)shareInstance;
+{
+    static SFruitInfoDB *sFruitInfodb;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sFruitInfodb = [[SFruitInfoDB alloc] init];
+    });
+    return sFruitInfodb;
+}
+
 -(id)init
 {
     self = [super init];
@@ -25,28 +35,29 @@
  */
 - (void) createDataBase
 {
-    FMResultSet * set = [_db executeQuery:[NSString stringWithFormat:@"select count(*) from sqlite_master where type ='table' and name = '%@'",kFruitInfoTableName]];
-    
-    [set next];
-    
-    NSInteger count = [set intForColumnIndex:0];
-    
-    BOOL existTable = !!count;
-    
-    if (existTable) {
-        // TODO:是否更新数据库
-        NSLog(@"%@数据库已经存在",kFruitInfoTableName);
-    } else {
-        // TODO: 插入新的数据库
-        NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitimage VARCHAR(100),rfid VARCHAR(50))",kFruitInfoTableName];
-        BOOL res = [_db executeUpdate:sql];
-        if (!res) {
-            NSLog(@"%@数据库创建失败",kFruitInfoTableName);
+    @synchronized (self) {
+        FMResultSet * set = [_db executeQuery:[NSString stringWithFormat:@"select count(*) from sqlite_master where type ='table' and name = '%@'",kFruitInfoTableName]];
+        
+        [set next];
+        
+        NSInteger count = [set intForColumnIndex:0];
+        
+        BOOL existTable = !!count;
+        
+        if (existTable) {
+            // TODO:是否更新数据库
+            NSLog(@"%@数据库已经存在",kFruitInfoTableName);
         } else {
-            NSLog(@"%@数据库创建成功",kFruitInfoTableName);
+            // TODO: 插入新的数据库
+            NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitimage VARCHAR(100),rfid VARCHAR(50),fruitcolor VARCHAR(50))",kFruitInfoTableName];
+            BOOL res = [_db executeUpdate:sql];
+            if (!res) {
+                NSLog(@"%@数据库创建失败",kFruitInfoTableName);
+            } else {
+                NSLog(@"%@数据库创建成功",kFruitInfoTableName);
+            }
         }
     }
-    
 }
 
 /**
@@ -60,18 +71,21 @@
  */
 -(Fruit *)selectFruitWithRFID:(NSString *)rfId
 {
-    Fruit *fruit = nil;
-    NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE rfid = '%@' limit 1",kFruitInfoTableName,rfId];
-    FMResultSet * rs = [_db executeQuery:query];
-    if ([rs next]) {
-        fruit = [[Fruit alloc] init];
-        fruit.fruitName = [rs stringForColumn:@"fruitname"];
-        fruit.fruitImage = [rs stringForColumn:@"fruitimage"];
-        fruit.fruitEnName = [rs stringForColumn:@"fruitenname"];
-        fruit.fruitRFID = [rs stringForColumn:@"rfid"];
+    @synchronized (self) {
+        Fruit *fruit = nil;
+        NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE rfid = '%@' limit 1",kFruitInfoTableName,rfId];
+        FMResultSet * rs = [_db executeQuery:query];
+        if ([rs next]) {
+            fruit = [[Fruit alloc] init];
+            fruit.fruitName = [rs stringForColumn:@"fruitname"];
+            fruit.fruitImage = [rs stringForColumn:@"fruitimage"];
+            fruit.fruitEnName = [rs stringForColumn:@"fruitenname"];
+            fruit.fruitColor = [rs stringForColumn:@"fruitcolor"];
+            fruit.fruitRFID = [rs stringForColumn:@"rfid"];
+        }
+        [rs close];
+        return fruit;
     }
-    [rs close];
-    return fruit;
 }
 
 /**
@@ -85,31 +99,37 @@
  */
 -(BOOL)mergeFruit:(Fruit *)fruit
 {
-    NSString * query = [NSString stringWithFormat:@"UPDATE %@ SET",kFruitInfoTableName];
-    NSMutableString * temp = [NSMutableString string];
-    // xxx = xxx;
-    if (fruit.fruitName) {
-        [temp appendFormat:@" fruitname = '%@',",fruit.fruitName];
+    @synchronized (self) {
+        NSString * query = [NSString stringWithFormat:@"UPDATE %@ SET",kFruitInfoTableName];
+        NSMutableString * temp = [NSMutableString string];
+        // xxx = xxx;
+        if (fruit.fruitName) {
+            [temp appendFormat:@" fruitname = '%@',",fruit.fruitName];
+        }
+        
+        if (fruit.fruitEnName) {
+            [temp appendFormat:@" fruitenname = '%@',",fruit.fruitEnName];
+        }
+        
+        if (fruit.fruitImage) {
+            [temp appendFormat:@" fruitimage = '%@',",fruit.fruitImage];
+        }
+        
+        if (fruit.fruitColor) {
+            [temp appendFormat:@" fruitcolor = '%@',",fruit.fruitColor];
+        }
+        
+        [temp appendString:@")"];
+        query = [query stringByAppendingFormat:@"%@ WHERE rfid = '%@'",[temp stringByReplacingOccurrencesOfString:@",)" withString:@""],fruit.fruitRFID];
+        
+        BOOL flag = [_db executeUpdate:query];
+        if(flag){
+            NSLog(@"修改%@成功",fruit.fruitName);
+        }else{
+            NSLog(@"修改%@失败",fruit.fruitName);
+        }
+        return flag;
     }
-    
-    if (fruit.fruitEnName) {
-        [temp appendFormat:@" fruitenname = '%@',",fruit.fruitEnName];
-    }
-    
-    if (fruit.fruitImage) {
-        [temp appendFormat:@" fruitimage = '%@',",fruit.fruitImage];
-    }
-    
-    [temp appendString:@")"];
-    query = [query stringByAppendingFormat:@"%@ WHERE rfid = '%@'",[temp stringByReplacingOccurrencesOfString:@",)" withString:@""],fruit.fruitRFID];
-    
-    BOOL flag = [_db executeUpdate:query];
-    if(flag){
-        NSLog(@"修改%@成功",fruit.fruitName);
-    }else{
-        NSLog(@"修改%@失败",fruit.fruitName);
-    }
-    return flag;
 }
 
 /**
@@ -123,14 +143,16 @@
  */
 -(BOOL)deleteFruit:(Fruit *)fruit
 {
-    NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,fruit.fruitRFID];
-    BOOL flag = [_db executeUpdate:query];
-    if (flag) {
-        NSLog(@"删除 一条数据 成功");
-    }else{
-        NSLog(@"删除 一条数据  失败");
+    @synchronized (self) {
+        NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,fruit.fruitRFID];
+        BOOL flag = [_db executeUpdate:query];
+        if (flag) {
+            NSLog(@"删除 一条数据 成功");
+        }else{
+            NSLog(@"删除 一条数据  失败");
+        }
+        return flag;
     }
-    return flag;
 }
 
 /**
@@ -144,48 +166,54 @@
  */
 -(BOOL)saveFruit:(Fruit *)fruit
 {
-    NSMutableString * query = [NSMutableString stringWithFormat:@"INSERT INTO %@",kFruitInfoTableName];
-    NSMutableString * keys = [NSMutableString stringWithFormat:@" ("];
-    NSMutableString * values = [NSMutableString stringWithFormat:@" ( "];
-    NSMutableArray * arguments = [NSMutableArray array];
-    
-    //群特有属性
-    if (fruit.fruitName) {
-        [keys appendString:@"fruitname,"];
+    @synchronized (self) {
+        NSMutableString * query = [NSMutableString stringWithFormat:@"INSERT INTO %@",kFruitInfoTableName];
+        NSMutableString * keys = [NSMutableString stringWithFormat:@" ("];
+        NSMutableString * values = [NSMutableString stringWithFormat:@" ( "];
+        NSMutableArray * arguments = [NSMutableArray array];
+        
+        //群特有属性
+        if (fruit.fruitName) {
+            [keys appendString:@"fruitname,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitName]];
+        }
+        if (fruit.fruitImage) {
+            [keys appendString:@"fruitimage,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitImage]];
+        }
+        
+        if (fruit.fruitEnName) {
+            [keys appendString:@"fruitenname,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitEnName]];
+        }
+        
+        if (fruit.fruitColor) {
+            [keys appendString:@"fruitcolor,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitColor]];
+        }
+        
+        [keys appendString:@"rfid,"];
         [values appendString:@"?,"];
-        [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitName]];
+        [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitRFID]];
+        
+        [keys appendString:@")"];
+        [values appendString:@")"];
+        [query appendFormat:@" %@ VALUES%@",
+         [keys stringByReplacingOccurrencesOfString:@",)" withString:@")"],
+         [values stringByReplacingOccurrencesOfString:@",)" withString:@")"]];
+        NSLog(@"%@",query);
+        
+        BOOL flag = [_db executeUpdate:query withArgumentsInArray:arguments];
+        if (flag) {
+            NSLog(@"%@ 插入一条数据 成功",kFruitInfoTableName);
+        }else{
+            NSLog(@"%@ 插入一条数据 失败",kFruitInfoTableName);
+        }
+        return flag;
     }
-    if (fruit.fruitImage) {
-        [keys appendString:@"fruitimage,"];
-        [values appendString:@"?,"];
-        [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitImage]];
-    }
-    
-    if (fruit.fruitEnName) {
-        [keys appendString:@"fruitenname,"];
-        [values appendString:@"?,"];
-        [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitEnName]];
-    }
-
-    
-    
-    [keys appendString:@"rfid,"];
-    [values appendString:@"?,"];
-    [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitRFID]];
-    
-    [keys appendString:@")"];
-    [values appendString:@")"];
-    [query appendFormat:@" %@ VALUES%@",
-     [keys stringByReplacingOccurrencesOfString:@",)" withString:@")"],
-     [values stringByReplacingOccurrencesOfString:@",)" withString:@")"]];
-    NSLog(@"%@",query);
-    
-    BOOL flag = [_db executeUpdate:query withArgumentsInArray:arguments];
-    if (flag) {
-        NSLog(@"%@ 插入一条数据 成功",kFruitInfoTableName);
-    }else{
-        NSLog(@"%@ 插入一条数据 失败",kFruitInfoTableName);
-    }
-    return flag;
 }
 @end

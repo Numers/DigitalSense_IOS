@@ -47,6 +47,7 @@ static IFlyRecognizerView *iFlyRecognizerView;
     tempResult = [[NSMutableString alloc] init];
     
     [iFlyRecognizerView setParameter:IFLYDOMAIN forKey:[IFlySpeechConstant IFLY_DOMAIN]];
+    iFlyRecognizerView.delegate = iFlyRecognizerManager;
     
     if (grammarContent != nil) {
         [iFlyRecognizerManager buildGrammer:grammarContent];

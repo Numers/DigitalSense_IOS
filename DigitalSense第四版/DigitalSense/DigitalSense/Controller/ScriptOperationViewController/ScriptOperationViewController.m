@@ -201,13 +201,13 @@
 {
     [self setIsScanning:NO];
     [self reloadComboxMenu];
-    [self setSelectDeviceBtnTitle:@"设备未开启蓝牙" IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"蓝牙未打开" IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtnTitle:@"请选择您需要连接的设备" IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"请选择嗅觉设备" IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
@@ -582,6 +582,11 @@
 
 -(IBAction)clickLoopBtn:(id)sender
 {
+    if (![[BluetoothMacManager defaultManager] isConnected]) {
+        [AppUtils showInfo:@"设备未连接"];
+        return;
+    }
+    
     if (isLoop) {
         [self setIsLoop:NO];
     }else{
@@ -649,6 +654,10 @@
 #pragma -mark ScriptSerialViewProtocol
 -(void)selectFruit:(Fruit *)fruit
 {
+    if (![[BluetoothMacManager defaultManager] isConnected]) {
+        [AppUtils showInfo:@"蓝牙未连接"];
+        return;
+    }
     if (scriptSerialVC) {
         [scriptSelectVC addFruit:fruit];
     }

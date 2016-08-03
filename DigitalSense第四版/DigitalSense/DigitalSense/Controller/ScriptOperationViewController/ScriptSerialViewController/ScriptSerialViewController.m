@@ -12,7 +12,7 @@
 
 #import "Fruit.h"
 
-@interface ScriptSerialViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource>
+@interface ScriptSerialViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSerialCollectionViewCellProtocol>
 {
     NSMutableArray *fruitList;
 }
@@ -45,6 +45,7 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     UIImage *collectionBackgroundImage = [UIImage imageNamed:@"SerialViewBackgroundViewImage"];
     self.collectionView.layer.contents = (id)collectionBackgroundImage.CGImage;
     [self.collectionView setScrollEnabled:YES];
+//    [self.collectionView setPagingEnabled:YES];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     [self.collectionView setShowsHorizontalScrollIndicator:NO];
     self.collectionView.delegate = self;
@@ -103,6 +104,7 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     ScriptSerialCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.delegate = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         Fruit *fruit = [fruitList objectAtIndex:indexPath.item];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -175,5 +177,17 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"deselect %ld",(long)indexPath.item);
+}
+
+#pragma -mark ScriptSerialCollectionViewCellProtocol
+-(void)swipeCellForFruit:(Fruit *)fruit
+{
+    if (fruit) {
+        if ([fruitList containsObject:fruit]) {
+            if ([self.delegate respondsToSelector:@selector(selectFruit:)]) {
+                [self.delegate selectFruit:fruit];
+            }
+        }
+    }
 }
 @end

@@ -11,7 +11,6 @@
 
 #import "UIImageView+WebCache.h"
 @implementation ScriptSerialCollectionViewCell
-
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -20,6 +19,12 @@
 -(void)setFruit:(Fruit *)fruit
 {
     [self setBackgroundColor:[UIColor clearColor]];
+    currentFruit = fruit;
+    if (swipeGestureRecognizer == nil) {
+        swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture)];
+        swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+        [self addGestureRecognizer:swipeGestureRecognizer];
+    }
     if ([AppUtils isNetworkURL:fruit.fruitImage]) {
         [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
     }else{
@@ -27,5 +32,17 @@
     }
     
     [self.lblFruitName setText:fruit.fruitName];
+}
+
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    NSLog(@"touched");
+//}
+
+-(void)swipeGesture
+{
+    if ([self.delegate respondsToSelector:@selector(swipeCellForFruit:)]) {
+        [self.delegate swipeCellForFruit:currentFruit];
+    }
 }
 @end

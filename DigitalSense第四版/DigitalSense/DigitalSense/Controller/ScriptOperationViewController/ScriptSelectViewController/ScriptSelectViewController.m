@@ -84,8 +84,13 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         ScriptCommand *command = [[ScriptCommand alloc] init];
         command.rfId = fruit.fruitRFID;
         command.smellName = fruit.fruitName;
-        command.duration = 3;
-        command.power = 0.5;
+        if ([AppUtils isNullStr:fruit.fruitRFID]) {
+            command.duration = 5;
+            command.power = 0.25;
+        }else{
+            command.duration = 3;
+            command.power = 0.67;
+        }
         command.desc = fruit.fruitName;
         command.color = fruit.fruitColor;
         [scriptCommandList addObject:command];

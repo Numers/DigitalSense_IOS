@@ -35,9 +35,9 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     NSTimer *heartTimer;
 }
-@property(nonatomic, strong) IBOutlet UIView *bottomView;
-@property(nonatomic, strong) IBOutlet UILabel *lblSmellName;
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
+@property(nonatomic, strong) IBOutlet UIImageView *scriptLogoImageView;
+@property(nonatomic, strong) IBOutlet UILabel *lblNoScript;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @end
 
@@ -75,6 +75,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scriptStateComfirmed:) name:ScriptStateComfirmed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackBluetoothPowerOff:) name:OnCallbackBluetoothPowerOff object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackBluetoothDisconnected:) name:OnCallbackBluetoothDisconnected object:nil];
     [self registeNotifications];
     [self.tableView reloadData];
 }
@@ -91,6 +92,19 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     // Dispose of any resources that can be recreated.
 }
 #pragma -mark private Functions
+-(void)setUISwitch:(NSInteger)scriptCount
+{
+    if (scriptCount > 0) {
+        [_tableView setHidden:NO];
+        [_scriptLogoImageView setHidden:YES];
+        [_lblNoScript setHidden:YES];
+    }else{
+        [_tableView setHidden:YES];
+        [_scriptLogoImageView setHidden:NO];
+        [_lblNoScript setHidden:NO];
+    }
+}
+
 -(void)setMacAddress:(NSString *)macAddr
 {
     currentMacAddress = macAddr;
@@ -104,13 +118,13 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 -(void)requestScriptInfoWithMacAddress:(NSString *)macAddress
 {
     if (macAddress) {
-        [AppUtils showHudProgress:@"加载中..." ForView:self.view];
+        [AppUtils showHudProgress:@"脚本正在加载中..." ForView:self.view];
         [[scriptViewModel requestScriptInfoWithMacAddress:macAddress] subscribeNext:^(id x) {
             NSDictionary *resultDic = (NSDictionary *)x;
             if (resultDic) {
+                [scriptList removeAllObjects];
                 NSArray *dataArr = [resultDic objectForKey:@"data"];
                 if (dataArr && dataArr.count > 0) {
-                    [scriptList removeAllObjects];
                     NSMutableArray *absoluteScriptList = [NSMutableArray array];
                     for (NSDictionary *dic in dataArr) {
                         ScriptType type = (ScriptType)[[dic objectForKey:@"trigger"] integerValue];
@@ -130,6 +144,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                 }else{
                     [AppUtils showInfo:@"无脚本记录"];
                 }
+                [self setUISwitch:scriptList.count];
             }
         } error:^(NSError *error) {
             
@@ -160,7 +175,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     XTLoveHeartView *heart = [[XTLoveHeartView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     [self.view addSubview:heart];
     [self.view bringSubviewToFront:heart];
-    CGPoint fountainSource = CGPointMake(self.view.frame.size.width / 2, self.view.bounds.size.height - self.bottomView.frame.size.height);
+    CGPoint fountainSource = CGPointMake(self.view.frame.size.width / 2, self.view.bounds.size.height - 20);
     heart.center = fountainSource;
     [heart animateInView:self.view];
 }
@@ -174,8 +189,14 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 
 -(void)onCallbackBluetoothPowerOff:(NSNotification *)notify
 {
-    [AppUtils showInfo:@"蓝牙未开启"];
     [[ScriptExecuteManager defaultManager] cancelAllScripts];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+-(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
+{
+    [[ScriptExecuteManager defaultManager] cancelAllScripts];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)registeNotifications
@@ -232,7 +253,6 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         id obj = [x object];
         if([obj isKindOfClass:[ScriptCommand class]]){
             ScriptCommand *command = (ScriptCommand *)obj;
-            [_lblSmellName setText:command.smellName];
             
             heartTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(generateHeartView) userInfo:nil repeats:YES];
             [heartTimer fire];
@@ -355,15 +375,18 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Script *script = [scriptList objectAtIndex:indexPath.row];
-    if (script.type == ScriptIsRelativeTime) {
-        if (script.state == ScriptIsPlaying) {
-            if (scriptPlayDetailsVC == nil) {
-                scriptPlayDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ScriptPlayDetailsViewIdentify"];
-            }
-            [scriptPlayDetailsVC setCurrentScript:script];
-            [self.navigationController pushViewController:scriptPlayDetailsVC animated:YES];
-        }
-    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"脚本详情" message:[script commandString] delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil, nil];
+    [alertView show];
+    
+//    if (script.type == ScriptIsRelativeTime) {
+//        if (script.state == ScriptIsPlaying) {
+//            if (scriptPlayDetailsVC == nil) {
+//                scriptPlayDetailsVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ScriptPlayDetailsViewIdentify"];
+//            }
+//            [scriptPlayDetailsVC setCurrentScript:script];
+//            [self.navigationController pushViewController:scriptPlayDetailsVC animated:YES];
+//        }
+//    }
 }
 #pragma -mark ScriptTableViewCellProtocol
 -(void)playScript:(Script *)script

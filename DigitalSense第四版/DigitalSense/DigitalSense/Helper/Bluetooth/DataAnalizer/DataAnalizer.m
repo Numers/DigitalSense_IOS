@@ -221,6 +221,26 @@
                     }
                 }
                     break;
+                case EmitCustomSmell:
+                {
+                    //自定义脚本发送不需要处理
+                    if (cacheData.length >= 10) {
+                        Byte check = byte[9];
+                        if (check == 0x55) {
+                            NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 10)];
+                            NSLog(@"发送:%@",sendData);
+                            if ([self.delegate respondsToSelector:@selector(outputData:)]) {
+                                [self.delegate outputData:sendData];
+                            }
+                            [cacheData replaceBytesInRange:NSMakeRange(0, 10) withBytes:NULL length:0];
+                        }else{
+                            //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
+                            [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                        }
+                    }
+                }
+                    break;
                 case BottleInfoCompletely:
                 {
                     if (cacheData.length >= 3) {
@@ -249,6 +269,7 @@
                 {
                     //如果数据错乱或程序执行错乱，清空数据
                     [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                    [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
                 }
                     break;
             }

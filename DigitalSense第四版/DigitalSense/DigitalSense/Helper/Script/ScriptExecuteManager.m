@@ -73,9 +73,8 @@ static NSInteger currentSecond = -1;
 {
     if (scriptQueue && scriptQueue.count > 0) {
         [scriptQueue removeAllObjects];
+        [self playOverRelativeTimeScript];
     }
-    
-    [self playOverRelativeTimeScript];
 }
 /**
  *  @author RenRenFenQi, 16-06-16 16:06:00

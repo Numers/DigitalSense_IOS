@@ -20,6 +20,7 @@ typedef enum{
     SleepDevice = 0xFB,
     BottleInfo = 0xFA,
     EmitSmell = 0xF9,
+    EmitCustomSmell = 0xF2,
     BottleInfoCompletely = 0xF7
 } CommandType;
 

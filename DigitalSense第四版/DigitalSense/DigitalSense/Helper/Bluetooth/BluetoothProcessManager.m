@@ -31,8 +31,17 @@
 
 -(void)startScanBluetooth
 {
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:OnStartScanBluetooth object:nil];
+    
     [[BluetoothMacManager defaultManager] startScanBluetoothDevice:ConnectForScan callBack:^(BOOL completely, CallbackType backType, id obj, ConnectType connectType) {
+        //new change
+        if ([[BluetoothMacManager defaultManager] isConnected]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:OnCallbackConnectToBluetoothSuccessfully object:nil];
+            [self executeBluetoothCommand];
+            return ;
+        }
+        //
         if (completely) {
             
         }else{

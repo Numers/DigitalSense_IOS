@@ -199,6 +199,10 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
                         [[ScriptExecuteManager defaultManager] executeRelativeTimeScript:currentScript];
                     });
                 }
+            }else{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
             }
         }
     }
@@ -242,7 +246,6 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
     if (currentScript) {
         [[ScriptExecuteManager defaultManager] cancelExecuteRelativeTimeScript:currentScript];
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma -mark 

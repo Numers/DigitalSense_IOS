@@ -17,23 +17,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage_Icon" translatesAutoresizingMaskIntoConstraints="NO" id="gg8-dP-hbj">
-                                <rect key="frame" x="248" y="120" width="105" height="102"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="ql7-rP-zKU">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.1333333333" green="0.71764705880000002" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="gg8-dP-hbj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="taS-d6-aCw"/>
-                            <constraint firstItem="gg8-dP-hbj" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="100" id="uIy-2I-fwc"/>
+                            <constraint firstItem="ql7-rP-zKU" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="W2y-RW-Zr7"/>
+                            <constraint firstItem="ql7-rP-zKU" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="clk-wv-naT"/>
+                            <constraint firstAttribute="trailing" secondItem="ql7-rP-zKU" secondAttribute="trailing" id="eZT-bW-mh4"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="ql7-rP-zKU" secondAttribute="bottom" id="y5i-cR-Ye5"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="375"/>
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage_Icon" width="105" height="102"/>
+        <image name="LaunchImage" width="58" height="58"/>
     </resources>
 </document>

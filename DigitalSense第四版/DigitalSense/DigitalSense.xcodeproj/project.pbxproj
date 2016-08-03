@@ -84,6 +84,8 @@
 		8482CF6E1D127A9F0020CEEA /* Script.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF6D1D127A9F0020CEEA /* Script.m */; };
 		8482CF711D12A40B0020CEEA /* ScriptCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 8482CF701D12A40B0020CEEA /* ScriptCommand.m */; };
 		84F7719D1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F7719C1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m */; };
+		84FF05611D51A5D4007E05C3 /* LaunchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FF055F1D51A5D4007E05C3 /* LaunchImage@2x.png */; };
+		84FF05621D51A5D4007E05C3 /* LaunchImage@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FF05601D51A5D4007E05C3 /* LaunchImage@3x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -230,6 +232,8 @@
 		8482CF701D12A40B0020CEEA /* ScriptCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScriptCommand.m; sourceTree = "<group>"; };
 		84F7719B1D1D239C00591B24 /* ScanBluetoothDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanBluetoothDeviceViewController.h; sourceTree = "<group>"; };
 		84F7719C1D1D239C00591B24 /* ScanBluetoothDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanBluetoothDeviceViewController.m; sourceTree = "<group>"; };
+		84FF055F1D51A5D4007E05C3 /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
+		84FF05601D51A5D4007E05C3 /* LaunchImage@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@3x.png"; sourceTree = "<group>"; };
 		A1CA930BEBDE5359E5E28A20 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -385,6 +389,8 @@
 		8466677A1CF82AD400EFBE66 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				84FF055F1D51A5D4007E05C3 /* LaunchImage@2x.png */,
+				84FF05601D51A5D4007E05C3 /* LaunchImage@3x.png */,
 				846667861CF82AD500EFBE66 /* Assets.xcassets */,
 				846667881CF82AD500EFBE66 /* LaunchScreen.storyboard */,
 				8466678B1CF82AD500EFBE66 /* Info.plist */,
@@ -840,7 +846,9 @@
 				847D3D001D5064E700030E6D /* load_circle.png in Resources */,
 				846667871CF82AD500EFBE66 /* Assets.xcassets in Resources */,
 				8482CF6B1D1278DF0020CEEA /* ScriptTableViewCell.xib in Resources */,
+				84FF05611D51A5D4007E05C3 /* LaunchImage@2x.png in Resources */,
 				846667851CF82AD400EFBE66 /* Main.storyboard in Resources */,
+				84FF05621D51A5D4007E05C3 /* LaunchImage@3x.png in Resources */,
 				847C58671D34E7D2002159AC /* ScriptSerialCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1069,6 +1077,7 @@
 			baseConfigurationReference = 7FA49954B89E83D9ABCCF028 /* Pods-DigitalSense.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1089,6 +1098,7 @@
 			baseConfigurationReference = 10C0DE51E8B3A68EDEB64EC7 /* Pods-DigitalSense.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (

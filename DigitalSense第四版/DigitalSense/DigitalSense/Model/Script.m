@@ -38,4 +38,19 @@
     }
     return self;
 }
+
+-(NSString *)commandString
+{
+    return nil;
+}
+
+-(NSString *)switchSecondsToTime:(NSInteger)seconds
+{
+    NSInteger second = seconds % 60;
+    NSInteger tempMinite = (seconds - second) / 60;
+    NSInteger minite = tempMinite % 60;
+    NSInteger hour = tempMinite / 60;
+    NSString *result = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",hour,minite,second];
+    return result;
+}
 @end

@@ -87,13 +87,9 @@
     [self.view addSubview:floatView];
     [self.view bringSubviewToFront:floatView];
     
-    UILabel *floatLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 20)];
-    [floatLabel setText:@"场景"];
-    [floatLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
-    [floatLabel setTextColor:[UIColor whiteColor]];
-    [floatLabel setTextAlignment:NSTextAlignmentCenter];
-    [floatLabel setCenter:CGPointMake(floatView.frame.size.width / 2.0f, floatView.frame.size.height / 2.0f)];
-    [floatView addSubview:floatLabel];
+    UIImageView *floatImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, floatView.frame.size.width, floatView.frame.size.height)];
+    [floatImageView setImage:[UIImage imageNamed:@"FloatImage"]];
+    [floatView addSubview:floatImageView];
     
     
     //获取本地缓存的皮肤
@@ -165,13 +161,13 @@
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtnTitle:@"设备未开启蓝牙" IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"蓝牙未打开" IsEnable:YES];
 }
 
 -(void)onCallbackScanBluetoothTimeout:(NSNotification *)notify
 {
     [self setIsScanning:NO];
-    [self setSelectDeviceBtnTitle:@"请选择您需要连接的设备" IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"请选择嗅觉设备" IsEnable:YES];
 }
 
 -(void)onCallbackBluetoothDisconnected:(NSNotification *)notify
@@ -185,6 +181,12 @@
 {
     [self setIsScanning:NO];
     [self setSelectDeviceBtnTitle:@"连接中..." IsEnable:YES];
+    if (testTimer) {
+        if ([testTimer isValid]) {
+            [testTimer invalidate];
+            testTimer = nil;
+        }
+    }
 }
 
 -(void)onCallbackConnectToBluetoothSuccessfully:(NSNotification *)notify
@@ -204,6 +206,14 @@
 {
     [self setIsScanning:NO];
     [self setSelectDeviceBtnTitle:@"设备未连接" IsEnable:YES];
+    
+    if (testTimer) {
+        if (![testTimer isValid]) {
+            //心跳包
+            testTimer = [NSTimer scheduledTimerWithTimeInterval:8 target:self selector:@selector(test) userInfo:nil repeats:YES];
+            [testTimer fire];
+        }
+    }
 }
 
 -(void)deliveryData:(NSNotification *)notify
@@ -289,7 +299,7 @@
                 break;
             case BottleInfoCompletely:
             {
-                [AppUtils showHudProgress:@"加载气味中..." ForView:self.view];
+                [AppUtils showHudProgress:@"气味正在提取中，请耐心等待..." ForView:self.view];
                 [[self.viewModel getBottleInfoCompletelyReturn:byte WithBottleInfoList:bottleInfoList] subscribeNext:^(id x) {
                     //处理http返回responseObject
                     [AppUtils hidenHudProgressForView:self.view];
@@ -311,6 +321,7 @@
                                 fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
                                 [self addFruitByOrder:fruit];
                             }
+                            
                             [[NSNotificationCenter defaultCenter] postNotificationName:BottleInfoCompeletelyNotify object:_fruitsList];
                             [self saveOrderFile];
                             [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -855,6 +866,7 @@
     }
     NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
     [scriptVC setMacAddress:macAddress];
+    
     [self.navigationController wxs_pushViewController:scriptVC makeTransition:^(WXSTransitionProperty *transition) {
         transition.animationType = WXSTransitionAnimationTypeSpreadFromRight;
     }];
@@ -997,8 +1009,9 @@
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    [[ScriptExecuteManager defaultManager] cancelAllScripts];
     Fruit *selectFruit = [_fruitsList objectAtIndex:indexPath.item];
-    NSLog(@"select %ld, FruitName is %@",indexPath.item,selectFruit.fruitName);
+    NSLog(@"select %ld, FruitName is %@",(long)indexPath.item,selectFruit.fruitName);
     if ([selectFruit.fruitRFID isEqualToString:selectTag]) {
         [self writeDataWithRFID:selectFruit.fruitRFID WithTimeInterval:0];
     }else{
@@ -1007,7 +1020,7 @@
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"deselect %ld",indexPath.item);
+    NSLog(@"deselect %ld",(long)indexPath.item);
 }
 
 #pragma -mark ScanBluetoothDeviceViewProtocol

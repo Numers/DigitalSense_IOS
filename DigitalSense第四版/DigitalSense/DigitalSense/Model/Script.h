@@ -31,4 +31,6 @@ typedef enum{
 @property(nonatomic) ScriptType type;
 
 -(id)initWithDictionary:(NSDictionary *)dic;
+-(NSString *)commandString;
+-(NSString *)switchSecondsToTime:(NSInteger)seconds;
 @end

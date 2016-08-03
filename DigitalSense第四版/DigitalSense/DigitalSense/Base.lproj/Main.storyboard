@@ -291,56 +291,45 @@
                                     <constraint firstItem="2fa-fh-JU6" firstAttribute="leading" secondItem="oXl-Fb-P8v" secondAttribute="leading" constant="5" id="r7i-Ap-NJo"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ScriptLogoImage" translatesAutoresizingMaskIntoConstraints="NO" id="Buh-pR-pAD">
+                                <rect key="frame" x="141" y="270" width="94" height="108"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="脚本无记录" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fo1-mf-gXH">
+                                <rect key="frame" x="150" y="378" width="75" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fdh-lG-OZs">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="uIS-Jk-Kup">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </view>
                                 <connections>
                                     <outlet property="dataSource" destination="SAr-rz-KS4" id="N1r-bT-v3c"/>
                                     <outlet property="delegate" destination="SAr-rz-KS4" id="iAp-pc-3l7"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yMI-jC-Fep">
-                                <rect key="frame" x="0.0" y="587" width="375" height="80"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yq-mL-7qn">
-                                        <rect key="frame" x="187" y="40" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="3yq-mL-7qn" firstAttribute="centerX" secondItem="yMI-jC-Fep" secondAttribute="centerX" id="2eI-Je-FjS"/>
-                                    <constraint firstAttribute="height" constant="80" id="APC-1Q-Z1C"/>
-                                    <constraint firstItem="3yq-mL-7qn" firstAttribute="centerY" secondItem="yMI-jC-Fep" secondAttribute="centerY" id="jGe-vE-uae"/>
-                                </constraints>
-                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="yMI-jC-Fep" firstAttribute="leading" secondItem="bjp-cr-VOx" secondAttribute="leading" id="0CG-fn-PYH"/>
+                            <constraint firstItem="Buh-pR-pAD" firstAttribute="centerY" secondItem="bjp-cr-VOx" secondAttribute="centerY" constant="-10" id="2tP-4F-9Z3"/>
+                            <constraint firstItem="Fo1-mf-gXH" firstAttribute="top" secondItem="Buh-pR-pAD" secondAttribute="bottom" id="Fwe-OX-9pU"/>
+                            <constraint firstItem="Buh-pR-pAD" firstAttribute="centerX" secondItem="bjp-cr-VOx" secondAttribute="centerX" id="G0x-Za-aTu"/>
                             <constraint firstAttribute="trailing" secondItem="oXl-Fb-P8v" secondAttribute="trailing" id="GIL-kG-L44"/>
                             <constraint firstItem="oXl-Fb-P8v" firstAttribute="top" secondItem="bjp-cr-VOx" secondAttribute="top" id="Mtj-LQ-xbc"/>
+                            <constraint firstItem="Fo1-mf-gXH" firstAttribute="centerX" secondItem="bjp-cr-VOx" secondAttribute="centerX" id="SZl-PT-DTj"/>
+                            <constraint firstItem="Gi9-SU-rwG" firstAttribute="top" secondItem="Fdh-lG-OZs" secondAttribute="bottom" id="TkA-f3-mMj"/>
                             <constraint firstItem="Fdh-lG-OZs" firstAttribute="top" secondItem="oXl-Fb-P8v" secondAttribute="bottom" id="Uc8-FI-QqF"/>
                             <constraint firstItem="Fdh-lG-OZs" firstAttribute="leading" secondItem="bjp-cr-VOx" secondAttribute="leading" id="XSb-Bk-dE4"/>
                             <constraint firstItem="oXl-Fb-P8v" firstAttribute="leading" secondItem="bjp-cr-VOx" secondAttribute="leading" id="Y3w-vD-ptc"/>
                             <constraint firstAttribute="trailing" secondItem="Fdh-lG-OZs" secondAttribute="trailing" id="bch-cb-h4l"/>
-                            <constraint firstAttribute="trailing" secondItem="yMI-jC-Fep" secondAttribute="trailing" id="gyH-gF-KJE"/>
-                            <constraint firstItem="Gi9-SU-rwG" firstAttribute="top" secondItem="yMI-jC-Fep" secondAttribute="bottom" id="pSq-3O-cGe"/>
-                            <constraint firstItem="Gi9-SU-rwG" firstAttribute="top" secondItem="Fdh-lG-OZs" secondAttribute="bottom" id="seF-bw-1wg"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="bottomView" destination="yMI-jC-Fep" id="Y7u-9y-5Pj"/>
-                        <outlet property="lblSmellName" destination="3yq-mL-7qn" id="KBU-kg-AYx"/>
+                        <outlet property="lblNoScript" destination="Fo1-mf-gXH" id="CpY-H1-Jex"/>
                         <outlet property="lblTitle" destination="vct-kA-6Zg" id="TMg-Jf-Gcl"/>
+                        <outlet property="scriptLogoImageView" destination="Buh-pR-pAD" id="WHk-dI-Tn2"/>
                         <outlet property="tableView" destination="Fdh-lG-OZs" id="Jk1-qE-pSG"/>
                     </connections>
                 </viewController>
@@ -851,7 +840,7 @@
     </scenes>
     <resources>
         <image name="AddImage_Normal" width="18" height="18"/>
-        <image name="FruitDefaultImage" width="137" height="173"/>
+        <image name="FruitDefaultImage" width="56" height="56"/>
         <image name="FullScreenViewPlayer_Pause" width="50" height="50"/>
         <image name="Player_Once" width="50" height="50"/>
         <image name="Player_Play" width="50" height="50"/>
@@ -860,5 +849,6 @@
         <image name="PopbackImage" width="22" height="22"/>
         <image name="PressedImage" width="50" height="50"/>
         <image name="RefreshImage_Normal" width="46" height="37"/>
+        <image name="ScriptLogoImage" width="94" height="108"/>
     </resources>
 </document>

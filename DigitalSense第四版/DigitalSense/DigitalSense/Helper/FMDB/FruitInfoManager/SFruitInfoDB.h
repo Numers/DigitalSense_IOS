@@ -14,6 +14,8 @@
     FMDatabase *_db;
 }
 
++(instancetype)shareInstance;
+
 /**
  *  @author RenRenFenQi, 16-06-02 17:06:03
  *

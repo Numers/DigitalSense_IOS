@@ -65,6 +65,7 @@ static  NSString * const cellIdentify = @"ComboxMenuViewCellIdentify";
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(17, 0, backView.frame.size.width - 34, backView.frame.size.height - DefaultTableViewMarginToBottom) style:UITableViewStylePlain];
         _tableView.delegate = self;
         _tableView.dataSource = self;
+        [_tableView setShowsVerticalScrollIndicator:NO];
         [_tableView setBackgroundColor:[UIColor clearColor]];
         [_tableView setSeparatorColor:[UIColor colorWithWhite:0.263 alpha:1.000]];
         [_tableView setShowsVerticalScrollIndicator:NO];
