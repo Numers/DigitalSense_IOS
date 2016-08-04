@@ -130,6 +130,15 @@ typedef void (^BluetoothCallBak)(BOOL completely,CallbackType backType, id obj, 
 -(BOOL)isConnected;
 
 /**
+ *  @author RenRenFenQi, 16-08-04 12:08:28
+ *
+ *  蓝牙是否打开
+ *
+ *  @return YES/是 NO/否
+ */
+-(BOOL)isPoweredOn;
+
+/**
  *  @author RenRenFenQi, 16-03-22 17:03:10
  *
  *  连接设备

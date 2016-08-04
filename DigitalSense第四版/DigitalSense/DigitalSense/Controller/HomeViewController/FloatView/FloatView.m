@@ -16,7 +16,7 @@ static void *AdsorbEnableKey = &AdsorbEnableKey;
     self = [super initWithFrame:frame];
     if (self) {
         [self setUserInteractionEnabled:YES];
-        [self setBackgroundColor:[UIColor colorWithRed:0.127 green:0.568 blue:0.730 alpha:1.000]];
+        [self setBackgroundColor:[UIColor clearColor]];
         tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapView)];
         [self addGestureRecognizer:tapGesture];
         [self changeFrame:frame];

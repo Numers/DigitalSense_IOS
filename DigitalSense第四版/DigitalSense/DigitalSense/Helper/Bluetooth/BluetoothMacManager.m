@@ -29,6 +29,7 @@ static BluetoothMacManager *bluetoothMacManager;
     NSTimer *scanTimer;
     NSTimer *connectTimer;
     BOOL isConnected;
+    BOOL bluetoothIsPowerOn;
 }
 @property (assign,nonatomic) id<BluetoothManagerProtocol> delegate;
 @property (strong,nonatomic) CBCentralManager *centralManager;//中心设备管理器
@@ -107,6 +108,18 @@ static BluetoothMacManager *bluetoothMacManager;
         isConnected = NO;
     }
     return isConnected;
+}
+
+/**
+ *  @author RenRenFenQi, 16-08-04 12:08:28
+ *
+ *  蓝牙是否打开
+ *
+ *  @return YES/是 NO/否
+ */
+-(BOOL)isPoweredOn
+{
+    return bluetoothIsPowerOn;
 }
 
 -(void)startBluetoothDevice
@@ -760,11 +773,13 @@ static BluetoothMacManager *bluetoothMacManager;
             //扫描外围设备
             //            [central scanForPeripheralsWithServices:@[[CBUUID UUIDWithString:kServiceUUID]] options:@{CBCentralManagerScanOptionAllowDuplicatesKey:@YES}];
             isConnected = NO;
+            bluetoothIsPowerOn = YES;
             [[NSNotificationCenter defaultCenter] postNotificationName:kBluetoothPowerOnNotify object:nil];
             break;
             
         default:
             isConnected = NO;
+            bluetoothIsPowerOn = NO;
             [self stopBluetoothDevice];
             [[NSNotificationCenter defaultCenter] postNotificationName:kBluetoothPowerOffNotify object:nil];
             NSLog(@"此设备不支持BLE或未打开蓝牙功能，无法作为外围设备.");

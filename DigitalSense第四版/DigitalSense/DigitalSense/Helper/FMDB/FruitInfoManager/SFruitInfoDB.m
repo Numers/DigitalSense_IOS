@@ -49,7 +49,7 @@
             NSLog(@"%@数据库已经存在",kFruitInfoTableName);
         } else {
             // TODO: 插入新的数据库
-            NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitimage VARCHAR(100),rfid VARCHAR(50),fruitcolor VARCHAR(50))",kFruitInfoTableName];
+            NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitkeywords VARCHAR(250),fruitimage VARCHAR(100),rfid VARCHAR(50),fruitcolor VARCHAR(50))",kFruitInfoTableName];
             BOOL res = [_db executeUpdate:sql];
             if (!res) {
                 NSLog(@"%@数据库创建失败",kFruitInfoTableName);
@@ -79,6 +79,7 @@
             fruit = [[Fruit alloc] init];
             fruit.fruitName = [rs stringForColumn:@"fruitname"];
             fruit.fruitImage = [rs stringForColumn:@"fruitimage"];
+            fruit.fruitKeyWords = [rs stringForColumn:@"fruitkeywords"];
             fruit.fruitEnName = [rs stringForColumn:@"fruitenname"];
             fruit.fruitColor = [rs stringForColumn:@"fruitcolor"];
             fruit.fruitRFID = [rs stringForColumn:@"rfid"];
@@ -109,6 +110,10 @@
         
         if (fruit.fruitEnName) {
             [temp appendFormat:@" fruitenname = '%@',",fruit.fruitEnName];
+        }
+        
+        if (fruit.fruitKeyWords) {
+            [temp appendFormat:@" fruitkeywords = '%@',",fruit.fruitKeyWords];
         }
         
         if (fruit.fruitImage) {
@@ -188,6 +193,12 @@
             [keys appendString:@"fruitenname,"];
             [values appendString:@"?,"];
             [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitEnName]];
+        }
+        
+        if (fruit.fruitKeyWords) {
+            [keys appendString:@"fruitkeywords,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitKeyWords]];
         }
         
         if (fruit.fruitColor) {

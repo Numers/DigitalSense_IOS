@@ -372,8 +372,10 @@
     isLoop = loop;
     if (loop) {
         [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Repeat"] forState:UIControlStateNormal];
+        [AppUtils showInfo:@"循环播放"];
     }else{
         [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
+        [AppUtils showInfo:@"单次播放"];
     }
 }
 
@@ -563,6 +565,11 @@
         return;
     }
     
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         [AppUtils showInfo:@"设备未连接"];
         return;
@@ -582,6 +589,11 @@
 
 -(IBAction)clickLoopBtn:(id)sender
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         [AppUtils showInfo:@"设备未连接"];
         return;

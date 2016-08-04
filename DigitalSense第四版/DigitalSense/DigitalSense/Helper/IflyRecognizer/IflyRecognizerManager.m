@@ -16,6 +16,7 @@
 #define GRAMMAR_TYPE_BNF     @"bnf"
 #define GRAMMAR_TYPE_ABNF    @"abnf"
 #define IFLYDOMAIN @"asr" //识别模式 iat/语音识别  asr/在线语法识别
+#define IFSPEECHTIMEOUT @"3000" //识别超时
 
 #define OnlineGrammarIDKey @"ONLINEGRAMMERIDKEY"
 static IflyRecognizerManager *iFlyRecognizerManager;
@@ -39,6 +40,7 @@ static IFlyRecognizerView *iFlyRecognizerView;
     
     //设置识别模式
     [iFlyRecognizerView setParameter:IFLYDOMAIN forKey:[IFlySpeechConstant IFLY_DOMAIN]];
+    [iFlyRecognizerView setParameter:IFSPEECHTIMEOUT forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];
 }
 
 -(void)startRecognizer:(NSString *)grammarContent Callback:(IFlyRecognizerCallback)callback;
@@ -47,6 +49,7 @@ static IFlyRecognizerView *iFlyRecognizerView;
     tempResult = [[NSMutableString alloc] init];
     
     [iFlyRecognizerView setParameter:IFLYDOMAIN forKey:[IFlySpeechConstant IFLY_DOMAIN]];
+    [iFlyRecognizerView setParameter:IFSPEECHTIMEOUT forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];
     iFlyRecognizerView.delegate = iFlyRecognizerManager;
     
     if (grammarContent != nil) {

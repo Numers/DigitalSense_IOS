@@ -81,7 +81,7 @@
     //popoverView显示的title
     popoverTitle = @[@"脚本列表"];
     //添加浮动的按钮
-    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
     floatView.delegate = self;
     [floatView.layer setCornerRadius:floatView.frame.size.width / 2.0f];
     [floatView setCenter:CGPointMake(self.view.frame.size.width - floatView.frame.size.width / 2.0f, self.view.frame.size.height / 2.0f)];
@@ -316,7 +316,7 @@
                             for (NSDictionary *dic in dataArr) {
                                 Fruit *fruit = [[Fruit alloc] init];
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
-                                fruit.fruitKeyWords = [dic objectForKey:@"cn_name"];
+                                fruit.fruitKeyWords = [dic objectForKey:@"keywords"];
                                 fruit.fruitEnName = [dic objectForKey:@"en_name"];
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
                                 fruit.fruitColor = [NSString stringWithFormat:@"#%@",[dic objectForKey:@"color"]];
@@ -594,6 +594,11 @@
  */
 -(void)writeDataWithRFID:(NSString *)rfId WithTimeInterval:(int)interval
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         //提示打开蓝牙或下拉重连
         [AppUtils showInfo:@"设备未连接"];
@@ -664,8 +669,10 @@
 {
     NSMutableString *content = [[NSMutableString alloc] initWithString:@"#ABNF 1.0 UTF-8;\nlanguage zh-CN; \nmode voice;\n\nroot $main;\n$main = $place1;\n$place1 = "];
     for (Fruit *fruit in _fruitsList) {
-        [content appendString:fruit.fruitKeyWords];
-        [content appendString:@"|"];
+        if (fruit.fruitKeyWords) {
+            [content appendString:fruit.fruitKeyWords];
+            [content appendString:@"|"];
+        }
     }
     [content appendString:@"关|关闭;"];
     return content;
@@ -785,6 +792,11 @@
 -(IBAction)TouchUpinsideVoiceBtn:(id)sender
 {
     NSLog(@"按钮松开了...");
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected]) {
         //提示打开蓝牙或下拉重连
         [AppUtils showInfo:@"设备未连接"];
@@ -889,6 +901,11 @@
 
 -(void)clickScriptBtn
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected])
     {
         [AppUtils showInfo:@"设备未连接"];
@@ -1077,6 +1094,11 @@
 #pragma -mark FloatViewProtocol
 -(void)didTapView
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
+    
     if (![[BluetoothMacManager defaultManager] isConnected])
     {
         [AppUtils showInfo:@"设备未连接"];
@@ -1100,11 +1122,19 @@
 #pragma -mark ComboxMenuViewProtocol
 -(void)selectPeripheral:(id)peripheral WithDeviceName:(NSString *)name
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
     [self connectToBluetoothWithPeripheral:peripheral WithName:name];
 }
 
 -(void)rescanBluetooth
 {
+    if (![[BluetoothMacManager defaultManager] isPoweredOn]) {
+        [AppUtils showInfo:@"蓝牙未打开"];
+        return;
+    }
     [[BluetoothProcessManager defatultManager] startScanBluetooth];
 }
 #pragma -mark ScriptOperationViewProtocol
