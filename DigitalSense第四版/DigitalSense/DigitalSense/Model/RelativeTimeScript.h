@@ -9,5 +9,5 @@
 #import "Script.h"
 
 @interface RelativeTimeScript : Script
--(id)initWithDictionary:(NSDictionary *)dic;
+
 @end

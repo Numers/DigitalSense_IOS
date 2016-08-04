@@ -22,6 +22,7 @@
 -(void)addFruit:(Fruit *)fruit;
 -(void)setScriptCommandList:(NSArray *)commandList WithScriptTime:(NSInteger)scriptTime;
 -(NSMutableArray *)returnAllScriptCommand;
+-(void)hiddenCloseBtnForEveryCell;
 
 -(void)clearAllData;
 @end

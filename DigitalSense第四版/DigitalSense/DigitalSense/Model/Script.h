@@ -30,7 +30,8 @@ typedef enum{
 @property(nonatomic) ScriptState state;
 @property(nonatomic) ScriptType type;
 
--(id)initWithDictionary:(NSDictionary *)dic;
+-(id)initWithDictionary:(NSDictionary *)dic WithModeList:(NSArray *)modeList;
+-(NSString *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList;
 -(NSString *)commandString;
 -(NSString *)switchSecondsToTime:(NSInteger)seconds;
 @end

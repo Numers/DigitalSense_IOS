@@ -49,7 +49,7 @@
             NSLog(@"%@数据库已经存在",kFruitInfoTableName);
         } else {
             // TODO: 插入新的数据库
-            NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitkeywords VARCHAR(250),fruitimage VARCHAR(100),rfid VARCHAR(50),fruitcolor VARCHAR(50))",kFruitInfoTableName];
+            NSString * sql = [NSString stringWithFormat:@"CREATE TABLE %@ (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, fruitname VARCHAR(50),fruitenname VARCHAR(50),fruitkeywords VARCHAR(250),fruitimage VARCHAR(100),rfid VARCHAR(50),fruitsn VARCHAR(50),fruitcolor VARCHAR(50))",kFruitInfoTableName];
             BOOL res = [_db executeUpdate:sql];
             if (!res) {
                 NSLog(@"%@数据库创建失败",kFruitInfoTableName);
@@ -83,6 +83,7 @@
             fruit.fruitEnName = [rs stringForColumn:@"fruitenname"];
             fruit.fruitColor = [rs stringForColumn:@"fruitcolor"];
             fruit.fruitRFID = [rs stringForColumn:@"rfid"];
+            fruit.fruitSn = [rs stringForColumn:@"fruitsn"];
         }
         [rs close];
         return fruit;
@@ -122,6 +123,10 @@
         
         if (fruit.fruitColor) {
             [temp appendFormat:@" fruitcolor = '%@',",fruit.fruitColor];
+        }
+        
+        if (fruit.fruitSn) {
+            [temp appendFormat:@" fruitsn = '%@',",fruit.fruitSn];
         }
         
         [temp appendString:@")"];
@@ -205,6 +210,12 @@
             [keys appendString:@"fruitcolor,"];
             [values appendString:@"?,"];
             [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitColor]];
+        }
+        
+        if (fruit.fruitSn) {
+            [keys appendString:@"fruitsn,"];
+            [values appendString:@"?,"];
+            [arguments addObject:[NSString stringWithFormat:@"%@",fruit.fruitSn]];
         }
         
         [keys appendString:@"rfid,"];

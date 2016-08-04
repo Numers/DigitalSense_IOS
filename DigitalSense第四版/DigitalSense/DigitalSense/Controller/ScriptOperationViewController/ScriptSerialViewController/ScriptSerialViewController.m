@@ -12,12 +12,12 @@
 
 #import "Fruit.h"
 
-@interface ScriptSerialViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSerialCollectionViewCellProtocol>
+@interface ScriptSerialViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSerialCollectionViewCellProtocol,UIScrollViewDelegate>
 {
     NSMutableArray *fruitList;
 }
 @property(nonatomic, strong) UICollectionView *collectionView;
-
+@property(nonatomic, strong) UIPageControl *pageControl;
 @end
 
 @implementation ScriptSerialViewController
@@ -41,11 +41,11 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     layout.delegate = self;
     layout.dataSource = self;
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, controllerFrame.size.width, controllerFrame.size.height) collectionViewLayout:layout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, controllerFrame.size.width, controllerFrame.size.height - 16) collectionViewLayout:layout];
     UIImage *collectionBackgroundImage = [UIImage imageNamed:@"SerialViewBackgroundViewImage"];
     self.collectionView.layer.contents = (id)collectionBackgroundImage.CGImage;
     [self.collectionView setScrollEnabled:YES];
-//    [self.collectionView setPagingEnabled:YES];
+    [self.collectionView setPagingEnabled:YES];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
     [self.collectionView setShowsHorizontalScrollIndicator:NO];
     self.collectionView.delegate = self;
@@ -56,6 +56,13 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     // Register cell classes
     [self.collectionView registerNib:[UINib nibWithNibName:@"ScriptSerialCollectionViewCell" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     
+    //add PageControl
+    self.pageControl = [[UIPageControl alloc] init];
+    [self.pageControl setHidesForSinglePage:NO];
+    [self.pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithWhite:1.0f alpha:0.8]];
+    [self.pageControl setPageIndicatorTintColor:[UIColor colorWithWhite:0.667 alpha:0.600]];
+    [self.view addSubview:self.pageControl];
+    [self.pageControl setCenter:CGPointMake(controllerFrame.size.width / 2.0f, controllerFrame.size.height - 8)];
     // Do any additional setup after loading the view.
     [self inilizedData];
 }
@@ -79,7 +86,18 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
         fruit.fruitImage = @"SerialViewClockForCell";
         fruit.fruitColor = @"#000000";
         [fruitList addObject:fruit];
-        [fruitList addObjectsFromArray:list];
+        NSInteger i = 1;
+        for (Fruit *f in list) {
+            [fruitList addObject:f];
+            i++;
+            if (i % 8 == 0) {
+                [fruitList addObject:fruit];
+                i++;
+            }
+        }
+        [self.pageControl setNumberOfPages:(fruitList.count + 7)/8];
+        [_collectionView scrollsToTop];
+        [self.pageControl setCurrentPage:0];
         if (_collectionView) {
             [_collectionView reloadData];
         }
@@ -104,20 +122,24 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 #pragma mark - LewReorderableLayoutDataSource
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     ScriptSerialCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    cell.delegate = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        Fruit *fruit = [fruitList objectAtIndex:indexPath.item];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [cell setFruit:fruit];
+    if (indexPath.item >= fruitList.count) {
+        [cell setFruit:nil];
+    }else{
+        cell.delegate = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            Fruit *fruit = [fruitList objectAtIndex:indexPath.item];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [cell setFruit:fruit];
+            });
         });
-    });
+    }
     // Configure the cell
     
     return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return fruitList.count;
+    return ((fruitList.count + 7) / 8) * 8;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
@@ -125,8 +147,9 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    CGFloat width = (collectionView.frame.size.width - 1.5) / 4.0f;
     CGFloat height = (collectionView.frame.size.height - 0.5)/ 2.0f;
-    return CGSizeMake(height, height);
+    return CGSizeMake(width, height);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
@@ -168,6 +191,9 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.item >= fruitList.count) {
+        return;
+    }
     Fruit *selectFruit = [fruitList objectAtIndex:indexPath.item];
     NSLog(@"select %ld, FruitName is %@",(long)indexPath.item,selectFruit.fruitName);
     if ([self.delegate respondsToSelector:@selector(selectFruit:)]) {
@@ -179,6 +205,13 @@ static NSString * const reuseIdentifier = @"ScriptSerialCollectionViewCell";
     NSLog(@"deselect %ld",(long)indexPath.item);
 }
 
+#pragma -mark UIScrollViewDelegate
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint offset = [scrollView contentOffset];
+    NSInteger page = offset.x / _collectionView.frame.size.width;
+    [self.pageControl setCurrentPage:page];
+}
 #pragma -mark ScriptSerialCollectionViewCellProtocol
 -(void)swipeCellForFruit:(Fruit *)fruit
 {

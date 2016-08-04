@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ScriptViewController : UIViewController
--(void)setMacAddress:(NSString *)macAddr;
+-(void)setMacAddress:(NSString *)macAddr WithFruitList:(NSArray *)list;
 @end

@@ -85,7 +85,7 @@
         }
         case iPhone5: {
             CGFloat seriaViewOriginY = scriptSelectVC.view.frame.origin.y + scriptSelectVC.view.frame.size.height + _playView.frame.size.height + 35.0f;
-            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY - 5.0f)];
+            scriptSerialVC = [[ScriptSerialViewController alloc] initWithFrame:CGRectMake(17, seriaViewOriginY, self.view.frame.size.width - 34, screenSize.height - seriaViewOriginY)];
             break;
         }
         case iPhone6: {
@@ -121,7 +121,8 @@
     
     [self.view bringSubviewToFront:_playView];
     
-    [self setIsLoop:NO];
+    isLoop = NO;
+    [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
 }
 
 -(void)viewDidLayoutSubviews
@@ -179,6 +180,13 @@
 
 - (BOOL)shouldAutorotate{
     return NO;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (scriptSelectVC) {
+        [scriptSelectVC hiddenCloseBtnForEveryCell];
+    }
 }
 #pragma -mark Notification
 -(void)onBottleInfoCompeletely:(NSNotification *)notify

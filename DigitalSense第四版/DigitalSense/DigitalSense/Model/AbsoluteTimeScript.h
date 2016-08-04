@@ -11,5 +11,4 @@
 @interface AbsoluteTimeScript : Script
 @property(nonatomic, strong) NSMutableArray *TaskTimeList;
 
--(id)initWithDictionary:(NSDictionary *)dic;
 @end

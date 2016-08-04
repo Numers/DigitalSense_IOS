@@ -7,6 +7,7 @@
 //
 
 #import "Script.h"
+#import "Fruit.h"
 
 @implementation Script
 -(id)init
@@ -24,7 +25,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:ScriptStateComfirmed object:nil];
 }
 
--(id)initWithDictionary:(NSDictionary *)dic
+-(id)initWithDictionary:(NSDictionary *)dic WithModeList:(NSArray *)modeList
 {
     self = [super init];
     if (self) {
@@ -37,6 +38,22 @@
         }
     }
     return self;
+}
+
+-(NSString *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList
+{
+    NSString *rfid = nil;
+    if (fruitSn) {
+        if (modeList) {
+            for (Fruit *fruit in modeList) {
+                if ([fruitSn isEqualToString:fruit.fruitSn]) {
+                    rfid = fruit.fruitRFID;
+                    break;
+                }
+            }
+        }
+    }
+    return rfid;
 }
 
 -(NSString *)commandString

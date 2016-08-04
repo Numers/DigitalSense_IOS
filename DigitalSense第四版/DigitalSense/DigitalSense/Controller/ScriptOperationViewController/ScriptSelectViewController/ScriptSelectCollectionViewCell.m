@@ -98,12 +98,12 @@
     [self.btnClose setCenter:CGPointMake(self.smellView.frame.origin.x + self.smellView.frame.size.width - CloseBtnSize.width / 2.0f, self.smellView.frame.origin.y + CloseBtnSize.height / 2.0f)];
 }
 
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    if (isShowCloseBtn) {
-        [self setIsShowCloseBtn:NO];
-    }
-}
+//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+//{
+//    if (isShowCloseBtn) {
+//        [self setIsShowCloseBtn:NO];
+//    }
+//}
 
 #pragma -mark ScriptSelectSmellViewProtocol
 -(void)powerValueChanged:(CGFloat)power

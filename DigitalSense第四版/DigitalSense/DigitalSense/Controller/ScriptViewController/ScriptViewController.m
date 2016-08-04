@@ -12,6 +12,7 @@
 #import "RelativeTimeScript.h"
 #import "AbsoluteTimeScript.h"
 #import "ScriptViewModel.h"
+#import "Fruit.h"
 
 #import "ScriptExecuteManager.h"
 #import "BluetoothProcessManager.h"
@@ -26,6 +27,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     ScriptViewModel *scriptViewModel;
     
     NSString *currentMacAddress;
+    NSArray *fruitList;
     
     RACDisposable *playScriptDisposable;
     RACDisposable *playOverAllScriptDisposable;
@@ -105,9 +107,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     }
 }
 
--(void)setMacAddress:(NSString *)macAddr
+-(void)setMacAddress:(NSString *)macAddr WithFruitList:(NSArray *)list
 {
     currentMacAddress = macAddr;
+    if (list) {
+        fruitList = [list copy];
+    }
 }
 
 -(void)setCurrentScript:(Script *)script
@@ -129,12 +134,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                     for (NSDictionary *dic in dataArr) {
                         ScriptType type = (ScriptType)[[dic objectForKey:@"trigger"] integerValue];
                         if (type == ScriptIsRelativeTime) {
-                            Script *relativeTimeScript = [[RelativeTimeScript alloc] initWithDictionary:dic];
+                            Script *relativeTimeScript = [[RelativeTimeScript alloc] initWithDictionary:dic WithModeList:fruitList];
                             [scriptList addObject:relativeTimeScript];
                         }
                         
                         if (type == ScriptIsAbsoluteTime) {
-                            Script *absoluteTimeScript = [[AbsoluteTimeScript alloc] initWithDictionary:dic];
+                            Script *absoluteTimeScript = [[AbsoluteTimeScript alloc] initWithDictionary:dic WithModeList:fruitList];
                             [scriptList addObject:absoluteTimeScript];
                             [absoluteScriptList addObject:absoluteTimeScript];
                         }

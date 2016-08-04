@@ -241,6 +241,66 @@
                     }
                 }
                     break;
+                case EmitRelativeTimeSmell:
+                {
+                    //自定义脚本发送不需要处理
+                    if (cacheData.length >= 9) {
+                        Byte check = byte[8];
+                        if (check == 0x55) {
+                            NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 9)];
+                            NSLog(@"发送:%@",sendData);
+                            if ([self.delegate respondsToSelector:@selector(outputData:)]) {
+                                [self.delegate outputData:sendData];
+                            }
+                            [cacheData replaceBytesInRange:NSMakeRange(0, 9) withBytes:NULL length:0];
+                        }else{
+                            //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
+                            [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                        }
+                    }
+                }
+                    break;
+                case EmitAbsoluteDateTimeSmell:
+                {
+                    //自定义脚本发送不需要处理
+                    if (cacheData.length >= 16) {
+                        Byte check = byte[15];
+                        if (check == 0x55) {
+                            NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 16)];
+                            NSLog(@"发送:%@",sendData);
+                            if ([self.delegate respondsToSelector:@selector(outputData:)]) {
+                                [self.delegate outputData:sendData];
+                            }
+                            [cacheData replaceBytesInRange:NSMakeRange(0, 16) withBytes:NULL length:0];
+                        }else{
+                            //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
+                            [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                        }
+                    }
+                }
+                    break;
+                case EmitAbsoluteWeekTimeSmell:
+                {
+                    //自定义脚本发送不需要处理
+                    if (cacheData.length >= 14) {
+                        Byte check = byte[13];
+                        if (check == 0x55) {
+                            NSData *sendData = [cacheData subdataWithRange:NSMakeRange(0, 14)];
+                            NSLog(@"发送:%@",sendData);
+                            if ([self.delegate respondsToSelector:@selector(outputData:)]) {
+                                [self.delegate outputData:sendData];
+                            }
+                            [cacheData replaceBytesInRange:NSMakeRange(0, 14) withBytes:NULL length:0];
+                        }else{
+                            //如果长度够长一个当前指令，但对应校验位不是0x55，那么认为是数据错乱或丢失，直接结束并清空缓存区
+                            [cacheData  replaceBytesInRange:NSMakeRange(0, cacheData.length) withBytes:NULL length:0];
+                            [AppUtils showInfo:@"数据错乱啦，请重新刷新数据"];
+                        }
+                    }
+                }
+                    break;
                 case BottleInfoCompletely:
                 {
                     if (cacheData.length >= 3) {

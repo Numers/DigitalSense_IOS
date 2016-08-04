@@ -21,6 +21,9 @@ typedef enum{
     BottleInfo = 0xFA,
     EmitSmell = 0xF9,
     EmitCustomSmell = 0xF2,
+    EmitRelativeTimeSmell = 0xF5,
+    EmitAbsoluteDateTimeSmell = 0xF6,
+    EmitAbsoluteWeekTimeSmell = 0xF3,
     BottleInfoCompletely = 0xF7
 } CommandType;
 

@@ -75,7 +75,7 @@
             [self.btnPlayScript setEnabled:NO];
         }
         
-        [_lblProgress setText:@"进度 00:00:00"];
+        [_lblProgress setText:@"进度 00:00"];
         [_lblAllTime setText:[NSString stringWithFormat:@"总时长 %@",[self switchSecondsToTime:st.scriptTime]]];
     }
 }
@@ -95,10 +95,13 @@
 -(NSString *)switchSecondsToTime:(NSInteger)seconds
 {
     NSInteger second = seconds % 60;
-    NSInteger tempMinite = (seconds - second) / 60;
-    NSInteger minite = tempMinite % 60;
-    NSInteger hour = tempMinite / 60;
-    NSString *result = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",hour,minite,second];
+    NSInteger minite = (seconds - second) / 60;
+    NSString *result;
+    if (minite < 10) {
+        result = [NSString stringWithFormat:@"%02ld:%02ld",(long)minite,(long)second];
+    }else{
+        result = [NSString stringWithFormat:@"%ld:%02ld",(long)minite,(long)second];
+    }
     return result;
 }
 @end

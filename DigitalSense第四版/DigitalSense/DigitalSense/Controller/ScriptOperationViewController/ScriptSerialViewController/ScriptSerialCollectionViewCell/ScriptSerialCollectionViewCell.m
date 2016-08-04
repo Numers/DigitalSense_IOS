@@ -20,18 +20,23 @@
 {
     [self setBackgroundColor:[UIColor clearColor]];
     currentFruit = fruit;
-    if (swipeGestureRecognizer == nil) {
-        swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture)];
-        swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-        [self addGestureRecognizer:swipeGestureRecognizer];
-    }
-    if ([AppUtils isNetworkURL:fruit.fruitImage]) {
-        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
+    if (fruit) {
+        if (swipeGestureRecognizer == nil) {
+            swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture)];
+            swipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+            [self addGestureRecognizer:swipeGestureRecognizer];
+        }
+        if ([AppUtils isNetworkURL:fruit.fruitImage]) {
+            [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
+        }else{
+            [self.fruitImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
+        }
+        
+        [self.lblFruitName setText:fruit.fruitName];
     }else{
-        [self.fruitImageView setImage:[UIImage imageNamed:fruit.fruitImage]];
+        [self.fruitImageView setImage:nil];
+        [self.lblFruitName setText:nil];
     }
-    
-    [self.lblFruitName setText:fruit.fruitName];
 }
 
 //-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event

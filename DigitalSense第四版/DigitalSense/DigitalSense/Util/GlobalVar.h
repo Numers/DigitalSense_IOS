@@ -37,7 +37,7 @@
  *  请求皮肤包API
  */
 //////////////////////////////////////////////////////////
-#define SC_SmellSkinPacket_API @"/app/v1/smell-skin/:id?type=ios"
+#define SC_SmellSkinPacket_API @"/app/v1/smell-skin/:id"
 /////////////////////////////////////////////////////////
 /*********************API接口****************************/
 

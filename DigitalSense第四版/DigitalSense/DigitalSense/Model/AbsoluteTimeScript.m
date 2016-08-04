@@ -10,9 +10,9 @@
 #import "ScriptTaskTime.h"
 
 @implementation AbsoluteTimeScript
--(id)initWithDictionary:(NSDictionary *)dic
+-(id)initWithDictionary:(NSDictionary *)dic WithModeList:(NSArray *)modeList
 {
-    self = [super initWithDictionary:dic];
+    self = [super initWithDictionary:dic WithModeList:modeList];
     if (self) {
         if (dic) {
             _TaskTimeList = [NSMutableArray array];
@@ -43,9 +43,14 @@
                                         NSArray *commandArr = [dic objectForKey:@"schedule"];
                                         if (commandArr) {
                                             for (NSDictionary *tempDic in commandArr) {
+                                                NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                if ([AppUtils isNullStr:rfId]) {
+                                                    continue;
+                                                }
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                command.rfId = rfId;
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                     break;
@@ -79,9 +84,14 @@
                                     if (commandArr) {
                                         
                                         for (NSDictionary *tempDic in commandArr) {
+                                            NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                            NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                            if ([AppUtils isNullStr:rfId]) {
+                                                continue;
+                                            }
                                             ScriptCommand *command = [[ScriptCommand alloc] init];
                                             command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                            command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                            command.rfId = rfId;
                                             command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                             if ((startTime + command.startRelativeTime) >= endTime) {
                                                 break;
@@ -114,9 +124,14 @@
                                             NSArray *commandArr = [dic objectForKey:@"schedule"];
                                             if (commandArr) {
                                                 for (NSDictionary *tempDic in commandArr) {
+                                                    NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                    NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                    if ([AppUtils isNullStr:rfId]) {
+                                                        continue;
+                                                    }
                                                     ScriptCommand *command = [[ScriptCommand alloc] init];
                                                     command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                    command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                    command.rfId = rfId;
                                                     command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                     if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                         break;
@@ -149,9 +164,14 @@
                                         if (commandArr) {
                                             
                                             for (NSDictionary *tempDic in commandArr) {
+                                                NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                if ([AppUtils isNullStr:rfId]) {
+                                                    continue;
+                                                }
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
+                                                command.rfId = rfId;
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((startTime + command.startRelativeTime) >= endTime) {
                                                     break;
@@ -178,6 +198,20 @@
         }
     }
     return self;
+}
+
+-(NSString *)commandString
+{
+    NSMutableString *result = [[NSMutableString alloc] init];
+    [result appendFormat:@"脚本任务:%@\n",self.scriptName];
+    if (self.isLoop) {
+        [result appendFormat:@"播放方式:循环播放\n"];
+        
+    }else{
+        [result appendFormat:@"播放方式:单次播放\n"];
+    }
+    [result appendString:@"这是一个绝对时间脚本"];
+    return result;
 }
 
 -(NSString *)timeStrFromTimeInterval:(NSTimeInterval)interval

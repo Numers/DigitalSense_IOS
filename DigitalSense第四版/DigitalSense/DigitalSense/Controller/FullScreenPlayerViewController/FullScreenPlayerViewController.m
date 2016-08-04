@@ -198,8 +198,18 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [[ScriptExecuteManager defaultManager] executeRelativeTimeScript:currentScript];
                     });
+                }else{
+                    currentScript = nil;
+                    if([[NSThread currentThread] isMainThread]){
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }else{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
+                    }
                 }
             }else{
+                currentScript = nil;
                 if([[NSThread currentThread] isMainThread]){
                     [self.navigationController popViewControllerAnimated:YES];
                 }else{

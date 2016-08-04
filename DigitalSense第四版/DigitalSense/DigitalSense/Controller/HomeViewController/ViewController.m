@@ -321,6 +321,7 @@
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
                                 fruit.fruitColor = [NSString stringWithFormat:@"#%@",[dic objectForKey:@"color"]];
                                 fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
+                                fruit.fruitSn = [dic objectForKey:@"smell_sn"];
                                 
                                 if ([[SFruitInfoDB shareInstance] isExistFruitWithRFID:fruit.fruitRFID]) {
                                     [[SFruitInfoDB shareInstance] mergeFruit:fruit];
@@ -361,6 +362,7 @@
                     fruit.fruitEnName = @"";
                     fruit.fruitImage = @"FruitDefaultImage";
                     fruit.fruitRFID = rfId;
+                    
                     fruit.fruitColor = @"#000000";
                 }
                 [self addFruitByOrder:fruit];
@@ -917,7 +919,7 @@
         scriptVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptViewIdentify"];
     }
     NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
-    [scriptVC setMacAddress:macAddress];
+    [scriptVC setMacAddress:macAddress WithFruitList:_fruitsList];
     
     [self.navigationController wxs_pushViewController:scriptVC makeTransition:^(WXSTransitionProperty *transition) {
         transition.animationType = WXSTransitionAnimationTypeSpreadFromRight;

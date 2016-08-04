@@ -153,6 +153,16 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     [_collectionView reloadData];
 }
 
+-(void)hiddenCloseBtnForEveryCell
+{
+    NSArray *visibleCell = [self.collectionView visibleCells];
+    if (visibleCell && visibleCell.count > 0) {
+        for (ScriptSelectCollectionViewCell *cell in visibleCell) {
+            [cell setIsShowCloseBtn:NO];
+        }
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -237,8 +247,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    ScriptCommand *command = [scriptCommandList objectAtIndex:indexPath.item];
-    NSLog(@"select %ld, FruitName is %@",(long)indexPath.item,command.smellName);
+    [self hiddenCloseBtnForEveryCell];
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
