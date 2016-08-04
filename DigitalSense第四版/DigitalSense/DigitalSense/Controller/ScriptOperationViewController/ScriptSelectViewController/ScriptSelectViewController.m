@@ -19,6 +19,8 @@
     NSMutableArray *scriptCommandList;
     
     DataPickViewController *dataPickVC;
+    NSMutableArray *dataArr;
+    NSMutableArray *titleArr;
     
     NSInteger allTime;
 }
@@ -64,6 +66,14 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         
     }else{
         [self inilizedData];
+    }
+    
+    //初始化pickview的数据
+    dataArr = [NSMutableArray array];
+    titleArr = [NSMutableArray array];
+    for (NSInteger i = 1; i <= 60; i++) {
+        [dataArr addObject:[NSNumber numberWithInteger:i]];
+        [titleArr addObject:[NSString stringWithFormat:@"%lds",(long)i]];
     }
 }
 
@@ -259,7 +269,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     if (dataPickVC) {
         dataPickVC = nil;
     }
-    dataPickVC = [[DataPickViewController alloc] initWithDataArray:@[@1,@2,@3,@4,@5,@6,@7,@8] WithTitleArray:@[@"1s",@"2s",@"3s",@"4s",@"5s",@"6s",@"7s",@"8s"] WithIdentify:command];
+    dataPickVC = [[DataPickViewController alloc] initWithDataArray:dataArr WithTitleArray:titleArr WithIdentify:command];
     dataPickVC.delegate = self;
     [dataPickVC showInView:[self.view superview]];
     

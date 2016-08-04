@@ -144,12 +144,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                 }else{
                     [AppUtils showInfo:@"无脚本记录"];
                 }
-                [self setUISwitch:scriptList.count];
             }
         } error:^(NSError *error) {
-            
+
         } completed:^{
             [AppUtils hidenHudProgressForView:self.view];
+            [self setUISwitch:scriptList.count];
         }];
     }
 }

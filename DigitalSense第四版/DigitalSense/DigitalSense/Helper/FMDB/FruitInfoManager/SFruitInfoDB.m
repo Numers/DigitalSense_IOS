@@ -216,4 +216,27 @@
         return flag;
     }
 }
+
+/**
+ *  @author RenRenFenQi, 16-08-04 10:08:32
+ *
+ *  是否存在水果
+ *
+ *  @param rfId 水果编号
+ *
+ *  @return YES/存在  NO/不存在
+ */
+-(BOOL)isExistFruitWithRFID:(NSString *)rfId
+{
+    @synchronized (self) {
+        BOOL result = NO;
+        NSString * query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE rfid = '%@' limit 1",kFruitInfoTableName,rfId];
+        FMResultSet * rs = [_db executeQuery:query];
+        if ([rs next]) {
+            result = YES;
+        }
+        [rs close];
+        return result;
+    }
+}
 @end

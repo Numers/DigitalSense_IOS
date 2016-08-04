@@ -200,9 +200,13 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
                     });
                 }
             }else{
-                dispatch_async(dispatch_get_main_queue(), ^{
+                if([[NSThread currentThread] isMainThread]){
                     [self.navigationController popViewControllerAnimated:YES];
-                });
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }
             }
         }
     }

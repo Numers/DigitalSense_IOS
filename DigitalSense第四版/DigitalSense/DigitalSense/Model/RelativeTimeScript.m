@@ -44,19 +44,19 @@
                 for (ScriptCommand *command in self.scriptCommandList) {
                     NSInteger startTime = baseTime + command.startRelativeTime;
                     NSInteger duration = command.duration;
-                    if ((startTime + duration) > self.scriptTime) {
+                    if ((startTime + duration) >= self.scriptTime) {
                         duration = self.scriptTime - startTime;
                         i = -2;
                     }
-                    NSString *str = [NSString stringWithFormat:@"播放气味%ld: 【%@,%@】播放，持续%ld秒\n",(long)j,[self switchSecondsToTime:startTime],command.smellName,duration];
+                    NSString *str = [NSString stringWithFormat:@"播放气味%ld: 【%@,%@】播放，持续%ld秒\n",(long)j,[self switchSecondsToTime:startTime],command.smellName,(long)duration];
                     [result appendString:str];
                     j++;
                     
                     if (i == -2) {
                         break;
                     }
-                    i++;
                 }
+                i++;
             }
         }
     }else{

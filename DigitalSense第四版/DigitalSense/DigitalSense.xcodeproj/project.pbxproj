@@ -815,6 +815,7 @@
 				TargetAttributes = {
 					846667761CF82AD400EFBE66 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = VNE3KQ6H48;
 					};
 				};
 			};
@@ -1078,6 +1079,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1090,6 +1092,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1099,6 +1102,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1111,6 +1115,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.renrenCompany.DigitalSense;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

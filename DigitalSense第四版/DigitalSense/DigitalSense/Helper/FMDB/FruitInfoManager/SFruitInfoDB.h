@@ -66,4 +66,15 @@
  *  @return 返回保存结果 YES/成功  NO/失败
  */
 -(BOOL)saveFruit:(Fruit *)fruit;
+
+/**
+ *  @author RenRenFenQi, 16-08-04 10:08:32
+ *
+ *  是否存在水果
+ *
+ *  @param rfId 水果编号
+ *
+ *  @return YES/存在  NO/不存在
+ */
+-(BOOL)isExistFruitWithRFID:(NSString *)rfId;
 @end

@@ -21,6 +21,7 @@
 #import "IflyRecognizerManager.h"
 #import "IFlySpeechSynthesizerManager.h"
 #import "ScriptExecuteManager.h"
+#import "SFruitInfoDB.h"
 
 #import "ViewModel.h"
 
@@ -304,6 +305,7 @@
                     //处理http返回responseObject
                     [AppUtils hidenHudProgressForView:self.view];
                     if (x == nil) {
+                        [self dowithFruitList];
                         return ;
                     }
                     
@@ -319,12 +321,15 @@
                                 [fruit setFruitImageWithDic:[dic objectForKey:@"icon"]];
                                 fruit.fruitColor = [NSString stringWithFormat:@"#%@",[dic objectForKey:@"color"]];
                                 fruit.fruitRFID = [[dic objectForKey:@"bottle_sn"] uppercaseString];
-                                [self addFruitByOrder:fruit];
+                                
+                                if ([[SFruitInfoDB shareInstance] isExistFruitWithRFID:fruit.fruitRFID]) {
+                                    [[SFruitInfoDB shareInstance] mergeFruit:fruit];
+                                }else{
+                                    [[SFruitInfoDB shareInstance] saveFruit:fruit];
+                                }
                             }
                             
-                            [[NSNotificationCenter defaultCenter] postNotificationName:BottleInfoCompeletelyNotify object:_fruitsList];
-                            [self saveOrderFile];
-                            [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+                            [self dowithFruitList];
                         }
                     }
                 }];
@@ -337,6 +342,36 @@
 }
 
 #pragma -mark private function
+/**
+ *  @author RenRenFenQi, 16-08-04 10:08:43
+ *
+ *  水果列表从网络请求后对FruitList处理
+ */
+-(void)dowithFruitList
+{
+    if (bottleInfoList && bottleInfoList.count > 0) {
+        for (NSDictionary *dic in bottleInfoList) {
+            NSString *rfId = [dic objectForKey:BottleKey];
+            if (rfId) {
+                Fruit *fruit = [[SFruitInfoDB shareInstance] selectFruitWithRFID:rfId];
+                if (fruit == nil) {
+                    fruit = [[Fruit alloc] init];
+                    fruit.fruitName = rfId;
+                    fruit.fruitKeyWords = @"";
+                    fruit.fruitEnName = @"";
+                    fruit.fruitImage = @"FruitDefaultImage";
+                    fruit.fruitRFID = rfId;
+                    fruit.fruitColor = @"#000000";
+                }
+                [self addFruitByOrder:fruit];
+            }
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:BottleInfoCompeletelyNotify object:_fruitsList];
+        [self saveOrderFile];
+        [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+    }
+}
+
 //同步ComboxMenu的数据
 -(void)syncComboxMenuData
 {

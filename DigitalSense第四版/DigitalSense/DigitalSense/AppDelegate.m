@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "GlobalVar.h"
 #import "RFGeneralManager.h"
+#import "SFruitInfoDB.h"
 #import <iflyMSC/IFlySetting.h>
 #import <iflyMSC/IFlySpeechUtility.h>
 
@@ -22,6 +23,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [[RFGeneralManager defaultManager] getGlovalVarWithVersion];
+    //创建fruitDB
+    [[SFruitInfoDB shareInstance] createDataBase];
     //设置log等级，此处log为默认在app沙盒目录下的msc.log文件
     [IFlySetting setLogFile:LVL_ALL];
     
