@@ -40,20 +40,20 @@
     return self;
 }
 
--(NSString *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList
+-(Fruit *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList
 {
-    NSString *rfid = nil;
+    Fruit *fruit = nil;
     if (fruitSn) {
         if (modeList) {
-            for (Fruit *fruit in modeList) {
-                if ([fruitSn isEqualToString:fruit.fruitSn]) {
-                    rfid = fruit.fruitRFID;
+            for (Fruit *f in modeList) {
+                if ([fruitSn isEqualToString:f.fruitSn]) {
+                    fruit = f;
                     break;
                 }
             }
         }
     }
-    return rfid;
+    return fruit;
 }
 
 -(NSString *)commandString
@@ -64,10 +64,13 @@
 -(NSString *)switchSecondsToTime:(NSInteger)seconds
 {
     NSInteger second = seconds % 60;
-    NSInteger tempMinite = (seconds - second) / 60;
-    NSInteger minite = tempMinite % 60;
-    NSInteger hour = tempMinite / 60;
-    NSString *result = [NSString stringWithFormat:@"%02ld:%02ld:%02ld",hour,minite,second];
+    NSInteger minite = (seconds - second) / 60;
+    NSString *result;
+    if (minite < 10) {
+        result = [NSString stringWithFormat:@"%02ld:%02ld",(long)minite,(long)second];
+    }else{
+        result = [NSString stringWithFormat:@"%ld:%02ld",(long)minite,(long)second];
+    }
     return result;
 }
 @end

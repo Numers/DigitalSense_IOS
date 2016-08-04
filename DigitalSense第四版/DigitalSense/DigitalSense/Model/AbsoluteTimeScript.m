@@ -44,13 +44,13 @@
                                         if (commandArr) {
                                             for (NSDictionary *tempDic in commandArr) {
                                                 NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
-                                                NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
-                                                if ([AppUtils isNullStr:rfId]) {
+                                                Fruit *fruit = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                if (fruit == nil) {
                                                     continue;
                                                 }
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = rfId;
+                                                command.rfId = fruit.fruitRFID;
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                     break;
@@ -59,7 +59,7 @@
                                                     command.duration = endTime - tempStartTime - command.startRelativeTime;
                                                 }
                                                 command.desc = [tempDic objectForKey:@"input"];
-                                                command.smellName = [tempDic objectForKey:@"input"];
+                                                command.smellName = nil;
                                                 
                                                 NSTimeInterval scheduleStartTime = tempStartTime + [[NSNumber numberWithInteger:command.startRelativeTime] doubleValue];
                                                 command.command = [NSString stringWithFormat:@"F600%@%@%04lX%02lX55",[self timeStrFromTimeInterval:scheduleStartTime],command.rfId,(long)command.duration,(long)index];
@@ -85,13 +85,13 @@
                                         
                                         for (NSDictionary *tempDic in commandArr) {
                                             NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
-                                            NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
-                                            if ([AppUtils isNullStr:rfId]) {
+                                            Fruit *fruit = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                            if (fruit == nil) {
                                                 continue;
                                             }
                                             ScriptCommand *command = [[ScriptCommand alloc] init];
                                             command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                            command.rfId = rfId;
+                                            command.rfId = fruit.fruitRFID;
                                             command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                             if ((startTime + command.startRelativeTime) >= endTime) {
                                                 break;
@@ -125,13 +125,13 @@
                                             if (commandArr) {
                                                 for (NSDictionary *tempDic in commandArr) {
                                                     NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
-                                                    NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
-                                                    if ([AppUtils isNullStr:rfId]) {
+                                                    Fruit *fruit = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                    if (fruit == nil) {
                                                         continue;
                                                     }
                                                     ScriptCommand *command = [[ScriptCommand alloc] init];
                                                     command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                    command.rfId = rfId;
+                                                    command.rfId = fruit.fruitRFID;
                                                     command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                     if ((tempStartTime + command.startRelativeTime) >= endTime) {
                                                         break;
@@ -165,13 +165,13 @@
                                             
                                             for (NSDictionary *tempDic in commandArr) {
                                                 NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"bottle_sn"]];
-                                                NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
-                                                if ([AppUtils isNullStr:rfId]) {
+                                                Fruit *fruit = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
+                                                if (fruit == nil) {
                                                     continue;
                                                 }
                                                 ScriptCommand *command = [[ScriptCommand alloc] init];
                                                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
-                                                command.rfId = rfId;
+                                                command.rfId = fruit.fruitRFID;
                                                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
                                                 if ((startTime + command.startRelativeTime) >= endTime) {
                                                     break;

@@ -36,6 +36,8 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     RACDisposable *sendScriptCommandDisposable;
     
     NSTimer *heartTimer;
+    
+    BOOL needRefresh;
 }
 @property(nonatomic, strong) IBOutlet UITableView *tableView;
 @property(nonatomic, strong) IBOutlet UIImageView *scriptLogoImageView;
@@ -67,9 +69,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     
     scriptViewModel = [[ScriptViewModel alloc] init];
     
-    if (currentMacAddress) {
-        [self requestScriptInfoWithMacAddress:currentMacAddress];
-    }
+    needRefresh = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -79,6 +79,9 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackBluetoothPowerOff:) name:OnCallbackBluetoothPowerOff object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackBluetoothDisconnected:) name:OnCallbackBluetoothDisconnected object:nil];
     [self registeNotifications];
+    if (currentMacAddress && needRefresh) {
+        [self requestScriptInfoWithMacAddress:currentMacAddress];
+    }
     [self.tableView reloadData];
 }
 
@@ -109,6 +112,11 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 
 -(void)setMacAddress:(NSString *)macAddr WithFruitList:(NSArray *)list
 {
+    if (currentMacAddress) {
+        if (![currentMacAddress isEqualToString:macAddr]) {
+            needRefresh = YES;
+        }
+    }
     currentMacAddress = macAddr;
     if (list) {
         fruitList = [list copy];
@@ -153,6 +161,7 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         } error:^(NSError *error) {
 
         } completed:^{
+            needRefresh = NO;
             [AppUtils hidenHudProgressForView:self.view];
             [self setUISwitch:scriptList.count];
         }];

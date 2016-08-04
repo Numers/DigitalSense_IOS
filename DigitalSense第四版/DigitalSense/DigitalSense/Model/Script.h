@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ScriptCommand.h"
+#import "Fruit.h"
 #define ScriptStateComfirmed @"ScriptStateComfirmed"
 typedef enum{
     ScriptIsNormal, //未播放状态
@@ -31,7 +32,7 @@ typedef enum{
 @property(nonatomic) ScriptType type;
 
 -(id)initWithDictionary:(NSDictionary *)dic WithModeList:(NSArray *)modeList;
--(NSString *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList;
+-(Fruit *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList;
 -(NSString *)commandString;
 -(NSString *)switchSecondsToTime:(NSInteger)seconds;
 @end

@@ -20,17 +20,20 @@
         if (commandArr) {
             for (NSDictionary *tempDic in commandArr) {
                 NSString *sn = [NSString stringWithFormat:@"%@",[tempDic objectForKey:@"sn"]];
-                NSString *rfId = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
-                if ([AppUtils isNullStr:rfId]) {
-                    continue;
-                }
+                Fruit *fruit = [self searchRFIDWithFruitSn:sn WithModeList:modeList];
                 ScriptCommand *command = [[ScriptCommand alloc] init];
                 command.startRelativeTime = [[tempDic objectForKey:@"many"] integerValue];
                 command.duration = [[tempDic objectForKey:@"keep"] integerValue];
-                command.rfId = rfId;
-                command.smellName = [tempDic objectForKey:@"input"];
+                if (fruit == nil) {
+                    command.rfId = nil;
+                    command.smellName = nil;
+                    command.command = nil;
+                }else{
+                    command.rfId = fruit.fruitRFID;
+                    command.smellName = fruit.fruitName;
+                    command.command = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,(long)command.duration];
+                }
                 command.desc = [tempDic objectForKey:@"input"];
-                command.command = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,(long)command.duration];
                 [self.scriptCommandList addObject:command];
             }
         }
@@ -58,6 +61,7 @@
                     }
                     NSString *str = [NSString stringWithFormat:@"播放气味%ld: 【%@,%@】播放，持续%ld秒\n",(long)j,[self switchSecondsToTime:startTime],command.smellName,(long)duration];
                     [result appendString:str];
+                    
                     j++;
                     
                     if (i == -2) {
