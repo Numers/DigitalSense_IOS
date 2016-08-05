@@ -19,8 +19,9 @@
     ScriptCommand *currentScriptCommand;
     
     UITapGestureRecognizer *tapGestureRecognizer;
+    UILongPressGestureRecognizer *longPressGestureRecognizer;
 }
-@property(nonatomic, assign) id<ScriptSelectCollectionViewCellProtocol> delegate;
+@property(nonatomic, assign) id<ScriptSelectCollectionViewCellProtocol,UIGestureRecognizerDelegate> delegate;
 @property(nonatomic, strong) UIButton *btnClose;
 @property(nonatomic, strong) ScriptSelectSmellView *smellView;
 

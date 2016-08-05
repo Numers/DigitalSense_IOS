@@ -52,13 +52,18 @@
 //    if (self.fruitImageView) {
 //        [self.fruitImageView sd_setImageWithURL:[NSURL URLWithString:fruit.fruitImage] placeholderImage:[UIImage imageNamed:@"FruitDefaultImage"]];
 //    }
+    if ([AppUtils isNullStr:scriptCommand.rfId]) {
+        canMove = NO;
+    }else{
+        canMove = YES;
+    }
     [self setBackgroundColor:[UIColor colorFromHexString:scriptCommand.color]];
     if (self.lblFruitName) {
         [self.lblFruitName setText:scriptCommand.smellName];
     }
     
     if (self.lblDuration) {
-        [self.lblDuration setText:[NSString stringWithFormat:@"%lds",scriptCommand.duration]];
+        [self.lblDuration setText:[NSString stringWithFormat:@"%lds",(long)scriptCommand.duration]];
     }
 }
 
@@ -75,6 +80,10 @@
 
 -(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    if (!canMove) {
+        return;
+    }
+    
     UITouch *touch = [touches anyObject];
     CGPoint previoisPoint = [touch previousLocationInView:self];
     CGPoint currentPoint = [touch locationInView:self];

@@ -14,7 +14,7 @@
 {
     self = [super initWithDictionary:dic WithModeList:modeList];
     if (self) {
-        self.scriptTime = [[dic objectForKey:@"long"] integerValue] * 60;
+        self.scriptTime = [[dic objectForKey:@"long"] integerValue];
         self.scriptCommandList = [NSMutableArray array];
         NSArray *commandArr = [dic objectForKey:@"schedule"];
         if (commandArr) {
@@ -59,10 +59,13 @@
                         duration = self.scriptTime - startTime;
                         i = -2;
                     }
-                    NSString *str = [NSString stringWithFormat:@"播放气味%ld: 【%@,%@】播放，持续%ld秒\n",(long)j,[self switchSecondsToTime:startTime],command.smellName,(long)duration];
-                    [result appendString:str];
                     
-                    j++;
+                    if (duration > 0) {
+                        NSString *str = [NSString stringWithFormat:@"播放气味%ld: 【%@,%@】播放，持续%ld秒\n",(long)j,[self switchSecondsToTime:startTime],command.smellName,(long)duration];
+                        [result appendString:str];
+                        
+                        j++;
+                    }
                     
                     if (i == -2) {
                         break;

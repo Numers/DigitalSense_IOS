@@ -26,11 +26,13 @@
         [self.layer setMasksToBounds:YES];
         
         self.smellView = [[ScriptSelectSmellView alloc] initWithFrame:CGRectMake(ShadowWidth, frame.size.height  / 2.0f, frame.size.width - ShadowWidth * 2, frame.size.height / 2.0f - ShadowWidth + TopAndBottomFixValue)];
-        self.smellView.delegate = self;
         [self.smellView setUserInteractionEnabled:YES];
         [self.contentView addSubview:self.smellView];
         tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
         [self.smellView addGestureRecognizer:tapGestureRecognizer];
+        
+        longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressCell)];
+        [self addGestureRecognizer:longPressGestureRecognizer];
         
         self.btnClose = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, CloseBtnSize.width, CloseBtnSize.height)];
         [self.btnClose setBackgroundImage:[UIImage imageNamed:@"ScriptCommand_Delete"] forState:UIControlStateNormal];
@@ -64,6 +66,11 @@
     }
 }
 
+-(void)longPressCell
+{
+    
+}
+
 -(void)setScriptCommand:(ScriptCommand *)scriptCommand;
 {
     currentScriptCommand = scriptCommand;
@@ -78,14 +85,18 @@
         [self.smellView setScriptCommand:scriptCommand];
         [self.smellView setMaxHeight:self.frame.size.height - ShadowWidth * 2 + 2 * TopAndBottomFixValue];
         [self.contentView addSubview:self.smellView];
-        
         tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
         [self.smellView addGestureRecognizer:tapGestureRecognizer];
     }
-    [self.smellView setNeedsDisplay];
+    self.smellView.delegate = self;
+    if (longPressGestureRecognizer) {
+        longPressGestureRecognizer.delegate = self.delegate;
+    }
     
-    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapSmellView)];
-    [self.smellView addGestureRecognizer:tapGestureRecognizer];
+    if (tapGestureRecognizer) {
+        tapGestureRecognizer.delegate = self.delegate;
+    }
+    [self.smellView setNeedsDisplay];
     
     if (self.btnClose == nil) {
         self.btnClose = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, CloseBtnSize.width, CloseBtnSize.height)];

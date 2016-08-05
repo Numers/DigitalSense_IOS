@@ -10,6 +10,7 @@
 #import "RelativeTimeScript.h"
 #import "FullScreenPlayerCollectionCell.h"
 #import "ScriptExecuteManager.h"
+#import "BluetoothMacManager.h"
 
 #define DefaultCellWidthPersecond 15.0f
 
@@ -259,6 +260,7 @@ static NSString *const cellIdentify = @"FullScreenCollectionCellIdentify";
     needLoop = NO;
     if (currentScript) {
         [[ScriptExecuteManager defaultManager] cancelExecuteRelativeTimeScript:currentScript];
+        [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:@"F96600000000000055"];
     }
 }
 

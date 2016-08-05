@@ -12,6 +12,7 @@
 -(void)pushToScriptView;
 -(void)selectPeripheralFromOperationView:(id)peripheral WithDeviceName:(NSString *)name;
 -(void)startScanningFromOperationView;
+-(void)stopCurrentSmell;
 @end
 @interface ScriptOperationViewController : UIViewController
 @property(nonatomic, assign) id<ScriptOperationViewProtocol> delegate;

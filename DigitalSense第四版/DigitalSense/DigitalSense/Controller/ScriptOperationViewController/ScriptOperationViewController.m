@@ -583,6 +583,9 @@
         return;
     }
     
+    if ([self.delegate respondsToSelector:@selector(stopCurrentSmell)]) {
+        [self.delegate stopCurrentSmell];
+    }
     currentScript = [self saveLocalRelativeTimeScript];
     
     FullScreenPlayerViewController *fullScreenPlayerVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FullScreenPlayerViewIdentify"];

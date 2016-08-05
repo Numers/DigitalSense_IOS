@@ -39,7 +39,7 @@
 #define LocalSmellRFIDOrderFile @"LocalSmellRFIDOrder.plist" //本地气味的rfid展示顺序
 #define cellIdentifier @"LewCollectionViewCell"
 
-@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxMenuViewProtocol,ScriptOperationViewProtocol>
+@interface ViewController ()<LewReorderableLayoutDelegate, LewReorderableLayoutDataSource,UICollectionViewDelegate,UICollectionViewDataSource,ScanBluetoothDeviceViewProtocol,FloatViewProtocol,ComboxMenuViewProtocol,ScriptOperationViewProtocol,ScriptViewProtocol>
 {
     NSString *selectTag;
     NSTimer *smellEmitTimer;
@@ -78,10 +78,14 @@
     //适配SelectDeviceButton的字体大小
     [UIDevice adaptUIButtonTitleFont:_btnSelectDevice WithIphone5FontSize:17.0f IsBold:YES];
     
+    //添加左划手势
+    UISwipeGestureRecognizer *swipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(SwipeView)];
+    [swipeGestureRecognizer setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [self.view addGestureRecognizer:swipeGestureRecognizer];
     //popoverView显示的title
     popoverTitle = @[@"脚本列表"];
     //添加浮动的按钮
-    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 70, 70)];
+    floatView = [[FloatView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     floatView.delegate = self;
     [floatView.layer setCornerRadius:floatView.frame.size.width / 2.0f];
     [floatView setCenter:CGPointMake(self.view.frame.size.width - floatView.frame.size.width / 2.0f, self.view.frame.size.height / 2.0f)];
@@ -148,7 +152,7 @@
             testTimer = nil;
         }
     }
-    [self setSelectDeviceBtnTitle:@"正在搜索智能设备" IsEnable:YES];
+    [self setSelectDeviceBtnTitle:@"正在搜索嗅觉设备" IsEnable:YES];
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
@@ -340,6 +344,12 @@
                 break;
         }
     }
+}
+
+#pragma -mark UIGestureRecognizer
+-(void)SwipeView
+{
+    [self didTapView];
 }
 
 #pragma -mark private function
@@ -918,12 +928,11 @@
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         scriptVC = [storyboard instantiateViewControllerWithIdentifier:@"ScriptViewIdentify"];
     }
+    scriptVC.delegate = self;
     NSString *macAddress = [[NSUserDefaults standardUserDefaults] objectForKey:KMY_BlutoothMacAddress_Key];
     [scriptVC setMacAddress:macAddress WithFruitList:_fruitsList];
     
-    [self.navigationController wxs_pushViewController:scriptVC makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType = WXSTransitionAnimationTypeSpreadFromRight;
-    }];
+    [self.navigationController pushViewController:scriptVC animated:YES];
 }
 
 -(IBAction)clickSelectDeviceBtn:(id)sender
@@ -1088,6 +1097,7 @@
             [self refreshBluetoothData];
         }
     }else{
+        [[ScriptExecuteManager defaultManager] cancelAllScripts];
         [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
     }
 }
@@ -1114,11 +1124,7 @@
     if (_fruitsList && _fruitsList.count > 0) {
         [scriptOperationVC setFruitList:_fruitsList];
     }
-    [self.navigationController wxs_pushViewController:scriptOperationVC makeTransition:^(WXSTransitionProperty *transition) {
-        transition.animationType = WXSTransitionAnimationTypeBrickOpenHorizontal;
-        transition.animationTime = 0.5f;
-        transition.backGestureEnable = NO;
-    }];
+    [self.navigationController pushViewController:scriptOperationVC animated:YES];
 }
 
 #pragma -mark ComboxMenuViewProtocol
@@ -1137,6 +1143,7 @@
         [AppUtils showInfo:@"蓝牙未打开"];
         return;
     }
+    [[ScriptExecuteManager defaultManager] cancelAllScripts];
     [[BluetoothProcessManager defatultManager] startScanBluetooth];
 }
 #pragma -mark ScriptOperationViewProtocol
@@ -1153,5 +1160,20 @@
 -(void)startScanningFromOperationView
 {
     [self rescanBluetooth];
+}
+
+#pragma -mark ScriptViewProtocol / ScriptOperationViewProtocol
+-(void)stopCurrentSmell
+{
+    if (![selectTag isEqualToString:CloseTag]) {
+        [self writeDataWithRFID:selectTag WithTimeInterval:0];
+        [self setSelectTag:CloseTag];
+        if (smellEmitTimer) {
+            if ([smellEmitTimer isValid]) {
+                [smellEmitTimer invalidate];
+                smellEmitTimer = nil;
+            }
+        }
+    }
 }
 @end

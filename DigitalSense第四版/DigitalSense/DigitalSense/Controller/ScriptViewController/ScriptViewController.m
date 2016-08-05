@@ -152,16 +152,16 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
                             [absoluteScriptList addObject:absoluteTimeScript];
                         }
                     }
-                    [[ScriptExecuteManager defaultManager] executeAbsoluteTimeScript:absoluteScriptList];
+//                    [[ScriptExecuteManager defaultManager] executeAbsoluteTimeScript:absoluteScriptList];
                     [self.tableView reloadData];
                 }else{
                     [AppUtils showInfo:@"无脚本记录"];
                 }
+                needRefresh = NO;
             }
         } error:^(NSError *error) {
 
         } completed:^{
-            needRefresh = NO;
             [AppUtils hidenHudProgressForView:self.view];
             [self setUISwitch:scriptList.count];
         }];
@@ -267,17 +267,18 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         id obj = [x object];
         if([obj isKindOfClass:[ScriptCommand class]]){
             ScriptCommand *command = (ScriptCommand *)obj;
-            
-            heartTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(generateHeartView) userInfo:nil repeats:YES];
-            [heartTimer fire];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(command.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                if (heartTimer) {
-                    if ([heartTimer isValid]) {
-                        [heartTimer invalidate];
+            if (![AppUtils isNullStr:command.command]) {
+                heartTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(generateHeartView) userInfo:nil repeats:YES];
+                [heartTimer fire];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(command.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (heartTimer) {
+                        if ([heartTimer isValid]) {
+                            [heartTimer invalidate];
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }];
 }
@@ -407,6 +408,9 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
 {
     if (script) {
         if (script.type == ScriptIsRelativeTime) {
+            if ([self.delegate respondsToSelector:@selector(stopCurrentSmell)]) {
+                [self.delegate stopCurrentSmell];
+            }
             [[ScriptExecuteManager defaultManager] executeRelativeTimeScript:script];
         }
     }

@@ -901,10 +901,14 @@ static BluetoothMacManager *bluetoothMacManager;
         }
         return;
     }
+    
     NSInteger index = [self.peripherals indexOfObject:peripheral];
-    NSString *deviceName = [self.peripheralNameList objectAtIndex:index];
-    [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (index != NSNotFound) {
+        NSString *deviceName = [self.peripheralNameList objectAtIndex:index];
+        [[NSUserDefaults standardUserDefaults] setObject:deviceName forKey:LastConnectDeviceNameKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     [self callBackDevice:YES WithCallbackType:CallbackSuccess];
 }
 

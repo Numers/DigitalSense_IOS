@@ -108,6 +108,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="140" height="132"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FruitDefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="kma-bn-FVo">
+                                                    <rect key="frame" x="36" y="16" width="69" height="69"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="kma-bn-FVo" secondAttribute="height" multiplier="1:1" id="zG1-f6-YQf"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="水果" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2HF-Vn-9CN">
                                                     <rect key="frame" x="1" y="100" width="139" height="15"/>
                                                     <constraints>
@@ -167,12 +173,6 @@
                                                         <constraint firstAttribute="height" constant="0.5" id="93N-Hf-JdR"/>
                                                     </constraints>
                                                 </view>
-                                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FruitDefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="kma-bn-FVo">
-                                                    <rect key="frame" x="36" y="16" width="69" height="69"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="kma-bn-FVo" secondAttribute="height" multiplier="1:1" id="zG1-f6-YQf"/>
-                                                    </constraints>
-                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>

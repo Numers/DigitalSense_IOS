@@ -14,7 +14,7 @@
 #import "Fruit.h"
 #import "ScriptCommand.h"
 
-@interface ScriptSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSelectCollectionViewCellProtocol,DataPickViewProtocol>
+@interface ScriptSelectViewController ()<UICollectionViewDelegate,UICollectionViewDataSource,LewReorderableLayoutDelegate,LewReorderableLayoutDataSource,ScriptSelectCollectionViewCellProtocol,DataPickViewProtocol,UIGestureRecognizerDelegate>
 {
     NSMutableArray *scriptCommandList;
     
@@ -23,6 +23,8 @@
     NSMutableArray *titleArr;
     
     NSInteger allTime;
+    
+    UITapGestureRecognizer *tapGestureRecognizer;
 }
 @property(nonatomic, strong) UICollectionView *collectionView;
 @end
@@ -59,6 +61,9 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
     self.collectionView.dataSource = self;
     [self.view addSubview:self.collectionView];
     [self.collectionView setBackgroundColor:[UIColor clearColor]];
+    tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenCloseBtnForEveryCell)];
+    tapGestureRecognizer.delegate = self;
+    [self.collectionView addGestureRecognizer:tapGestureRecognizer];
     
     [self.collectionView registerClass:[ScriptSelectCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     // Do any additional setup after loading the view.
@@ -99,7 +104,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
             command.power = 0.25;
         }else{
             command.duration = 3;
-            command.power = 0.67;
+            command.power = 0.5;
         }
         command.desc = fruit.fruitName;
         command.color = fruit.fruitColor;
@@ -247,7 +252,7 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
 
 #pragma -mark UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    [self hiddenCloseBtnForEveryCell];
+//    [self hiddenCloseBtnForEveryCell];
 }
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -304,5 +309,24 @@ static NSString * const reuseIdentifier = @"ScriptSelectCollectionViewCell";
         }
         
     }
+}
+
+#pragma -mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    static NSTimeInterval beginTime = 0;
+    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        beginTime = [[NSDate date] timeIntervalSince1970];
+        return NO;
+    }else if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]){
+        NSTimeInterval clickTime = [[NSDate date] timeIntervalSince1970];
+        NSTimeInterval interval = (clickTime - beginTime)*1000;
+        if (interval < 1000) {
+            return NO;
+        }else{
+            return YES;
+        }
+    }
+    return YES;
 }
 @end

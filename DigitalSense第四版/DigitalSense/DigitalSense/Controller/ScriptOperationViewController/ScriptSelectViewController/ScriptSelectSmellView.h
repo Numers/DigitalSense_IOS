@@ -15,6 +15,8 @@
 @interface ScriptSelectSmellView : UIView
 {
     CGFloat maxHeight;
+    
+    BOOL canMove;
 }
 @property(nonatomic, assign) id<ScriptSelectSmellViewProtocol> delegate;
 @property(nonatomic, strong) UIImageView *fruitImageView;
