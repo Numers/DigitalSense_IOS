@@ -147,14 +147,14 @@
  *
  *  删除Fruit记录
  *
- *  @param fruit 水果味对象
+ *  @param rfid 水果味对象编号
  *
  *  @return 返回删除结果 YES/成功  NO/失败
  */
--(BOOL)deleteFruit:(Fruit *)fruit
+-(BOOL)deleteFruit:(NSString *)rfid
 {
     @synchronized (self) {
-        NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,fruit.fruitRFID];
+        NSString * query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE rfid = '%@'",kFruitInfoTableName,rfid];
         BOOL flag = [_db executeUpdate:query];
         if (flag) {
             NSLog(@"删除 一条数据 成功");

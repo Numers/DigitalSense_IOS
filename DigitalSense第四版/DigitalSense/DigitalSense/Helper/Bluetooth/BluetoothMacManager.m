@@ -215,6 +215,12 @@ static BluetoothMacManager *bluetoothMacManager;
 {
     connectTime ++;
     if (connectTime > ConnectTimeOut) {
+        if (self.peripheral) {
+            if (self.peripheral.state == CBPeripheralStateConnected) {
+                [self callBackDevice:YES WithCallbackType:CallbackSuccess];
+                return;
+            }
+        }
         [self callBackDevice:NO WithCallbackType:CallbackTimeout];
     }
 }

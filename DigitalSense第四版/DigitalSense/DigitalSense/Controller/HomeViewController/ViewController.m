@@ -317,6 +317,7 @@
                     if (result) {
                         NSArray *dataArr = [result objectForKey:@"data"];
                         if (dataArr) {
+                            [self clearDataFromDataBaseRelationToBottleInfoList];
                             for (NSDictionary *dic in dataArr) {
                                 Fruit *fruit = [[Fruit alloc] init];
                                 fruit.fruitName = [dic objectForKey:@"cn_name"];
@@ -353,6 +354,20 @@
 }
 
 #pragma -mark private function
+/**
+ *  @author RenRenFenQi, 16-08-05 18:08:47
+ *
+ *  清空数据库中关于bottleInfoList中的RFID的关联记录
+ */
+-(void)clearDataFromDataBaseRelationToBottleInfoList
+{
+    for (NSDictionary *dic in bottleInfoList) {
+        NSString *rfid = [dic objectForKey:BottleKey];
+        if (rfid) {
+            [[SFruitInfoDB shareInstance] deleteFruit:rfid];
+        }
+    }
+}
 /**
  *  @author RenRenFenQi, 16-08-04 10:08:43
  *

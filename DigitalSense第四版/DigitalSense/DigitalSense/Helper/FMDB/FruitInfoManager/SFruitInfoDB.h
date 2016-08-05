@@ -50,11 +50,11 @@
  *
  *  删除Fruit记录
  *
- *  @param fruit 水果味对象
+ *  @param rfid 水果味对象编号
  *
  *  @return 返回删除结果 YES/成功  NO/失败
  */
--(BOOL)deleteFruit:(Fruit *)fruit;
+-(BOOL)deleteFruit:(NSString *)rfid;
 
 /**
  *  @author RenRenFenQi, 16-06-03 10:06:11
