@@ -123,6 +123,8 @@
     
     isLoop = NO;
     [_btnLoop setBackgroundImage:[UIImage imageNamed:@"Player_Once"] forState:UIControlStateNormal];
+    
+    [self registerNotify];
 }
 
 -(void)viewDidLayoutSubviews
@@ -156,16 +158,15 @@
 {
     [super viewWillAppear:animated];
     [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait];
-    [self registerNotify];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if ([self isMovingFromParentViewController]) {
         [self saveLocalRelativeTimeScript];
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
 }
 

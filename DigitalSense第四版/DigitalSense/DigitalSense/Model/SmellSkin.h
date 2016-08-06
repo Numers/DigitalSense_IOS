@@ -10,10 +10,12 @@
 
 @interface SmellSkin : NSObject
 @property(nonatomic, copy) NSString *skinId;
+@property(nonatomic, copy) NSString *name;
 @property(nonatomic, copy) NSString *backgroundImage;
 @property(nonatomic, copy) NSString *tabBarImage;
 @property(nonatomic, copy) NSString *voiceButtonImage;
 
 +(SmellSkin *)getLocalSkin;
 -(void)saveSkinToLocal;
+-(NSString *)matchImageURLWithDic:(NSDictionary *)dic WithBaseURL:(NSString *)baseURL;
 @end

@@ -121,6 +121,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCallbackConnectToBluetoothTimeout:) name:OnCallbackConnectToBluetoothTimeout object:nil];
     
     [[BluetoothProcessManager defatultManager] registerNotify];
+    
+    selectTag = CloseTag;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -536,7 +538,6 @@
     }
     
     hasNewFruit = NO;
-    selectTag = CloseTag;
     [_collectionView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
@@ -777,14 +778,27 @@
                 if (dataDic) {
                     
                     SmellSkin *skin = [[SmellSkin alloc] init];
-                    skin.skinId = [dataDic objectForKey:@"id"];
+                    skin.skinId = @"1";
+                    skin.name = [dataDic objectForKey:@"name"];
                     NSString *url = [dataDic objectForKey:@"url"];
-                    NSString *backgroundUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"background"]];
-                    skin.backgroundImage = backgroundUrl;
-                    NSString *tabUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"tab"]];
-                    skin.tabBarImage = tabUrl;
-                    NSString *buttonUrl = [NSString stringWithFormat:@"%@%@",url,[dataDic objectForKey:@"button"]];
-                    skin.voiceButtonImage = buttonUrl;
+                    NSDictionary *skinDic = [dataDic objectForKey:@"skin"];
+                    if (skinDic) {
+                        NSDictionary *backgroundDic = [skinDic objectForKey:@"background"];
+                        if (backgroundDic) {
+                            skin.backgroundImage = [skin matchImageURLWithDic:backgroundDic WithBaseURL:url];
+                        }
+                        
+                        NSDictionary *tabBarDic = [skinDic objectForKey:@"button-background"];
+                        if (tabBarDic) {
+                            skin.tabBarImage = [skin matchImageURLWithDic:tabBarDic WithBaseURL:url];
+                        }
+                        
+                        NSDictionary *voiceButtonDic = [skinDic objectForKey:@"speak-button"];
+                        if (voiceButtonDic) {
+                            skin.voiceButtonImage = [skin matchImageURLWithDic:voiceButtonDic WithBaseURL:url];
+                        }
+                    }
+                    
                     [skin saveSkinToLocal];
                     [self renderingSkinWithSmellSkin:skin];
                 }
@@ -1106,6 +1120,7 @@
 {
     if ([[BluetoothMacManager defaultManager] isConnected]) {
         if (![[BluetoothMacManager defaultManager] isMatchConnectedPeripheral:peripheral]) {
+            [self stopCurrentSmell];
             [[ScriptExecuteManager defaultManager] cancelAllScripts];
             [[BluetoothProcessManager defatultManager] connectToBluetooth:name WithPeripheral:peripheral];
         }else{
@@ -1158,6 +1173,7 @@
         [AppUtils showInfo:@"蓝牙未打开"];
         return;
     }
+    
     [[ScriptExecuteManager defaultManager] cancelAllScripts];
     [[BluetoothProcessManager defatultManager] startScanBluetooth];
 }
@@ -1190,5 +1206,6 @@
             }
         }
     }
+
 }
 @end
