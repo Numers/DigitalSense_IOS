@@ -268,10 +268,12 @@ static NSString *cellIdentify = @"ScriptTableViewCellIdentify";
         if([obj isKindOfClass:[ScriptCommand class]]){
             ScriptCommand *command = (ScriptCommand *)obj;
             if (![AppUtils isNullStr:command.command]) {
+                NSDictionary *dic = [x userInfo];
+                NSInteger actualTime = [[dic objectForKey:ActualTimeKey] integerValue];
                 heartTimer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(generateHeartView) userInfo:nil repeats:YES];
                 [heartTimer fire];
                 
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(command.duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(actualTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     if (heartTimer) {
                         if ([heartTimer isValid]) {
                             [heartTimer invalidate];

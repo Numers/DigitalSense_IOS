@@ -164,14 +164,30 @@ static NSInteger currentSecond = -1;
     NSArray *filterArr = [scriptCommandQueue filteredArrayUsingPredicate:predicate];
     if (filterArr && filterArr.count > 0) {
         ScriptCommand *command = [filterArr objectAtIndex:0];
+        NSString *commandstr = command.command;
+        NSInteger duration = command.duration;
+        if ((currentSecond + command.duration) > currentPlayingScript.scriptTime) {
+            duration = currentPlayingScript.scriptTime - currentSecond;
+        }
         
+        if (duration > 0) {
+            if (![AppUtils isNullStr:commandstr]) {
+                if([commandstr hasPrefix:@"F5"]){
+                    commandstr = [NSString stringWithFormat:@"F501%@%04lX55",command.rfId,(long)duration];
+                }
+            }
+        }else{
+            return;
+        }
         //往蓝牙发送command
         if ([[BluetoothMacManager defaultManager] isConnected]) {
-            if (![AppUtils isNullStr:command.command]) {
-                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:command.command];
+            if (![AppUtils isNullStr:commandstr]) {
+                [[BluetoothMacManager defaultManager] writeCharacteristicWithCommandStr:commandstr];
             }
+            
+            NSDictionary *dic = [NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:duration] forKey:ActualTimeKey];
             //往UI通知当前执行的命令
-            [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command];
+            [[NSNotificationCenter defaultCenter] postNotificationName:SendScriptCommandNotification object:command userInfo:dic];
         }
     }
 }

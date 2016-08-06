@@ -33,6 +33,7 @@ typedef enum{
 
 -(id)initWithDictionary:(NSDictionary *)dic WithModeList:(NSArray *)modeList;
 -(Fruit *)searchRFIDWithFruitSn:(NSString *)fruitSn WithModeList:(NSArray *)modeList;
+-(void)analyzeCommandList;
 -(NSString *)commandString;
 -(NSString *)switchSecondsToTime:(NSInteger)seconds;
 @end

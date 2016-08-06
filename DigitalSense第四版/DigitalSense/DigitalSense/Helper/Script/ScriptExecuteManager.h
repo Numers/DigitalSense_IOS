@@ -12,6 +12,8 @@
 #define PlayOverAllScriptsNotification @"PlayOverAllScriptsNotification"
 #define SendScriptCommandNotification @"SendScriptCommandNotification"
 #define PlayProgressSecondNotification @"PlayProgressSecondNotification"
+
+#define ActualTimeKey @"ActualTime"
 @class Script;
 @interface ScriptExecuteManager : NSObject
 {
