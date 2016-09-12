@@ -25,9 +25,9 @@ static URLManager *manager;
 -(void)setUrlWithState:(BOOL)state
 {
     if (state) {
-        BaseURL = @"http://api.smell.renrenfenqi.com";
+        BaseURL = @"http://api.oa.damosphere.com/";
     }else{
-        BaseURL = @"http://api.smell.renrenfenqi.com";
+        BaseURL = @"http://api.oa.damosphere.com/";
     }
 }
 @end
